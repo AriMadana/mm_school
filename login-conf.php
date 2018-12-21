@@ -6,21 +6,15 @@
     $login_email = $_POST['email'];
     $login_password = $_POST['password'];
 
-    $username = $mm_admin_class-> isPresentUsername($login_email);
-    $user_id  = $mm_admin_class-> user_match($login_email, $login_password);
-
-    if(!$username) {
-        redirectSelf('sign-in.php', 'nomemberinformation');
-    } else if(!$mm_admin_class-> isCorrectPassword($login_password)) {
-        redirectSelf('sign-in.php', 'usernameandpasswordnotmatch'); //wrongpassword
-    } else if($user_id != null) {
-        $_SESSION['user_id'] = $user_id;
-        $user_infos = $mm_admin_class -> user_info_from_userid($user_id);
-        $_SESSION['school_id'] = $user_infos['admin_school'];
-        redirect('index.php');
+    $user_id = $mm_user_class -> userMatch($login_email, $login_password);
+    if($user_id != null) {
+      $_SESSION['user_id'] = $user_id;
+      $user_infos = $mm_user_class -> userInfoFromUserID($user_id);
+      $_SESSION['school_id'] = $user_infos['user_school'];
+      header('Location: index.php');
     } else {
-        redirectSelf('sign-in.php', 'error');
-    }
+      echo 'Login ERROR!';
+    };
   }
 
   // include 'includes/init.php';

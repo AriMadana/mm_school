@@ -6,7 +6,7 @@ header("content-type:application/json");
 $postdata = file_get_contents("php://input");
 $grade = json_decode($postdata);
 
-$result = $mm_school_grade -> addGrade($grade->new_grade, $_SESSION['school_id']);
+$result = $mm_school_grade -> selectGrade($_SESSION['school_id']);
 //$teachers = $mm_teacher_class -> activated_teacher_list_for_sub($grade, $subject, $user_id);
 echo json_encode($result);
 // echo $result;

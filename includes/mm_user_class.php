@@ -1,103 +1,29 @@
 <?php
 
-class MM_School_Grade extends Db_object {
+class MM_User_Class extends Db_object {
 
-	protected static $db_table = "eth_grade";
-	protected static $db_fields = array('grade_id', 'grade_name', 'grade_school');
+	protected static $db_table = "eth_user";
+	protected static $db_fields = array('user_id', 'user_email', 'user_pass', 'user_name', 'user_school', 'user_active');
 
-	public $grade_id;
-	public $grade_name;
-	public $grade_school;
-
-  public function selectGrade($school_id) {
-    $db_table = static::$db_table;
-    $result = $this -> find_array_by_query("SELECT * FROM `$db_table` WHERE `grade_school` = '$school_id';");
-    return $result;
-  }
-  public function addGrade($grade_name,$school_id) {
-    global $database;
-    $db_table = static::$db_table;
-    $grade_name = $database -> escape_string($grade_name);
-    $result = $this -> insert_query("INSERT INTO `$db_table` (`grade_name`, `grade_school`) VALUES ('$grade_name', $school_id)");
-    return $result;
-  }
-	public function user_match($email, $password) {
+  public function userMatch($email, $password) {
 		global $database;
 		$db_table = static::$db_table;
-        $password = md5($password);
 		$email = $database -> escape_string($email);
-        $password = $database -> escape_string($password);
-		$result = $this -> find_by_query("SELECT `admin_id` FROM `$db_table` WHERE `admin_email` = '$email' AND `admin_pass` = '$password';");
+    $password = $database -> escape_string($password);
+		$result = $this -> find_by_query("SELECT `user_id` FROM `$db_table` WHERE `user_email` = '$email' AND `user_pass` = '$password';");
 		//$count = mysqli_num_rows($query);
 		// return ($result > 0) ? true : false;
-    return $result['admin_id'];
+    return $result['user_id'];
 	}
 
-    public function isPresentUsername($email) {
-        global $database;
-        $db_table = static::$db_table;
-        $email = $database->escape_string($email);
-        $isPresent = $this->count_by_query("SELECT `admin_email` FROM `$db_table` WHERE `admin_email` = '$email';");
-
-        if($isPresent == 1) {
-            return true;
-        }
-        return false;
-    }
-
-    public function isCorrectPassword($password) {
-        global $database;
-        $db_table = static::$db_table;
-        $password = md5($password);
-        $password = $database->escape_string($password);
-        $isCorrect = $this->count_by_query("SELECT `admin_pass` FROM `$db_table` WHERE `admin_pass` = '$password';");
-
-        if($isCorrect == 1) {
-            return true;
-        }
-        return false;
-    }
-
-    public function isInsertSuccessful($username, $phone, $email, $password) {
-        global $database;
-        $db_table = static::$db_table;
-
-        $username = $database->escape_string($username);
-        $phone    = $database->escape_string($phone);
-        $email    = $database->escape_string($email);
-        $password = $database->escape_string($password);
-        $password = md5($password); //->OK
-
-        /*for($i = 0; $i < count($values); $i++) {
-            $values[i] = $database->escape_string($values[i]);
-        }
-        $values[3] = md5($values[3]);
-
-        $isInsert = $this->insert($db_table, array(
-            static::$db_fields[2] => $values[0], //name
-            static::$db_fields[9] => $values[1], //phone
-            static::$db_fields[1] => $values[2], //email
-            static::$db_fields[6] => $values[3]  //password
-        ));*/
-
-        $sql = "INSERT INTO `$db_table` (`admin_fname`, `admin_phone`, `admin_email`, `admin_pass`) VALUES ('$username', '$phone', '$email', '$password')"; //-> OK
-
-        $isInsert = $this->insert_query($sql); //-> OK
-
-        if($isInsert) {
-            return true;
-        }
-        return false;
-    }
-
-  public function user_info_from_userid($user_id) {
+  public function userInfoFromUserID($user_id) {
 		global $database;
 		$db_table = static::$db_table;
 		$user_id = $database -> escape_string($user_id);
-		$result = $this -> find_by_query("SELECT * FROM `$db_table` WHERE `admin_id` = $user_id;");
+		$result = $this -> find_by_query("SELECT * FROM `$db_table` WHERE `user_id` = $user_id;");
 		//$count = mysqli_num_rows($query);
 		// return ($result > 0) ? true : false;
-        return $result;
+    return $result;
 	}
 
  /*   public function sendMail($to, array $message) {

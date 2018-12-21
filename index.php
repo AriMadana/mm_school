@@ -1,3 +1,12 @@
+<?php
+  include 'includes/init.php';
+  if($_SESSION['user_id'] == null) {
+    header('Location: sign-in.php');
+  } else {
+    $user_infos = $mm_user_class -> userInfoFromUserID($_SESSION['user_id']);
+    $image_prof = $user_infos['user_pf'];
+    $image_cov = $user_infos['user_cv'];
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -541,7 +550,7 @@
 
             <!-- Toggle -->
             <a class="avatar avatar-sm avatar-online dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img src="assets/img/avatars/profiles/avatar-1.jpg" alt="..." class="avatar-img rounded-circle">
+              <img src="ftp_folder/profile/<?php echo $image_prof ?>" alt="..." class="avatar-img rounded-circle">
             </a>
 
             <!-- Menu -->
@@ -814,3 +823,4 @@
     </script>
   </body>
 </html>
+<?php } ?>
