@@ -791,24 +791,25 @@
             });
         });
 
-        app.controller("manage-gradesCtrl", function ($scope) {
+        app.controller("manage-gradesCtrl", function ($scope, $http) {
           $('#create_grade_btn').click(function () {
             $('#sidebarModalSearch').modal('show');
           });
           var new_grade;
           $scope.add_grade=function () {
             new_grade = $('#new_grade').val();
+            var grade = ({
+              'new_grade' : new_grade
+            });
+            $http({
+              method : 'POST',
+              url : 'includes/http_req/forms/add_grade.php',
+              data : grade,
+              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            });
           }
 
-          var grade = ({
-            'new_grade' : new_grade
-          });
-          $http({
-            method : 'POST',
-            url : 'includes/http_req/forms/add_grade.php',
-            data : grade,
-            headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
-          });
+
         });
     </script>
   </body>
