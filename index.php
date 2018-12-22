@@ -815,9 +815,106 @@
               url : 'includes/http_req/forms/add_grade.php',
               data : grade,
               headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              grade_load();
             });
           }
+          grade_load();
+          function grade_load(){
+            $http.get('includes/http_req/api/req_grade.php')
+            .then(function (response) {
+              $scope.grade = response.data;
+              if ($scope.grade) {
+                $('#no_grade').hide();
+                var grade_cards = "";
+                for (var i = 0; i < $scope.grade.length; i++) {
+                  grade_cards += '<div class="col-12 col-lg-4">' +
+                    '<!-- Card -->' +
+                    '<div class="card">' +
+                      '<div class="card-body">' +
+                        '<!-- Dropdown -->' +
+                        '<div class="dropdown card-dropdown">' +
+                          '<a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown">' +
+                            '<i class="fe fe-more-vertical text-dark"></i>' +
+                          '</a>' +
+                          '<div class="dropdown-menu dropdown-menu-right">' +
+                            '<a class="dropdown-item">' +
+                              'Edit Grade Name' +
+                            '</a>' +
+                            '<a class="dropdown-item">' +
+                              'Another action' +
+                            '</a>' +
+                            '<a class="dropdown-item">' +
+                              'Something else here' +
+                            '</a>' +
+                          '</div>' +
+                        '</div>' +
 
+                        '<!-- Avatar -->' +
+                        '<div class="text-center">' +
+                          '<p>2019/2020</p>' +
+                        '</div>' +
+
+                        '<!-- Title -->' +
+                        '<h2 class="card-title text-center p-3">' +
+                          '<p style="font-size: 28px;">'+$scope.grade[i].grade_name+'</p>' +
+                        '</h2>' +
+                        '<!-- Divider -->' +
+                        '<hr>' +
+
+                        '<div class="row align-items-center">' +
+                          '<div class="col">' +
+
+                            '<!-- Time -->' +
+                            '<p class="card-text text-muted">' +
+                              '100 Students' +
+                            '</p>' +
+
+                          '</div>' +
+                          '<div class="col-auto">' +
+                            '<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseClass'+$scope.grade[i].grade_id+'" aria-expanded="false" aria-controls="collapseClass">' +
+                              'Create Class<span class="fe fe-chevrons-down"></span>' +
+                            '</button>' +
+                          '</div>' +
+                        '</div> <!-- / .row -->' +
+                        '<div class="collapse" id="collapseClass'+$scope.grade[i].grade_id+'">' +
+                          '<hr>' +
+                          '<div>' +
+                            '<ul class="list-group">' +
+                              '<li class="list-group-item d-flex justify-content-between align-items-center">' +
+                                'Grade-8A' +
+                                '<span>' +
+                                  '<span class="fe fe-edit-2 mr-3 text-danger"></span>' +
+                                  '<span class="fe fe-trash-2 mr-1 text-danger"></span>' +
+                                '</span>' +
+                              '</li>' +
+                              '<li class="list-group-item d-flex justify-content-between align-items-center">' +
+                                'Grade-8B' +
+                                '<span>' +
+                                  '<span class="fe fe-edit-2 mr-3 text-danger"></span>' +
+                                  '<span class="fe fe-trash-2 mr-1 text-danger"></span>' +
+                                '</span>' +
+                              '</li>' +
+                            '</ul>' +
+                            '<div class="input-group mt-3">' +
+                              '<input type="text" class="form-control" placeholder="Enter new class name">' +
+                              '<div class="input-group-append">' +
+                                '<button class="btn btn-success">Create</button>' +
+                              '</div>' +
+                            '</div>' +
+                          '</div>' +
+                        '</div>' +
+                      '</div> <!-- / .card-body -->' +
+                    '</div>' +
+                  '</div>';
+                  $('#grade_item').html(grade_cards);
+                }
+              }else {
+                $('#no_grade').show();
+                $('#upper_grade_btn').hide();
+              }
+            });
+//lkjkljkl
 
         });
 

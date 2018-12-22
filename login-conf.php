@@ -11,6 +11,7 @@
       $_SESSION['user_id'] = $user_id;
       $user_infos = $mm_user_class -> userInfoFromUserID($user_id);
       $_SESSION['school_id'] = $user_infos['user_school'];
+
       header('Location: index.php');
     } else {
       echo 'Login ERROR!';
