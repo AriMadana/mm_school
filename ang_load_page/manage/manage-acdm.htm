@@ -1,3 +1,64 @@
+<div class="modal fade" id="add_new_acdm_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div id="addStuAlert" style="top:-90px;z-index:1200;position:absolute;width:100%;" class="alert alert-success fade" role="alert">
+        <h4 class="alert-heading">Well done!</h4>
+        <p style="margin-bottom:0px;">Aww yeah, you successfully</p>
+      </div>
+      <div class="modal-card card" data-toggle="lists" data-lists-values="[&quot;name&quot;]">
+        <div class="card-header">
+          <div class="row align-items-center">
+            <div class="col-auto">
+
+              <!-- Close -->
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"><span class="fe fe-x"></span></span>
+              </button>
+
+            </div>
+            <div class="col">
+
+              <!-- Title -->
+              <h4 class="card-header-title" id="exampleModalCenterTitle" style="text-align:center;">
+                Academic Years Creation
+              </h4>
+
+            </div>
+            <div class="col-auto">
+
+              <!-- Close -->
+              <button type="button" class="close" ng-click="add_grade()">
+                <span aria-hidden="true"><span class="fe fe-check"></span></span>
+              </button>
+
+            </div>
+          </div> <!-- / .row -->
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="form-row">
+              <div class="col-12 col-md-6 mb-3">
+                <label for="validationServer01">From</label>
+                <input id="acdmYearsRangeInput" type="text" class="form-control" placeholder="Flatpickr range example" data-toggle="flatpickr" data-flatpickr-mode="range">
+                <!-- <input type="text" class="form-control data-mask" placeholder="US data example" data-mask="0000-00-00"> -->
+                <div class="valid-feedback">
+                  Looks good!
+                </div>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label for="validationServer02">To</label>
+                <input type="text" class="form-control data-mask" placeholder="US data example" data-mask="0000-00-00">
+                <div class="valid-feedback">
+                  Looks good!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="main-content">
 
   <!-- HEADER -->
@@ -22,7 +83,7 @@
           </div>
           <div class="col-auto">
 
-            
+
 
           </div>
         </div> <!-- / .row -->
@@ -32,7 +93,334 @@
   </div> <!-- / .header -->
 
   <!-- CARDS -->
-  <div class="container">
-  </div> <!-- / .container -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+
+        <!-- Card -->
+        <div class="card card-inactive card-fluid">
+          <div class="card-body text-center">
+
+            <!-- Image -->
+            <img src="assets/img/illustrations/scale.svg" alt="..." class="img-fluid" style="max-width: 182px;">
+
+            <!-- Title -->
+            <h1>
+              No Academic Years Added Yet.
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-muted">
+              Create grades for your school.
+            </p>
+
+            <!-- Button -->
+            <a id="create_acdm_year" class="btn btn-primary" style="color: #fff">
+              Create Academic Years
+            </a>
+
+          </div>
+        </div>
+
+      </div>
+    </div> <!-- / .row -->
+    <div class="row">
+      <div class="col-12 col-xl-8">
+        <!-- Card -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+
+                <!-- Avatar -->
+                <h2 style="margin: 0;">2017-2018</h2>
+
+              </div>
+              <div class="col ml--2">
+
+                <!-- Title -->
+                <p class="card-text small text-muted mb-1">
+                  From 02-05-2016 to 02-05-2017
+                </p>
+
+                <!-- Text -->
+                <p class="card-text small text-muted mb-1">
+                  You either die Spongebob or you live long enough to...
+                </p>
+
+                <!-- Status -->
+                <p class="card-text small text-danger">
+                  finished
+                </p>
+
+              </div>
+              <div class="col-auto">
+
+                <!-- Button -->
+                <a style="color: #fff" class="btn btn-sm btn-primary d-none d-md-inline-block">
+                  Activties
+                </a>
+
+              </div>
+              <div class="col-auto">
+
+                <!-- Dropdown -->
+                <div class="dropdown">
+                  <a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" data-expanded="false">
+                    <i class="fe fe-more-vertical"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item">
+                      Action
+                    </a>
+                    <a class="dropdown-item">
+                      Another action
+                    </a>
+                    <a class="dropdown-item">
+                      Something else here
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+            </div> <!-- / .row -->
+          </div> <!-- / .card-body -->
+        </div>
+
+        <!-- Card -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+
+                <!-- Avatar -->
+                <h2 style="margin: 0;">2018-2019</h2>
+
+              </div>
+              <div class="col ml--2">
+
+                <!-- Title -->
+                <p class="card-text small text-muted mb-1">
+                  From 02-05-2018 to 02-05-2019
+                </p>
+
+                <!-- Text -->
+                <p class="card-text small text-muted mb-1">
+                  You either die Spongebob or you live long enough to...
+                </p>
+
+                <!-- Status -->
+                <p class="card-text small text-warning">
+                  current
+                </p>
+
+              </div>
+              <div class="col-auto">
+
+                <!-- Button -->
+                <a style="color: #fff" class="btn btn-sm btn-primary d-none d-md-inline-block">
+                  Activties
+                </a>
+
+              </div>
+              <div class="col-auto">
+
+                <!-- Dropdown -->
+                <div class="dropdown">
+                  <a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" data-expanded="false">
+                    <i class="fe fe-more-vertical"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item">
+                      Action
+                    </a>
+                    <a class="dropdown-item">
+                      Another action
+                    </a>
+                    <a class="dropdown-item">
+                      Something else here
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+            </div> <!-- / .row -->
+          </div> <!-- / .card-body -->
+        </div>
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-auto">
+
+                <!-- Avatar -->
+                <h2 style="margin: 0;">2019-2020</h2>
+
+              </div>
+              <div class="col ml--2">
+
+                <!-- Title -->
+                <p class="card-text small text-muted mb-1">
+                  From 02-05-2019 to 02-05-2020
+                </p>
+
+                <!-- Text -->
+                <p class="card-text small text-muted mb-1">
+                  You either die Spongebob or you live long enough to...
+                </p>
+
+                <!-- Status -->
+                <p class="card-text small text-success">
+                  upcoming
+                </p>
+
+              </div>
+              <div class="col-auto">
+
+                <!-- Button -->
+                <a style="color: #fff" class="btn btn-sm btn-primary d-none d-md-inline-block">
+                  Activties
+                </a>
+
+              </div>
+              <div class="col-auto">
+
+                <!-- Dropdown -->
+                <div class="dropdown">
+                  <a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" data-expanded="false">
+                    <i class="fe fe-more-vertical"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item">
+                      Action
+                    </a>
+                    <a class="dropdown-item">
+                      Another action
+                    </a>
+                    <a class="dropdown-item">
+                      Something else here
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+            </div> <!-- / .row -->
+          </div> <!-- / .card-body -->
+        </div>
+      </div>
+
+      <div class="col-12 col-xl-4">
+
+        <!-- Card -->
+        <div class="card">
+          <div class="card-body">
+
+            <div class="row align-items-center">
+              <div class="col">
+
+                <!-- Title -->
+                <h5 class="mb-0">
+                  Member Count
+                </h5>
+
+              </div>
+              <div class="col-auto">
+
+                <small class="text-muted">
+                  129
+                </small>
+
+              </div>
+            </div> <!-- / .row -->
+
+            <!-- Divider -->
+            <hr>
+
+            <div class="row align-items-center">
+              <div class="col">
+
+                <!-- Title -->
+                <h5 class="mb-0">
+                  Created
+                </h5>
+
+              </div>
+              <div class="col-auto">
+
+                <time class="small text-muted" datetime="2018-10-28">
+                  10/24/18
+                </time>
+
+              </div>
+            </div> <!-- / .row -->
+
+            <!-- Divider -->
+            <hr>
+
+            <div class="row align-items-center">
+              <div class="col">
+
+                <!-- Title -->
+                <h5 class="mb-0">
+                  Slack Channel
+                </h5>
+
+              </div>
+              <div class="col-auto">
+
+                <a href="#!" class="small">
+                  #bloomers
+                </a>
+
+              </div>
+            </div> <!-- / .row -->
+
+            <!-- Divider -->
+            <hr>
+
+            <div class="row align-items-center">
+              <div class="col">
+
+                <!-- Title -->
+                <h5 class="mb-0">
+                  Privacy
+                </h5>
+
+              </div>
+              <div class="col-auto">
+
+                <small class="text-muted">
+                  Public
+                </small>
+
+              </div>
+            </div> <!-- / .row -->
+
+            <!-- Divider -->
+            <hr>
+
+            <div class="row align-items-center">
+              <div class="col">
+
+                <!-- Title -->
+                <h5 class="mb-0">
+                  Owner
+                </h5>
+
+              </div>
+              <div class="col-auto">
+
+                <a href="#!" class="small">
+                  Dianna Smiley
+                </a>
+
+              </div>
+            </div> <!-- / .row -->
+
+          </div>
+        </div>
+
+      </div>
+    </div> <!-- / .container-fluid -->
+  </div>
 
 </div> <!-- / .main-content -->

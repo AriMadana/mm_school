@@ -30,49 +30,49 @@
 
     </div>
   </div> <!-- / .header -->
-    <div class="modal fade" id="sidebarModalSearch" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div id="addStuAlert" style="top:-90px;z-index:1200;position:absolute;width:100%;" class="alert alert-success fade" role="alert">
-            <h4 class="alert-heading">Well done!</h4>
-            <p style="margin-bottom:0px;">Aww yeah, you successfully</p>
+  <div class="modal fade" id="sidebarModalSearch" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div id="addStuAlert" style="top:-90px;z-index:1200;position:absolute;width:100%;" class="alert alert-success fade" role="alert">
+          <h4 class="alert-heading">Well done!</h4>
+          <p style="margin-bottom:0px;">Aww yeah, you successfully</p>
+        </div>
+        <div class="modal-card card" data-toggle="lists" data-lists-values="[&quot;name&quot;]">
+          <div class="card-header">
+            <div class="row align-items-center">
+              <div class="col-auto">
+
+                <!-- Close -->
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true"><span class="fe fe-x"></span></span>
+                </button>
+
+              </div>
+              <div class="col">
+
+                <!-- Title -->
+                <h4 class="card-header-title" id="exampleModalCenterTitle" style="text-align:center;">
+                  Grade Creation
+                </h4>
+
+              </div>
+              <div class="col-auto">
+
+                <!-- Close -->
+                <button type="button" class="close" ng-click="add_grade()">
+                  <span aria-hidden="true"><span class="fe fe-check"></span></span>
+                </button>
+
+              </div>
+            </div> <!-- / .row -->
           </div>
-          <div class="modal-card card" data-toggle="lists" data-lists-values="[&quot;name&quot;]">
-            <div class="card-header">
-              <div class="row align-items-center">
-                <div class="col-auto">
-
-                  <!-- Close -->
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><span class="fe fe-x"></span></span>
-                  </button>
-
-                </div>
-                <div class="col">
-
-                  <!-- Title -->
-                  <h4 class="card-header-title" id="exampleModalCenterTitle" style="text-align:center;">
-                    Grade Creation
-                  </h4>
-
-                </div>
-                <div class="col-auto">
-
-                  <!-- Close -->
-                  <button type="button" class="close" ng-click="add_grade()">
-                    <span aria-hidden="true"><span class="fe fe-check"></span></span>
-                  </button>
-
-                </div>
-              </div> <!-- / .row -->
-            </div>
-            <div class="card-body">
-              <input type="text" id="new_grade" class="form-control form-control-flush" placeholder="Add New Grade Name">
-            </div>
+          <div class="card-body">
+            <input type="text" id="new_grade" class="form-control form-control-flush" placeholder="Add New Grade Name">
           </div>
         </div>
       </div>
     </div>
+  </div>
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
