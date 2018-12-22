@@ -820,6 +820,16 @@
 
 
         });
+
+        app.controller("manage-acdmCtrl", function ($scope, $http) {
+          $('#create_acdm_year').on('click', function() {
+            $('#add_new_acdm_modal').modal('show');
+          });
+          flatpickr("#acdmYearsRangeInput", {
+            mode: 'range'
+          });
+          $('.data-mask').mask('0000-00-00');
+        });
     </script>
   </body>
 </html>
