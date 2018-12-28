@@ -820,6 +820,9 @@
               grade_load();
             });
           }
+          $('#create_student_btn').click(function () {
+            $('#sidebarModalSearch').modal('show');
+          });
           grade_load();
           function grade_load(){
             $http.get('includes/http_req/api/req_grade.php')

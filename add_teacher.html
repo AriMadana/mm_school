@@ -649,7 +649,7 @@
 
                 <!-- Title -->
                 <h1 class="header-title">
-                  Subjects
+                  Teachers
                 </h1>
 
               </div>
@@ -683,7 +683,7 @@
 
                       <!-- Title -->
                       <h4 class="card-header-title" id="exampleModalCenterTitle" style="text-align:center;">
-                        Subjects Creation
+                        Teachers Creation
                       </h4>
 
                     </div>
@@ -699,9 +699,21 @@
                 </div>
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="subject_name">Enter Subject Name</label>
-                    <input type="text" class="form-control" id="subject_name" placeholder="Subject Name">
+                    <label for="teacher_name">Enter Teacher Name</label>
+                    <input type="text" class="form-control" id="teacher_name" placeholder="Teacher Name">
                   </div>
+                  <div class="form-group">
+                      <label for="grade_name_select">Choose Subject(s)</label>
+                      <select class="form-control" id="subject_name_select" data-toggle="select" multiple>
+                        <option>Myanmar</option>
+                        <option>English</option>
+                        <option>Mathematics</option>
+                        <option>Chemistry</option>
+                        <option>Physics</option>
+                        <option>Biology</option>
+                        <option>Ecology</option>
+                      </select>
+                    </div>
                   <div class="form-group">
                       <label for="grade_name_select">Choose Grade(s)</label>
                       <select class="form-control" id="grade_name_select" data-toggle="select" multiple>
@@ -715,7 +727,7 @@
             </div>
           </div>
         </div>
-      <div class="container-fluid">
+      <div class="container container-fluid">
         <div class="row">
           <div class="col-12">
 
@@ -728,7 +740,7 @@
 
                 <!-- Title -->
                 <h1>
-                  No subjects yet.
+                  No teacher yet.
                 </h1>
 
                 <!-- Subtitle -->
@@ -738,7 +750,7 @@
 
                 <!-- Button -->
                 <a href="#!" id="create_subject_btn" class="btn btn-primary">
-                  Create Subject
+                  Create Teacher
                 </a>
 
               </div>
@@ -746,42 +758,54 @@
 
           </div>
         </div> <!-- / .row -->
-        <div class="row">
-          <div class="col-12 col-lg-4">
-            <!-- Card -->
-            <div class="card">
-              <div class="card-header">
-                <div class="text-center" style="font-size:22px;">
-                  Grade-9
-                </div>
-                <!-- Dropdown -->
-                <div class="dropdown card-dropdown">
-                  <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fe fe-more-vertical text-dark"></i>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right">
-                    <a href="#!" class="dropdown-item">
-                      Edit
-                    </a>
-                    <a href="#!" class="dropdown-item">
-                      Delete
-                    </a>
-                  </div>
-                </div>
-              </div> <!-- / .card-header -->
-              <div class="card-body">
-                <ul class="list-group">
-                  <li class="list-group-item d-flex justify-content-between align-items-center active">Subjects<span><span class="mr-4">Teachers</span></span></li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center " >Myanmar<span><span class="mr-3">U Ko Ko</span><span class="fe fe-edit-2 mr-3 text-danger "></span><span class="fe fe-trash-2 mr-1 text-danger "></span></span></li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center ">English<span><span class="mr-3">U Ko Ko</span><span class="fe fe-edit-2 mr-3 text-danger "></span><span class="fe fe-trash-2 mr-1 text-danger "></span></span></li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center ">Mathematics<span><span class="mr-3">U Ko Ko</span><span class="fe fe-edit-2 mr-3 text-danger "></span><span class="fe fe-trash-2 mr-1 text-danger "></span></span></li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center ">Chemistry<span><span class="mr-3">U Ko Ko</span><span class="fe fe-edit-2 mr-3 text-danger "></span><span class="fe fe-trash-2 mr-1 text-danger "></span></span></li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center ">Physics<span><span class="mr-3">U Ko Ko</span><span class="fe fe-edit-2 mr-3 text-danger "></span><span class="fe fe-trash-2 mr-1 text-danger "></span></span></li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center ">Biology<span><span class="mr-3">U Ko Ko</span><span class="fe fe-edit-2 mr-3 text-danger "></span><span class="fe fe-trash-2 mr-1 text-danger "></span></span></li>
-                </ul>
+        <div class="col-12">
+          <div class="container container-fluid">
+            <div id="teacher-table"class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th class="text-muted">
+                        <a>No</a>
+                      </th>
+                      <th>
+                        <a class="text-muted">Name</a>
+                      </th>
+                      <th>
+                        <a class="text-muted">Subjects</a>
+                      </th>
+                      <th>
+                        <a class="text-muted">Grades</a>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th>1</th>
+                      <td>Nyo Nyo</td>
+                      <td>Mathematics</td>
+                      <td>Grade-9</td>
+                    </tr>
+                    <tr>
+                      <th>2</th>
+                      <td>Khin Khin</td>
+                      <td>Physics</td>
+                      <td>Grade-10</td>
+                    </tr>
+                    <tr>
+                      <th>3</th>
+                      <td>Than Than</td>
+                      <td>English,Biology</td>
+                      <td>Grade-9,Grade-10</td>
+                    </tr>
+                    <tr>
+                      <th>4</th>
+                      <td>Kyaw Kyaw</td>
+                      <td>Myanmar</td>
+                      <td>Grade-8,Grade-10</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-            </div>
-
           </div>
         </div> <!-- / .container-fluid -->
     </div> <!-- / .main-content -->
@@ -809,6 +833,7 @@
           $('#sidebarModalSearch').modal('show');
         });
         $('#grade_name_select').select2();
+        $('#subject_name_select').select2();
       });//end document
     </script>
   </body>
