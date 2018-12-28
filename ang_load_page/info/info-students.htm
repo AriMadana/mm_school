@@ -1,3 +1,8 @@
+<style>
+  .select2-search{
+    display: none;
+  }
+</style>
 <div class="main-content">
 
   <!-- HEADER -->
@@ -28,7 +33,7 @@
 
     </div>
   </div> <!-- / .header -->
-    <div class="modal fade" id="sidebarModalSearch" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="info_student_modal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div id="addStuAlert" style="top:-90px;z-index:1200;position:absolute;width:100%;" class="alert alert-success fade" role="alert">
@@ -67,15 +72,44 @@
             <div class="card-body">
               <div class="form-group">
                   <label for="grade_name_select">Choose Grade</label>
-                  <select class="form-control" id="grade_name_select" data-toggle="select">
-                    <option>Grade-9</option>
-                    <option>Grade-10</option>
-                    <option>Grade-11</option>
+                  <select class="form-control" id="grade_name_select" data-toggle="select" name="grade_name">
+                    <option value="g-9">Grade-9</option>
+                    <option value="g-10">Grade-10</option>
+                    <option value="g-11">Grade-11</option>
                   </select>
               </div>
               <div class="form-group">
                 <label for="student_name">Enter Student Name</label>
                 <input type="text" class="form-control" id="student_name" placeholder="Student Name">
+              </div>
+              <div class="form-group">
+                <label for="father_name">Enter Father Name</label>
+                <input type="text" class="form-control" id="father_name" placeholder="Father Name">
+              </div>
+              <div class="form-group">
+                <label for="student_name">Choose BirthDay</label>
+                <input type="text" class="form-control" placeholder="Choose BirthDay" data-toggle="flatpickr" id="st_birthday">
+              </div>
+              <div class="form-group">
+                <div class="form-check form-check-inline">
+                  <label class="text-muted">Gender</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                  <label class="form-check-label" for="inlineRadio1">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                  <label class="form-check-label" for="inlineRadio2">Female</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="st_address">Enter Address</label>
+                <input type="text" class="form-control" id="st_address" placeholder="Enter Address">
+              </div>
+              <div class="form-group">
+                <label for="phone_no">Enter Phone no</label>
+                <input type="text" class="form-control" id="phone_no" placeholder="Phone No">
               </div>
 
             </div>
@@ -96,16 +130,16 @@
 
             <!-- Title -->
             <h1>
-              No teacher yet.
+              No student yet.
             </h1>
 
             <!-- Subtitle -->
             <p class="text-muted">
-              Create subjects for your school.
+              Create students for your school.
             </p>
 
             <!-- Button -->
-            <a href="#!" id="create_student_btn" class="btn btn-primary">
+            <a id="create_student_btn" class="btn btn-primary">
               Create Student
             </a>
 

@@ -820,9 +820,7 @@
               grade_load();
             });
           }
-          $('#create_student_btn').click(function () {
-            $('#sidebarModalSearch').modal('show');
-          });
+
           grade_load();
           function grade_load(){
             $http.get('includes/http_req/api/req_grade.php')
@@ -927,6 +925,16 @@
           });
           $('.data-mask').mask('0000-00-00');
         });
+        app.controller("info-studentsCtrl",function ($scope, $http) {
+          $('#create_student_btn').click(function () {
+            $('#info_student_modal').modal('show');
+          });
+          $('#grade_name_select').select2();
+          flatpickr("#st_birthday", {
+
+          });
+          $('#phone_no').mask('00-000000000')
+        })
     </script>
   </body>
 </html>
