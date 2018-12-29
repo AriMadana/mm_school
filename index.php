@@ -929,7 +929,12 @@
           $('#create_student_btn').click(function () {
             $('#info_student_modal').modal('show');
           });
+          $('#add_new_student_btn').click(function () {
+            $('#info_student_modal').modal('show');
+          });
           $('#grade_name_select').select2();
+          $('#selectedAcdmGrade').select2();
+          $('#selectedAcdmYears').select2();
           flatpickr("#st_birthday", {
 
           });

@@ -716,87 +716,197 @@
             </div>
           </div>
         </div>
-      <div class="container container-fluid">
-        <div class="row">
-          <div class="col-12">
+        <div id="stuRegTableCard" class="card" style="margin-bottom: 10px;" data-toggle="lists" data-lists-values="[&quot;orders-order&quot;, &quot;orders-product&quot;, &quot;orders-date&quot;, &quot;orders-total&quot;, &quot;orders-status&quot;, &quot;orders-method&quot;]">
+            <div class="card-header">
 
-            <!-- Card -->
-            <div class="card card-inactive card-fluid">
-              <div class="card-body text-center">
+              <div class="row align-items-center ng-scope" ng-controller="acdmListCtrl">
+                <div class="col">
+                  <a ng-click="addNewStu()" href="#!" class="btn btn-primary">
+                    New Student
+                  </a>
+                  <!-- Title -->
+                  <!-- <h4 class="card-header-title">
+                    Student Infos
+                  </h4> -->
 
-                <!-- Image -->
-                <img src="assets/img/illustrations/scale.svg" alt="..." class="img-fluid" style="max-width: 182px;">
+                </div>
+                <div class="col-auto">
+                  <select id="selectedAcdmYears" class="form-control select2-hidden-accessible" data-toggle="select" data-select2-id="selectedAcdmYears" tabindex="-1" aria-hidden="true"><option value="2017/2018" data-select2-id="37">2017/2018</option><option value="2013/2014">2013/2014</option></select><span class="select2 select2-container select2-container--default select2-container--below" dir="ltr" data-select2-id="7" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-selectedAcdmYears-container"><span class="select2-selection__rendered" id="select2-selectedAcdmYears-container" role="textbox" aria-readonly="true" title="2017/2018">2017/2018</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                </div>
+                <div class="col-auto" data-select2-id="19">
+                  <select id="selectedAcdmGrade" class="form-control select2-hidden-accessible" data-toggle="select" data-select2-id="selectedAcdmGrade" tabindex="-1" aria-hidden="true"><option value="Grade-10" data-select2-id="38">Grade-10</option></select><span class="select2 select2-container select2-container--default select2-container--below" dir="ltr" data-select2-id="8" style="width: auto;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-selectedAcdmGrade-container"><span class="select2-selection__rendered" id="select2-selectedAcdmGrade-container" role="textbox" aria-readonly="true" title="Grade-10">Grade-10</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
 
-                <!-- Title -->
-                <h1>
-                  No teacher yet.
-                </h1>
-
-                <!-- Subtitle -->
-                <p class="text-muted">
-                  Create subjects for your school.
-                </p>
-
-                <!-- Button -->
-                <a href="#!" id="create_student_btn" class="btn btn-primary">
-                  Create Teacher
-                </a>
-
-              </div>
+                </div>
+              </div> <!-- / .row -->
             </div>
+                <div class="card-header">
+                  <div class="row align-items-center">
+                    <div class="col">
 
-          </div>
-        </div> <!-- / .row -->
-        <div class="col-12">
-          <div class="container container-fluid">
-            <div id="teacher-table"class="table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th class="text-muted">
-                        <a>No</a>
-                      </th>
-                      <th>
-                        <a class="text-muted">Name</a>
-                      </th>
-                      <th>
-                        <a class="text-muted">Subjects</a>
-                      </th>
-                      <th>
-                        <a class="text-muted">Grades</a>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th>1</th>
-                      <td>Nyo Nyo</td>
-                      <td>Mathematics</td>
-                      <td>Grade-9</td>
-                    </tr>
-                    <tr>
-                      <th>2</th>
-                      <td>Khin Khin</td>
-                      <td>Physics</td>
-                      <td>Grade-10</td>
-                    </tr>
-                    <tr>
-                      <th>3</th>
-                      <td>Than Than</td>
-                      <td>English,Biology</td>
-                      <td>Grade-9,Grade-10</td>
-                    </tr>
-                    <tr>
-                      <th>4</th>
-                      <td>Kyaw Kyaw</td>
-                      <td>Myanmar</td>
-                      <td>Grade-8,Grade-10</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-          </div>
-        </div> <!-- / .container-fluid -->
+                      <!-- Search -->
+                      <form class="row ng-pristine ng-valid">
+                        <div class="col-auto pr-0">
+                          <span class="fe fe-search text-muted"></span>
+                        </div>
+                        <div class="col">
+                            <input id="stuSearch" type="search" class="form-control form-control-flush" placeholder="Search" onkeyup="stuSearchFnc()">
+                        </div>
+                      </form>
+
+                    </div>
+                    <div class="col-auto">
+
+                      <!-- Button -->
+
+                      <div class="dropdown">
+                        <button class="btn btn-sm btn-white dropdown-toggle" type="button" id="bulkActionDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Multiaction
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="bulkActionDropdown" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 29px, 0px);">
+                          <!-- <a href="#!" class="dropdown-item" ng-click="editStudents()">
+                            <span class="fe fe-edit-2"></span>&nbsp;&nbsp;Edit
+                          </a> -->
+                          <a href="#!" class="dropdown-item" ng-click="delStudents()">
+                            <span class="fe fe-trash-2"></span>&nbsp;&nbsp;Delete
+                          </a>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div> <!-- / .row -->
+                </div>
+                <div class="table-responsive">
+                  <table id="stuTable" class="table table-sm table-nowrap card-table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>
+                          <div class="custom-control custom-checkbox table-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="ordersSelect" id="checkAll">
+                            <label class="custom-control-label" for="checkAll">
+                              &nbsp;
+                            </label>
+                          </div>
+                        </th>
+                        <th>
+                          <a href="#" class="text-muted">
+                            Stu ID
+                          </a>
+                        </th>
+                        <th>
+                          <a href="#" class="text-muted">
+                            Name
+                          </a>
+                        </th>
+                        <th>
+                          <a href="#" class="text-muted">
+                            Birth
+                          </a>
+                        </th>
+                        <th>
+                          <a href="#" class="text-muted">
+                            Father
+                          </a>
+                        </th>
+                        <th>
+                          <a href="#" class="text-muted">
+                            Address
+                          </a>
+                        </th>
+                        <th colspan="2">
+                          <a href="#" class="text-muted asc">
+                            Phone
+                          </a>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="list"><!-- ngRepeat: x in students | orderBy : 'stu_name' --><tr ng-repeat="x in students | orderBy : 'stu_name'" class="ng-scope" style="">
+                        <td>
+                          <div class="custom-control custom-checkbox table-checkbox">
+                            <input type="checkbox" class="checkSingle custom-control-input check-box ng-pristine ng-untouched ng-valid ng-empty" value="61" name="ordersSelect" id="61" ng-model="selectedList[x.acdm_id]">
+                            <label class="custom-control-label" for="61">
+                              &nbsp;
+                            </label>
+                          </div>
+                        </td>
+                        <td class="orders-order ng-binding">
+                          #1
+                        </td>
+                        <td class="orders-product ng-binding">
+                          faeaefasf
+                        </td>
+                        <td class="orders-date">
+                          <time datetime="2018-07-30" class="ng-binding">2018-10-24</time>
+                        </td>
+                        <td class="orders-total ng-binding">
+                          ewafwfe
+                        </td>
+                        <td class="orders-status ng-binding">
+                          faaefaef
+                        </td>
+                        <td class="orders-method ng-binding">
+                          (32) 4234
+                        </td>
+                        <td class="text-right">
+                          <div class="dropdown">
+                            <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <i class="fe fe-more-vertical"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                              <a href="#!" class="dropdown-item" ng-click="editStudent(x.acdm_id)">
+                                <span class="fe fe-edit-2"></span>&nbsp;&nbsp;Edit
+                              </a>
+                              <a href="#!" class="dropdown-item" ng-click="delStudent(x.acdm_id)">
+                                <span class="fe fe-trash-2"></span>&nbsp;&nbsp;Delete
+                              </a>
+                            </div>
+                          </div>
+                        </td>
+                      </tr><!-- end ngRepeat: x in students | orderBy : 'stu_name' --><tr ng-repeat="x in students | orderBy : 'stu_name'" class="ng-scope" style="">
+                        <td>
+                          <div class="custom-control custom-checkbox table-checkbox">
+                            <input type="checkbox" class="checkSingle custom-control-input check-box ng-pristine ng-untouched ng-valid ng-empty" value="53" name="ordersSelect" id="53" ng-model="selectedList[x.acdm_id]">
+                            <label class="custom-control-label" for="53">
+                              &nbsp;
+                            </label>
+                          </div>
+                        </td>
+                        <td class="orders-order ng-binding">
+                          #2
+                        </td>
+                        <td class="orders-product ng-binding">
+                          fasdflajdsf
+                        </td>
+                        <td class="orders-date">
+                          <time datetime="2018-07-30" class="ng-binding">2018-11-08</time>
+                        </td>
+                        <td class="orders-total ng-binding">
+                          fjisadjfl
+                        </td>
+                        <td class="orders-status ng-binding">
+                          jfialfjaf
+                        </td>
+                        <td class="orders-method ng-binding">
+                          (24) 2343
+                        </td>
+                        <td class="text-right">
+                          <div class="dropdown">
+                            <a href="#!" class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <i class="fe fe-more-vertical"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                              <a href="#!" class="dropdown-item" ng-click="editStudent(x.acdm_id)">
+                                <span class="fe fe-edit-2"></span>&nbsp;&nbsp;Edit
+                              </a>
+                              <a href="#!" class="dropdown-item" ng-click="delStudent(x.acdm_id)">
+                                <span class="fe fe-trash-2"></span>&nbsp;&nbsp;Delete
+                              </a>
+                            </div>
+                          </div>
+                        </td>
+                      </tr><!-- end ngRepeat: x in students | orderBy : 'stu_name' --></tbody>
+                  </table>
+                </div>
+        </div>
     </div> <!-- / .main-content -->
 
     <!-- JAVASCRIPT
@@ -819,7 +929,7 @@
     <script>
       $(document).ready(function () {
         $('#create_student_btn').click(function () {
-          $('#info_student_modal').modal('show');
+          $('#sidebarModalSearch').modal('show');
         });
         // $('#grade_name_select').select();
       });//end document
