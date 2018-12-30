@@ -940,6 +940,9 @@
           });
           $('#phone_no').mask('00-000000000')
         })
+		    app.controller('checkboxCtrl',function ($scope) {
+
+		      })
     </script>
   </body>
 </html>

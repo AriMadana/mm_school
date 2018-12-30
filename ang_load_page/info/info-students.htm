@@ -218,12 +218,12 @@
                   </div> <!-- / .row -->
                 </div>
                 <div class="table-responsive">
-                  <table id="stuTable" class="table table-sm table-nowrap card-table">
+                  <table ng-controller="checkboxCtrl" id="stuTable" class="table table-sm table-nowrap card-table">
                     <thead>
                       <tr>
                         <th>
                           <div class="custom-control custom-checkbox table-checkbox">
-                            <input type="checkbox" class="custom-control-input" name="ordersSelect" id="checkAll">
+                            <input type="checkbox" ng-model='selectAll' class="custom-control-input" name="ordersSelect" id="checkAll">
                             <label class="custom-control-label" for="checkAll">
                               &nbsp;
                             </label>
@@ -265,7 +265,7 @@
                       <tr>
                         <td>
                           <div class="custom-control custom-checkbox table-checkbox">
-                            <input type="checkbox" class="checkSingle custom-control-input check-box " value="61" name="ordersSelect" id="61">
+                            <input type="checkbox" ng-checked='selectAll' class="checkSingle custom-control-input check-box " value="61" name="ordersSelect" id="61">
                             <label class="custom-control-label" for="61">
                               &nbsp;
                             </label>
@@ -308,7 +308,7 @@
                       <tr>
                         <td>
                           <div class="custom-control custom-checkbox table-checkbox">
-                            <input type="checkbox" class="checkSingle custom-control-input check-box" value="53" name="ordersSelect" id="53">
+                            <input type="checkbox" ng-checked='selectAll' class="checkSingle custom-control-input check-box" value="53" name="ordersSelect" id="53">
                             <label class="custom-control-label" for="53">
                               &nbsp;
                             </label>
