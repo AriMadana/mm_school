@@ -27,7 +27,7 @@
             <div class="col-auto">
 
               <!-- Close -->
-              <button type="button" class="close" ng-click="add_grade()">
+              <button id="add_acdm_btn" type="button" class="close" ng-click="add_acdm()">
                 <span aria-hidden="true"><span class="fe fe-check"></span></span>
               </button>
 
@@ -39,15 +39,15 @@
             <div class="form-row">
               <div class="col-12 col-md-6 mb-3">
                 <label for="validationServer01">From</label>
-                <input id="acdmYearsRangeInput" type="text" class="form-control" placeholder="Flatpickr range example" data-toggle="flatpickr" data-flatpickr-mode="range">
-                <!-- <input type="text" class="form-control data-mask" placeholder="US data example" data-mask="0000-00-00"> -->
+                <!-- <input id="acdmYearsRangeInput" type="text" class="form-control" placeholder="Flatpickr range example" data-toggle="flatpickr" data-flatpickr-mode="range"> -->
+                <input type="text" id="acdm_year_from" class="form-control data-mask" placeholder="US data example" data-mask="0000-00-00">
                 <div class="valid-feedback">
                   Looks good!
                 </div>
               </div>
               <div class="col-12 col-md-6 mb-3">
                 <label for="validationServer02">To</label>
-                <input type="text" class="form-control data-mask" placeholder="US data example" data-mask="0000-00-00">
+                <input type="text" id="acdm_year_to" class="form-control data-mask" placeholder="US data example" data-mask="0000-00-00">
                 <div class="valid-feedback">
                   Looks good!
                 </div>
@@ -81,10 +81,10 @@
             </h1>
 
           </div>
-          <div class="col-auto">
-
-
-
+          <div class="col-auto" id="upper_grade_btn">
+            <a id="create_acdm_year" class="btn btn-primary" style="color: #fff">
+              Create Academic Years
+            </a>
           </div>
         </div> <!-- / .row -->
       </div> <!-- / .header-body -->
@@ -93,9 +93,9 @@
   </div> <!-- / .header -->
 
   <!-- CARDS -->
-  <div class="container-fluid">
+  <div class="container-fluid" id="acdmFrame">
     <div class="row">
-      <div class="col-12">
+      <div class="col-12" id="no_acdm">
 
         <!-- Card -->
         <div class="card card-inactive card-fluid">
@@ -125,187 +125,9 @@
       </div>
     </div> <!-- / .row -->
     <div class="row">
-      <div class="col-12 col-xl-8">
-        <!-- Card -->
-        <div class="card mb-3">
-          <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col-auto">
+      <div class="col-12 col-xl-8" id="acdm_cards_div">
 
-                <!-- Avatar -->
-                <h2 style="margin: 0;">2017-2018</h2>
 
-              </div>
-              <div class="col ml--2">
-
-                <!-- Title -->
-                <p class="card-text small text-muted mb-1">
-                  From 02-05-2016 to 02-05-2017
-                </p>
-
-                <!-- Text -->
-                <p class="card-text small text-muted mb-1">
-                  You either die Spongebob or you live long enough to...
-                </p>
-
-                <!-- Status -->
-                <p class="card-text small text-danger">
-                  finished
-                </p>
-
-              </div>
-              <div class="col-auto">
-
-                <!-- Button -->
-                <a style="color: #fff" class="btn btn-sm btn-primary d-none d-md-inline-block">
-                  Activties
-                </a>
-
-              </div>
-              <div class="col-auto">
-
-                <!-- Dropdown -->
-                <div class="dropdown">
-                  <a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" data-expanded="false">
-                    <i class="fe fe-more-vertical"></i>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item">
-                      Action
-                    </a>
-                    <a class="dropdown-item">
-                      Another action
-                    </a>
-                    <a class="dropdown-item">
-                      Something else here
-                    </a>
-                  </div>
-                </div>
-
-              </div>
-            </div> <!-- / .row -->
-          </div> <!-- / .card-body -->
-        </div>
-
-        <!-- Card -->
-        <div class="card mb-3">
-          <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col-auto">
-
-                <!-- Avatar -->
-                <h2 style="margin: 0;">2018-2019</h2>
-
-              </div>
-              <div class="col ml--2">
-
-                <!-- Title -->
-                <p class="card-text small text-muted mb-1">
-                  From 02-05-2018 to 02-05-2019
-                </p>
-
-                <!-- Text -->
-                <p class="card-text small text-muted mb-1">
-                  You either die Spongebob or you live long enough to...
-                </p>
-
-                <!-- Status -->
-                <p class="card-text small text-warning">
-                  current
-                </p>
-
-              </div>
-              <div class="col-auto">
-
-                <!-- Button -->
-                <a style="color: #fff" class="btn btn-sm btn-primary d-none d-md-inline-block">
-                  Activties
-                </a>
-
-              </div>
-              <div class="col-auto">
-
-                <!-- Dropdown -->
-                <div class="dropdown">
-                  <a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" data-expanded="false">
-                    <i class="fe fe-more-vertical"></i>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item">
-                      Action
-                    </a>
-                    <a class="dropdown-item">
-                      Another action
-                    </a>
-                    <a class="dropdown-item">
-                      Something else here
-                    </a>
-                  </div>
-                </div>
-
-              </div>
-            </div> <!-- / .row -->
-          </div> <!-- / .card-body -->
-        </div>
-        <div class="card mb-3">
-          <div class="card-body">
-            <div class="row align-items-center">
-              <div class="col-auto">
-
-                <!-- Avatar -->
-                <h2 style="margin: 0;">2019-2020</h2>
-
-              </div>
-              <div class="col ml--2">
-
-                <!-- Title -->
-                <p class="card-text small text-muted mb-1">
-                  From 02-05-2019 to 02-05-2020
-                </p>
-
-                <!-- Text -->
-                <p class="card-text small text-muted mb-1">
-                  You either die Spongebob or you live long enough to...
-                </p>
-
-                <!-- Status -->
-                <p class="card-text small text-success">
-                  upcoming
-                </p>
-
-              </div>
-              <div class="col-auto">
-
-                <!-- Button -->
-                <a style="color: #fff" class="btn btn-sm btn-primary d-none d-md-inline-block">
-                  Activties
-                </a>
-
-              </div>
-              <div class="col-auto">
-
-                <!-- Dropdown -->
-                <div class="dropdown">
-                  <a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" data-expanded="false">
-                    <i class="fe fe-more-vertical"></i>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item">
-                      Action
-                    </a>
-                    <a class="dropdown-item">
-                      Another action
-                    </a>
-                    <a class="dropdown-item">
-                      Something else here
-                    </a>
-                  </div>
-                </div>
-
-              </div>
-            </div> <!-- / .row -->
-          </div> <!-- / .card-body -->
-        </div>
       </div>
 
       <div class="col-12 col-xl-4">
