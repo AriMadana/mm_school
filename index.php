@@ -774,9 +774,11 @@
               data : grade,
               headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
             }).then(function (response) {
+              $('#sidebarModalSearch').modal('hide');
               grade_load();
             });
           }
+
           grade_load();
           function grade_load(){
             $http.get('includes/http_req/api/req_grade.php')
@@ -797,13 +799,10 @@
                           '</a>' +
                           '<div class="dropdown-menu dropdown-menu-right">' +
                             '<a class="dropdown-item">' +
-                              'Edit Grade Name' +
+                              'Edit' +
                             '</a>' +
                             '<a class="dropdown-item">' +
-                              'Another action' +
-                            '</a>' +
-                            '<a class="dropdown-item">' +
-                              'Something else here' +
+                              'Delete' +
                             '</a>' +
                           '</div>' +
                         '</div>' +
@@ -873,7 +872,7 @@
               }
             });
           }
-
+          
         });
 
         function acdmCond(acdm_time_from, acdm_time_to, server_time) {
@@ -1143,6 +1142,24 @@
             $scope.setAcdmCurrent(acdm_id);
           });
         });
+        app.controller("info-studentsCtrl",function ($scope, $http) {
+          $('#create_student_btn').click(function () {
+            $('#info_student_modal').modal('show');
+          });
+          $('#add_new_student_btn').click(function () {
+            $('#info_student_modal').modal('show');
+          });
+          $('#grade_name_select').select2();
+          $('#selectedAcdmGrade').select2();
+          $('#selectedAcdmYears').select2();
+          flatpickr("#st_birthday", {
+
+          });
+          $('#phone_no').mask('00-000000000')
+        })
+		    app.controller('checkboxCtrl',function ($scope) {
+
+		      })
     </script>
   </body>
 </html>
