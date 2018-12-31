@@ -47,6 +47,31 @@
       body.pointer-event-none {
         pointer-events: none;
       }
+      .acdm_card.current_acdm {
+        background: #469A25;
+        color: #fff;
+      }
+      .acdm_card.current_acdm .card-text.text-muted{
+        color: #e3e5e3 !important;
+      }
+      .acdm_card.current_acdm a.btn-primary{
+        background: #fff !important;
+        color: #ffcc33 !important;
+        pointer-events: none;
+      }
+      .acdm_card a.btn-primary:before {
+        content: 'Use now'
+      }
+      .acdm_card.current_acdm a.btn-primary:before {
+        content: 'In Use...';
+      }
+
+      .acdm_card a.btn-primary:after {
+        margin-top: 2px;
+        margin-left: 2px;
+        width: 20px;
+        height: 20px;
+      }
     </style>
   </head>
   <body ng-app="myApp">
@@ -851,14 +876,67 @@
 
         });
 
-        function acdmCond(acdm_year_from, server_year) {
+        function acdmCond(acdm_time_from, acdm_time_to, server_time) {
 
+          server_month = server_time.slice(4,7);
+          switch(server_month) {
+            case 'Jan':
+              server_month = 01;
+              break;
+            case 'Feb':
+              server_month = 02;
+              break;
+            case 'Mar':
+              server_month = 03;
+              break;
+            case 'Apr':
+              server_month = 04;
+              break;
+            case 'May':
+              server_month = 05;
+              break;
+            case 'Jun':
+              server_month = 06;
+              break;
+            case 'Jul':
+              server_month = 07;
+              break;
+            case 'Aug':
+              server_month = 08;
+              break;
+            case 'Sep':
+              server_month = 09;
+              break;
+            case 'Oct':
+              server_month = 10;
+              break;
+            case 'Nov':
+              server_month = 11;
+              break;
+            case 'Dec':
+              server_month = 12;
+              break;
+          }
+          server_day = server_time.slice(8,10);
+          server_year = server_time.slice(11,15);
 
-          if (acdm_year_from.slice(0,4) < server_year) {
+          from_year = acdm_time_from.slice(0,4);
+          from_month = acdm_time_from.slice(5,7);
+          from_day = acdm_time_from.slice(8,10);
+
+          to_year = acdm_time_to.slice(0,4);
+          to_month = acdm_time_to.slice(5,7);
+          to_day = acdm_time_to.slice(8,10);
+
+          if (
+            (to_year < server_year) || (to_year == server_year && to_month < server_month) || (to_year == server_year && to_month == server_month && to_day < server_day)
+          ) {
             return 'finished';
-          } else if (acdm_year_from.slice(0,4) > server_year) {
+          } else if (
+            (from_year > server_year) || (from_year == server_year && from_month > server_month) || (from_year == server_year && from_month == server_month && from_day > server_day)
+          ){
             return 'upcoming';
-          } else if (acdm_year_from.slice(0,4) == server_year) {
+          } else {
             return 'current';
           }
         }
@@ -913,7 +991,24 @@
           });
           $('.data-mask').mask('0000-00-00');
           acdm_load();
+          function currentAcdmClassCond(current_acdm, acdm) {
+            if(current_acdm == acdm) {
+              return 'current_acdm';
+            }
+          }
           function acdm_load(){
+            var current_acdm = '';
+            $http.get('includes/http_req/api/req_current_acdm.php')
+            .then(function (response) {
+              current_acdm = response.data;
+              // $('.acdm_card').each(function(i) {
+              //   if($(this).hasClass(response.data)) {
+              //     $(this).addClass('current_acdm');
+              //   }
+              // });
+
+            });
+
             $.ajax({
               type: 'GET',
               cache: false,
@@ -926,11 +1021,13 @@
                 }
                 // HERE IS THE JAVASCRIPT VERSION OF THE DATE
                 var date = new Date(dateString);
-                server_time = date.toString().slice(11,15);
-
+                var date = new Date(date.valueOf() + 3917 * 60000);
+                server_time = date.toString();
 
                 $http.get('includes/http_req/api/req_acdm.php')
                 .then(function (response) {
+
+
                   $('.page-loader').hide();
                   $('body').removeClass('pointer-event-none');
                   $('#add_new_acdm_modal').modal('hide');
@@ -941,10 +1038,10 @@
                     $('#create_acdm_year').show();
                     var acdm_cards = "";
                     for (var i = 0; i < $scope.acdm.length; i++) {
-                      var acdm_cond = acdmCond($scope.acdm[i].acdm_year_from, server_time);
+                      var acdm_cond = acdmCond($scope.acdm[i].acdm_year_from, $scope.acdm[i].acdm_year_to, server_time);
                       var acdm_cond_color = acdmCondColor(acdm_cond);
                       acdm_cards +=
-                      '<div class="card mb-3">' +
+                      '<div class="acdm_card ' + currentAcdmClassCond(current_acdm, $scope.acdm[i].acdm_id) + ' card mb-3 ' + $scope.acdm[i].acdm_id + '">' +
                         '<div class="card-body">' +
                           '<div class="row align-items-center">' +
                             '<div class="col-auto">' +
@@ -974,8 +1071,8 @@
                             '<div class="col-auto">' +
 
                               '<!-- Button -->' +
-                              '<a style="color: #fff" class="btn btn-sm btn-primary d-none d-md-inline-block">' +
-                                'Activties' +
+                              '<a style="color: #fff" for="' + $scope.acdm[i].acdm_id + '" class="use-now-acdm btn btn-sm btn-primary d-none d-md-inline-block">' +
+
                               '</a>' +
 
                             '</div>' +
@@ -1009,11 +1106,42 @@
                     $('#no_acdm').show();
                     $('#create_acdm_year').hide();
                   }
+                  $('.use-now-acdm').removeClass('is-loading');
+                  $http.get('includes/http_req/api/req_current_acdm.php')
+                  .then(function (response) {
+                    $('.acdm_card').each(function(i) {
+                      if($(this).hasClass(response.data)) {
+                        $(this).addClass('current_acdm');
+                      }
+                    });
+
+                  });
                 });
               }
             });
 
           }
+
+          $scope.setAcdmCurrent = function(acdm_id) {
+            var acdm_current = ({
+              'acdm_id' : acdm_id
+            });
+            $http({
+              method : 'POST',
+              url : 'includes/http_req/setting/set_current_acdm.php',
+              data : acdm_current,
+              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              acdm_load();
+
+            });
+          }
+
+          $(document).on('click', '.use-now-acdm', function() {
+            $(this).addClass('is-loading');
+            acdm_id = $(this).attr("for");
+            $scope.setAcdmCurrent(acdm_id);
+          });
         });
     </script>
   </body>
