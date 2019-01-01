@@ -3,7 +3,7 @@
 include '../../init.php';
 header("content-type:application/json");
 
-$result = $mm_school_grade -> selectGrade($_SESSION['school_id']);
+$result = $mm_school_acdm -> selectAcdm(1);
 //$teachers = $mm_teacher_class -> activated_teacher_list_for_sub($grade, $subject, $user_id);
 // echo json_encode($result);
 echo json_encode($result);

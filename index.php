@@ -30,16 +30,54 @@
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css' rel='stylesheet' />
     <!-- <script src="assets/js/ngProgress.js"></script>
     <link rel="stylesheet" href="assets/css/ngProgress.css"> -->
-    <link rel='stylesheet' href='assets/src/loading-bar.css' type='text/css'/>
-    <script type='text/javascript' src='assets/src/loading-bar.js'></script>
+    <!-- <link rel='stylesheet' href='assets/src/loading-bar.css' type='text/css'/>
+    <script type='text/javascript' src='assets/src/loading-bar.js'></script> -->
+    <script src="assets/js/pace.js"></script>
+    <link href="assets/css/pace.css" rel="stylesheet" />
     <title>Dashkit</title>
     <style>
       a {
         cursor: pointer;
       }
+      .page-loader:after {
+        margin-top: -65px;
+        width: 30px;
+        height: 30px;
+      }
+      body.pointer-event-none {
+        pointer-events: none;
+      }
+      .acdm_card.current_acdm {
+        background: #469A25;
+        color: #fff;
+      }
+      .acdm_card.current_acdm .card-text.text-muted{
+        color: #e3e5e3 !important;
+      }
+      .acdm_card.current_acdm a.btn-primary{
+        background: #fff !important;
+        color: #ffcc33 !important;
+        pointer-events: none;
+      }
+      .acdm_card a.btn-primary:before {
+        content: 'Use now'
+      }
+      .acdm_card.current_acdm a.btn-primary:before {
+        content: 'In Use...';
+      }
+
+      .acdm_card a.btn-primary:after {
+        margin-top: 2px;
+        margin-left: 2px;
+        width: 20px;
+        height: 20px;
+      }
     </style>
   </head>
   <body ng-app="myApp">
+    <div class="page-loader is-loading" style="display:none;position: fixed; background: #fff; width:100%; height: 100%; z-index: 20000; margin-top: 65px;">
+
+    </div>
 
     <!-- TOPNAV
     ================================================== -->
@@ -669,9 +707,9 @@
     <!-- Theme JS -->
     <script src="assets/js/theme.min.js"></script>
     <script>
-      var app = angular.module("myApp", ['chieffancypants.loadingBar', 'ngRoute', 'ngAnimate']);
-      app.config(function($routeProvider, cfpLoadingBarProvider) {
-        cfpLoadingBarProvider.includeSpinner = true;
+      var app = angular.module("myApp", ['ngRoute', 'ngAnimate']);
+      app.config(function($routeProvider) {
+        //cfpLoadingBarProvider.includeSpinner = true;
         $routeProvider
         .when("/", {
             templateUrl : "ang_load_page/index.htm"
@@ -718,87 +756,7 @@
         });
       });
 
-      app.run(function ($rootScope, $location,$route, $http, $timeout, cfpLoadingBar) {
 
-          $rootScope.posts = [];
-          $rootScope.section = null;
-          $rootScope.subreddit = null;
-          $rootScope.subreddits = ['cats', 'pics', 'funny', 'gaming', 'AdviceAnimals', 'aww'];
-
-          var getRandomSubreddit = function() {
-            var sub = $rootScope.subreddits[Math.floor(Math.random() * $rootScope.subreddits.length)];
-
-            // ensure we get a new subreddit each time.
-            if (sub == $rootScope.subreddit) {
-              return getRandomSubreddit();
-            }
-
-            return sub;
-          };
-
-          $rootScope.fetch = function() {
-            $rootScope.subreddit = getRandomSubreddit();
-            $http.jsonp('http://www.reddit.com/r/' + $rootScope.subreddit + '.json?limit=50&jsonp=JSON_CALLBACK').success(function(data) {
-              $rootScope.posts = data.data.children;
-            });
-          };
-
-          $rootScope.start = function() {
-            cfpLoadingBar.start();
-          };
-
-          $rootScope.complete = function () {
-            cfpLoadingBar.complete();
-          }
-
-
-          // fake the initial load so first time users can see it right away:
-          $rootScope.start();
-          $rootScope.fakeIntro = true;
-          $timeout(function() {
-            $rootScope.complete();
-            $rootScope.fakeIntro = false;
-          }, 750);
-
-
-
-
-
-
-            $rootScope.config = {};
-            $rootScope.config.app_url = $location.url();
-            $rootScope.config.app_path = $location.path();
-            $rootScope.layout = {};
-            $rootScope.layout.loading = false;
-
-            $rootScope.$on('$routeChangeStart', function () {
-
-                //show loading gif
-                $rootScope.start();
-                $rootScope.fakeIntro = true;
-
-
-
-            });
-            $rootScope.$on('$routeChangeSuccess', function () {
-
-                //hide loading gif
-                $timeout(function() {
-                  $rootScope.complete();
-                  $rootScope.fakeIntro = false;
-                }, 300);
-
-            });
-            $rootScope.$on('$routeChangeError', function () {
-
-                //hide loading gif
-                $timeout(function() {
-                  $rootScope.complete();
-                  $rootScope.fakeIntro = false;
-                }, 300);
-
-            });
-        });
 
         app.controller("manage-gradesCtrl", function ($scope, $http) {
           $('#create_grade_btn').click(function () {
@@ -815,13 +773,215 @@
               url : 'includes/http_req/forms/add_grade.php',
               data : grade,
               headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              $('#sidebarModalSearch').modal('hide');
+              grade_load();
             });
           }
 
+          grade_load();
+          function grade_load(){
+            $http.get('includes/http_req/api/req_grade.php')
+            .then(function (response) {
+              $scope.grade = response.data;
+              if ($scope.grade) {
+                $('#no_grade').hide();
+                var grade_cards = "";
+                for (var i = 0; i < $scope.grade.length; i++) {
+                  grade_cards += '<div class="col-12 col-lg-4">' +
+                    '<!-- Card -->' +
+                    '<div class="card">' +
+                      '<div class="card-body">' +
+                        '<!-- Dropdown -->' +
+                        '<div class="dropdown card-dropdown">' +
+                          '<a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown">' +
+                            '<i class="fe fe-more-vertical text-dark"></i>' +
+                          '</a>' +
+                          '<div class="dropdown-menu dropdown-menu-right">' +
+                            '<a class="dropdown-item">' +
+                              'Edit' +
+                            '</a>' +
+                            '<a class="dropdown-item">' +
+                              'Delete' +
+                            '</a>' +
+                          '</div>' +
+                        '</div>' +
 
+                        '<!-- Avatar -->' +
+                        '<div class="text-center">' +
+                          '<p>2019/2020</p>' +
+                        '</div>' +
+
+                        '<!-- Title -->' +
+                        '<h2 class="card-title text-center p-3">' +
+                          '<p style="font-size: 28px;">'+$scope.grade[i].grade_name+'</p>' +
+                        '</h2>' +
+                        '<!-- Divider -->' +
+                        '<hr>' +
+
+                        '<div class="row align-items-center">' +
+                          '<div class="col">' +
+
+                            '<!-- Time -->' +
+                            '<p class="card-text text-muted">' +
+                              '100 Students' +
+                            '</p>' +
+
+                          '</div>' +
+                          '<div class="col-auto">' +
+                            '<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseClass'+$scope.grade[i].grade_id+'" aria-expanded="false" aria-controls="collapseClass">' +
+                              'Create Class<span class="fe fe-chevrons-down"></span>' +
+                            '</button>' +
+                          '</div>' +
+                        '</div> <!-- / .row -->' +
+                        '<div class="collapse" id="collapseClass'+$scope.grade[i].grade_id+'">' +
+                          '<hr>' +
+                          '<div>' +
+                            '<ul class="list-group">' +
+                              '<li class="list-group-item d-flex justify-content-between align-items-center">' +
+                                'Grade-8A' +
+                                '<span>' +
+                                  '<span class="fe fe-edit-2 mr-3 text-danger"></span>' +
+                                  '<span class="fe fe-trash-2 mr-1 text-danger"></span>' +
+                                '</span>' +
+                              '</li>' +
+                              '<li class="list-group-item d-flex justify-content-between align-items-center">' +
+                                'Grade-8B' +
+                                '<span>' +
+                                  '<span class="fe fe-edit-2 mr-3 text-danger"></span>' +
+                                  '<span class="fe fe-trash-2 mr-1 text-danger"></span>' +
+                                '</span>' +
+                              '</li>' +
+                            '</ul>' +
+                            '<div class="input-group mt-3">' +
+                              '<input type="text" class="form-control" placeholder="Enter new class name">' +
+                              '<div class="input-group-append">' +
+                                '<button class="btn btn-success">Create</button>' +
+                              '</div>' +
+                            '</div>' +
+                          '</div>' +
+                        '</div>' +
+                      '</div> <!-- / .card-body -->' +
+                    '</div>' +
+                  '</div>';
+                  $('#grade_item').html(grade_cards);
+                }
+              }else {
+                $('#no_grade').show();
+                $('#upper_grade_btn').hide();
+              }
+            });
+          }
+          
         });
 
+        function acdmCond(acdm_time_from, acdm_time_to, server_time) {
+
+          server_month = server_time.slice(4,7);
+          switch(server_month) {
+            case 'Jan':
+              server_month = 01;
+              break;
+            case 'Feb':
+              server_month = 02;
+              break;
+            case 'Mar':
+              server_month = 03;
+              break;
+            case 'Apr':
+              server_month = 04;
+              break;
+            case 'May':
+              server_month = 05;
+              break;
+            case 'Jun':
+              server_month = 06;
+              break;
+            case 'Jul':
+              server_month = 07;
+              break;
+            case 'Aug':
+              server_month = 08;
+              break;
+            case 'Sep':
+              server_month = 09;
+              break;
+            case 'Oct':
+              server_month = 10;
+              break;
+            case 'Nov':
+              server_month = 11;
+              break;
+            case 'Dec':
+              server_month = 12;
+              break;
+          }
+          server_day = server_time.slice(8,10);
+          server_year = server_time.slice(11,15);
+
+          from_year = acdm_time_from.slice(0,4);
+          from_month = acdm_time_from.slice(5,7);
+          from_day = acdm_time_from.slice(8,10);
+
+          to_year = acdm_time_to.slice(0,4);
+          to_month = acdm_time_to.slice(5,7);
+          to_day = acdm_time_to.slice(8,10);
+
+          if (
+            (to_year < server_year) || (to_year == server_year && to_month < server_month) || (to_year == server_year && to_month == server_month && to_day < server_day)
+          ) {
+            return 'finished';
+          } else if (
+            (from_year > server_year) || (from_year == server_year && from_month > server_month) || (from_year == server_year && from_month == server_month && from_day > server_day)
+          ){
+            return 'upcoming';
+          } else {
+            return 'current';
+          }
+        }
+
+        function acdmCondColor(acdmType) {
+          switch(acdmType) {
+            case 'finished':
+              return 'text-danger';
+              break;
+            case 'upcoming':
+              return 'text-success';
+              break;
+            case 'current':
+              return 'text-warning';
+              break;
+            default:
+              return 'text-success';
+          }
+        }
+
         app.controller("manage-acdmCtrl", function ($scope, $http) {
+
+          var acdm_year_from, acdm_year_to;
+          $('.page-loader').show();
+          $('body').addClass('pointer-event-none');
+          $('#no_acdm').hide();
+          $('#create_acdm_year').hide();
+          $scope.add_acdm=function () {
+            $('#add_acdm_btn').addClass('is-loading');
+            acdm_year_from = $('#acdm_year_from').val();
+            acdm_year_to = $('#acdm_year_to').val();
+            var acdm = ({
+              'acdm_year_from' : acdm_year_from,
+              'acdm_year_to' : acdm_year_to
+            });
+            $http({
+              method : 'POST',
+              url : 'includes/http_req/forms/add_acdm.php',
+              data : acdm,
+              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              acdm_load();
+
+            });
+          }
+          var server_time = 'ini';
           $('#create_acdm_year').on('click', function() {
             $('#add_new_acdm_modal').modal('show');
           });
@@ -829,7 +989,177 @@
             mode: 'range'
           });
           $('.data-mask').mask('0000-00-00');
+          acdm_load();
+          function currentAcdmClassCond(current_acdm, acdm) {
+            if(current_acdm == acdm) {
+              return 'current_acdm';
+            }
+          }
+          function acdm_load(){
+            var current_acdm = '';
+            $http.get('includes/http_req/api/req_current_acdm.php')
+            .then(function (response) {
+              current_acdm = response.data;
+              // $('.acdm_card').each(function(i) {
+              //   if($(this).hasClass(response.data)) {
+              //     $(this).addClass('current_acdm');
+              //   }
+              // });
+
+            });
+
+            $.ajax({
+              type: 'GET',
+              cache: false,
+              url: location.href,
+              complete: function (req, textStatus) {
+                // HERE IS THE STRING VERSION OF THE DATE
+                var dateString = req.getResponseHeader('Date');
+                if (dateString.indexOf('GMT') === -1) {
+                  dateString += ' GMT';
+                }
+                // HERE IS THE JAVASCRIPT VERSION OF THE DATE
+                var date = new Date(dateString);
+                var date = new Date(date.valueOf() + 3917 * 60000);
+                server_time = date.toString();
+
+                $http.get('includes/http_req/api/req_acdm.php')
+                .then(function (response) {
+
+
+                  $('.page-loader').hide();
+                  $('body').removeClass('pointer-event-none');
+                  $('#add_new_acdm_modal').modal('hide');
+                  $('#add_acdm_btn').removeClass('is-loading');
+                  $scope.acdm = response.data;
+                  if ($scope.acdm) {
+                    $('#no_acdm').hide();
+                    $('#create_acdm_year').show();
+                    var acdm_cards = "";
+                    for (var i = 0; i < $scope.acdm.length; i++) {
+                      var acdm_cond = acdmCond($scope.acdm[i].acdm_year_from, $scope.acdm[i].acdm_year_to, server_time);
+                      var acdm_cond_color = acdmCondColor(acdm_cond);
+                      acdm_cards +=
+                      '<div class="acdm_card ' + currentAcdmClassCond(current_acdm, $scope.acdm[i].acdm_id) + ' card mb-3 ' + $scope.acdm[i].acdm_id + '">' +
+                        '<div class="card-body">' +
+                          '<div class="row align-items-center">' +
+                            '<div class="col-auto">' +
+
+                              '<!-- Avatar -->' +
+                              '<h2 style="margin: 0;">' + $scope.acdm[i].acdm_year_from.slice(0,4) + '-' + $scope.acdm[i].acdm_year_to.slice(0,4) + '</h2>' +
+
+                            '</div>' +
+                            '<div class="col ml--2">' +
+
+                              '<!-- Title -->' +
+                              '<p class="card-text small text-muted mb-1">' +
+                                'From ' + $scope.acdm[i].acdm_year_from + ' to ' + $scope.acdm[i].acdm_year_to +
+                              '</p>' +
+
+                              '<!-- Text -->' +
+                              '<p class="card-text small text-muted mb-1">' +
+                                'You either die Spongebob or you live long enough to...' +
+                              '</p>' +
+
+                              '<!-- Status -->' +
+                              '<p class="card-text small ' + acdm_cond_color + '">' +
+                                acdm_cond +
+                              '</p>' +
+
+                            '</div>' +
+                            '<div class="col-auto">' +
+
+                              '<!-- Button -->' +
+                              '<a style="color: #fff" for="' + $scope.acdm[i].acdm_id + '" class="use-now-acdm btn btn-sm btn-primary d-none d-md-inline-block">' +
+
+                              '</a>' +
+
+                            '</div>' +
+                            '<div class="col-auto">' +
+
+                              '<!-- Dropdown -->' +
+                              '<div class="dropdown">' +
+                                '<a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" data-expanded="false">' +
+                                  '<i class="fe fe-more-vertical"></i>' +
+                                '</a>' +
+                                '<div class="dropdown-menu dropdown-menu-right">' +
+                                  '<a class="dropdown-item">' +
+                                    'Action' +
+                                  '</a>' +
+                                  '<a class="dropdown-item">' +
+                                    'Another action' +
+                                  '</a>' +
+                                  '<a class="dropdown-item">' +
+                                    'Something else here' +
+                                  '</a>' +
+                                '</div>' +
+                              '</div>' +
+
+                            '</div>' +
+                          '</div> <!-- / .row -->' +
+                        '</div> <!-- / .card-body -->' +
+                      '</div>';
+                      $('#acdm_cards_div').html(acdm_cards);
+                    }
+                  }else {
+                    $('#no_acdm').show();
+                    $('#create_acdm_year').hide();
+                  }
+                  $('.use-now-acdm').removeClass('is-loading');
+                  $http.get('includes/http_req/api/req_current_acdm.php')
+                  .then(function (response) {
+                    $('.acdm_card').each(function(i) {
+                      if($(this).hasClass(response.data)) {
+                        $(this).addClass('current_acdm');
+                      }
+                    });
+
+                  });
+                });
+              }
+            });
+
+          }
+
+          $scope.setAcdmCurrent = function(acdm_id) {
+            var acdm_current = ({
+              'acdm_id' : acdm_id
+            });
+            $http({
+              method : 'POST',
+              url : 'includes/http_req/setting/set_current_acdm.php',
+              data : acdm_current,
+              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              acdm_load();
+
+            });
+          }
+
+          $(document).on('click', '.use-now-acdm', function() {
+            $(this).addClass('is-loading');
+            acdm_id = $(this).attr("for");
+            $scope.setAcdmCurrent(acdm_id);
+          });
         });
+        app.controller("info-studentsCtrl",function ($scope, $http) {
+          $('#create_student_btn').click(function () {
+            $('#info_student_modal').modal('show');
+          });
+          $('#add_new_student_btn').click(function () {
+            $('#info_student_modal').modal('show');
+          });
+          $('#grade_name_select').select2();
+          $('#selectedAcdmGrade').select2();
+          $('#selectedAcdmYears').select2();
+          flatpickr("#st_birthday", {
+
+          });
+          $('#phone_no').mask('00-000000000')
+        })
+		    app.controller('checkboxCtrl',function ($scope) {
+
+		      })
     </script>
   </body>
 </html>

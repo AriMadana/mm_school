@@ -20,8 +20,10 @@
             </h1>
 
           </div>
-          <div class="col-auto">
-
+          <div class="col-auto" id="upper_grade_btn">
+            <a id="create_grade_btn" class="btn btn-primary" style="color: #fff">
+              Create Grade
+            </a>
           </div>
         </div> <!-- / .row -->
       </div> <!-- / .header-body -->
@@ -72,21 +74,19 @@
     </div>
   </div>
   <div class="container-fluid">
-    <div class="row">
+    <div class="row" id="no_acdm">
       <div class="col-12">
 
         <!-- Card -->
-        <div class="card card-inactive card-fluid">
+        <div class="card card-inactive card-fluid" id="no_grade">
           <div class="card-body text-center">
+              <!-- Image -->
+              <img src="assets/img/illustrations/scale.svg" alt="..." class="img-fluid" style="max-width: 182px;">
 
-            <!-- Image -->
-            <img src="assets/img/illustrations/scale.svg" alt="..." class="img-fluid" style="max-width: 182px;">
-
-            <!-- Title -->
-            <h1>
-              No grades yet.
-            </h1>
-
+              <!-- Title -->
+              <h1>
+                No grades yet.
+              </h1>
             <!-- Subtitle -->
             <p class="text-muted">
               Create grades for your school.
@@ -102,252 +102,7 @@
 
       </div>
     </div> <!-- / .row -->
-    <div class="row">
-      <div class="col-12 col-lg-4">
+    <div class="row" id="grade_item">
 
-        <!-- Card -->
-        <div class="card">
-          <div class="card-body">
-
-            <!-- Dropdown -->
-            <div class="dropdown card-dropdown">
-              <a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown">
-                <i class="fe fe-more-vertical text-dark"></i>
-              </a>
-              <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item">
-                  Edit Grade Name
-                </a>
-                <a class="dropdown-item">
-                  Another action
-                </a>
-                <a class="dropdown-item">
-                  Something else here
-                </a>
-              </div>
-            </div>
-
-            <!-- Avatar -->
-            <div class="text-center">
-              <p>2019/2020</p>
-            </div>
-
-            <!-- Title -->
-            <h2 class="card-title text-center p-3">
-              <p style="font-size: 28px;">8 Standard</p>
-            </h2>
-            <!-- Divider -->
-            <hr>
-
-            <div class="row align-items-center">
-              <div class="col">
-
-                <!-- Time -->
-                <p class="card-text text-muted">
-                  100 Students
-                </p>
-
-              </div>
-              <div class="col-auto">
-                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseClass8" aria-expanded="false" aria-controls="collapseClass">
-                  Create Class<span class="fe fe-chevrons-down"></span>
-                </button>
-              </div>
-            </div> <!-- / .row -->
-            <div class="collapse" id="collapseClass8">
-              <hr>
-              <div>
-                <ul class="list-group">
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Grade-8A
-                    <span>
-                      <span class="fe fe-edit-2 mr-3 text-danger"></span>
-                      <span class="fe fe-trash-2 mr-3 text-danger"></span>
-                    </span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Grade-8B
-                    <span>
-                      <span class="fe fe-edit-2 mr-3 text-danger"></span>
-                      <span class="fe fe-trash-2 mr-3 text-danger"></span>
-                    </span>
-                  </li>
-                </ul>
-                <div class="input-group mt-3">
-                  <input type="text" class="form-control" placeholder="Enter new class name">
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-success">Create</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> <!-- / .card-body -->
-        </div>
-
-      </div>
-      <div class="col-12 col-lg-4">
-
-        <!-- Card -->
-        <div class="card">
-          <div class="card-body">
-
-            <!-- Dropdown -->
-            <div class="dropdown card-dropdown">
-              <a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fe fe-more-vertical text-dark"></i>
-              </a>
-              <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item">
-                  Edit Grade Name
-                </a>
-                <a class="dropdown-item">
-                  Another action
-                </a>
-                <a class="dropdown-item">
-                  Something else here
-                </a>
-              </div>
-            </div>
-
-            <!-- Avatar -->
-            <div class="text-center">
-              <p>2019/2020</p>
-            </div>
-
-            <!-- Title -->
-            <h2 class="card-title text-center p-3">
-              <p style="font-size: 28px;">9 Standard</p>
-            </h2>
-            <!-- Divider -->
-            <hr>
-
-            <div class="row align-items-center">
-              <div class="col">
-
-                <!-- Time -->
-                <p class="card-text text-muted">
-                  100 Students
-                </p>
-
-              </div>
-              <div class="col-auto">
-                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseClass" aria-expanded="false" aria-controls="collapseClass">
-                  Create Class<span class="fe fe-chevrons-down"></span>
-                </button>
-              </div>
-            </div> <!-- / .row -->
-            <div class="collapse" id="collapseClass">
-              <hr>
-              <div>
-                <ul class="list-group">
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Grade-9A
-                    <span>
-                      <span class="fe fe-edit-2 mr-3 text-danger"></span>
-                      <span class="fe fe-trash-2 mr-3 text-danger"></span>
-                    </span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Grade-9B
-                    <span>
-                      <span class="fe fe-edit-2 mr-3 text-danger"></span>
-                      <span class="fe fe-trash-2 mr-3 text-danger"></span>
-                    </span>
-                  </li>
-                </ul>
-                <div class="input-group mt-3">
-                  <input type="text" class="form-control" placeholder="Enter new class name">
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-success">Create</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> <!-- / .card-body -->
-        </div>
-
-      </div>
-      <div class="col-12 col-lg-4">
-
-        <!-- Card -->
-        <div class="card">
-          <div class="card-body">
-
-            <!-- Dropdown -->
-            <div class="dropdown card-dropdown">
-              <a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fe fe-more-vertical text-dark"></i>
-              </a>
-              <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item">
-                  Edit Grade Name
-                </a>
-                <a class="dropdown-item">
-                  Another action
-                </a>
-                <a class="dropdown-item">
-                  Something else here
-                </a>
-              </div>
-            </div>
-
-            <!-- Avatar -->
-            <div class="text-center">
-              <p>2019/2020</p>
-            </div>
-
-            <!-- Title -->
-            <h2 class="card-title text-center p-3">
-              <p style="font-size: 28px;">10 Standard</p>
-            </h2>
-            <!-- Divider -->
-            <hr>
-
-            <div class="row align-items-center">
-              <div class="col">
-
-                <!-- Time -->
-                <p class="card-text text-muted">
-                  100 Students
-                </p>
-
-              </div>
-              <div class="col-auto">
-                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseClass10" aria-expanded="false" aria-controls="collapseClass">
-                  Create Class<span class="fe fe-chevrons-down"></span>
-                </button>
-              </div>
-            </div> <!-- / .row -->
-            <div class="collapse" id="collapseClass10">
-              <hr>
-              <div>
-                <ul class="list-group">
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Grade-10A
-                    <span>
-                      <span class="fe fe-edit-2 mr-3 text-danger"></span>
-                      <span class="fe fe-trash-2 mr-3 text-danger"></span>
-                    </span>
-                  </li>
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    Grade-10B
-                    <span>
-                      <span class="fe fe-edit-2 mr-3 text-danger"></span>
-                      <span class="fe fe-trash-2 mr-3 text-danger"></span>
-                    </span>
-                  </li>
-                </ul>
-                <div class="input-group mt-3">
-                  <input type="text" class="form-control" placeholder="Enter new class name">
-                  <div class="input-group-append">
-                    <button class="btn btn-outline-success">Create</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> <!-- / .card-body -->
-        </div>
-
-      </div>
     </div> <!-- / .container-fluid -->
 </div> <!-- / .main-content -->
