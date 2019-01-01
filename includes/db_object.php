@@ -93,6 +93,11 @@ class Db_object {
       return $result;
     }
 
+    public static function insert_queryID($sql) {
+      global $database;
+      $result = $database -> queryID($sql);
+      return $result;
+    }
     /*public function insert($table, $fields = array()) {
         if(count($fields)) {
             $keys = array_keys($fields);

@@ -72,6 +72,8 @@
         width: 20px;
         height: 20px;
       }
+
+
     </style>
   </head>
   <body ng-app="myApp">
@@ -757,7 +759,15 @@
       });
 
 
-
+      function pageLoader(trigger) {
+        if(trigger == 'hide') {
+          $('.page-loader').hide();
+          $('body').removeClass('pointer-event-none');
+        } else if (trigger == 'show') {
+          $('.page-loader').show();
+          $('body').addClass('pointer-event-none');
+        }
+      }
         app.controller("manage-gradesCtrl", function ($scope, $http) {
           $('#create_grade_btn').click(function () {
             $('#sidebarModalSearch').modal('show');
@@ -872,7 +882,7 @@
               }
             });
           }
-          
+
         });
 
         function acdmCond(acdm_time_from, acdm_time_to, server_time) {
@@ -959,8 +969,7 @@
         app.controller("manage-acdmCtrl", function ($scope, $http) {
 
           var acdm_year_from, acdm_year_to;
-          $('.page-loader').show();
-          $('body').addClass('pointer-event-none');
+          pageLoader('show');
           $('#no_acdm').hide();
           $('#create_acdm_year').hide();
           $scope.add_acdm=function () {
@@ -1027,8 +1036,7 @@
                 .then(function (response) {
 
 
-                  $('.page-loader').hide();
-                  $('body').removeClass('pointer-event-none');
+                  pageLoader('hide');
                   $('#add_new_acdm_modal').modal('hide');
                   $('#add_acdm_btn').removeClass('is-loading');
                   $scope.acdm = response.data;
@@ -1143,23 +1151,117 @@
           });
         });
         app.controller("info-studentsCtrl",function ($scope, $http) {
+          pageLoader('show');
+          $('#student-table-loader').hide();
+          $('#addStuAlert').fadeOut();
           $('#create_student_btn').click(function () {
             $('#info_student_modal').modal('show');
           });
           $('#add_new_student_btn').click(function () {
             $('#info_student_modal').modal('show');
           });
+          $http.get('includes/http_req/api/req_grade.php')
+          .then(function (response) {
+            if(response.data) {
+              var data = [];
+              for(i in response.data) {
+                data.push(
+                  {id: response.data[i].grade_id, text: response.data[i].grade_name}
+                );
+              };
+            }
+            $('#selectedAcdmGrade').select2({
+              data: data
+            }).trigger('change');
+
+            $('#grade_name_select').select2({
+              data: data
+            }).trigger('change');
+          });
+
           $('#grade_name_select').select2();
-          $('#selectedAcdmGrade').select2();
+          //$('#selectedAcdmGrade').select2();
           $('#selectedAcdmYears').select2();
           flatpickr("#st_birthday", {
 
           });
-          $('#phone_no').mask('00-000000000')
-        })
+          $('#phone_no').mask('00-000000000');
+
+
+
+          $('#selectedAcdmGrade').on('change', function() {
+            // if($('#stuRegTableCard').hasClass('no-student')) {
+            //
+            // }
+            $('#stuRegTableCard').addClass('loading');
+            $('#student-table-loader').show();
+            var stu_grade = ({
+              'grade_id' : $(this).val()
+            });
+            $http({
+              method : 'POST',
+              url : 'includes/http_req/api/req_stu_list.php',
+              data : stu_grade,
+              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              pageLoader('hide');
+              $('#stuRegTableCard').removeClass('loading');
+              $('#student-table-loader').hide();
+              if(response.data.length > 0) {
+                $scope.students = response.data;
+                $('#stuRegTableCard').removeClass('no-student');
+                //$('#no-students-div').hide();
+              } else {
+                if(!$('#stuRegTableCard').hasClass('no-student')) {
+                  $('#stuRegTableCard').addClass('no-student');
+                }
+
+                //$('#no-students-div').show();
+              }
+
+            });
+          });
+
+          $scope.addStudent = function() {
+            $('#add-student-btn').addClass('is-loading');
+            var add_stu_infos = ({
+              'name' : $('#student_name').val(),
+              'father' : $('#father_name').val(),
+              'birth' : $('#st_birthday').val(),
+              'gender' : $('.stu_gender_radio:checked').attr('value'),
+              'add' : $('#st_address').val(),
+              'phone' : $('#phone_no').val(),
+              'grade' : $('#grade_name_select').val()
+            });
+            $http({
+              method : 'POST',
+              url : 'includes/http_req/forms/add_stu.php',
+              data : add_stu_infos,
+              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              if(response.data) {
+                $('#selectedAcdmGrade').val($('#grade_name_select').val()).trigger('change');
+                $('#student_name').val('');
+                $('#father_name').val('');
+                $('#st_birthday').val('');
+                $('#st_address').val('');
+                $('#phone_no').val('');
+                $('.stu_gender_radio').prop('checked', false);
+
+                $('#addStuAlert').fadeIn();
+                setInterval(function() {
+                  $('#addStuAlert').fadeOut();
+                }, 3000);
+                $('#add-student-btn').removeClass('is-loading');
+
+              }
+            });
+          }
+
+        });
 		    app.controller('checkboxCtrl',function ($scope) {
 
-		      })
+	      });
     </script>
   </body>
 </html>
