@@ -646,8 +646,8 @@
                   </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#!manage-parents">
-                    Parents
+                  <a class="dropdown-item" href="#!manage-acd_fees">
+                    Acd_fees
                   </a>
                 </li>
               </ul>
@@ -713,8 +713,8 @@
             templateUrl : "ang_load_page/manage/manage-teachers.htm",
             controller : "manage-teachersCtrl"
         })
-        .when("/manage-parents", {
-            templateUrl : "ang_load_page/manage/manage-parents.htm",
+        .when("/manage-acd_fees", {
+            templateUrl : "ang_load_page/manage/manage-acd_fees.htm",
             controller : "manage-acdmCtrl"
         })
         .when("/info-staffs", {
@@ -847,7 +847,7 @@
               }
             });
           }
-          
+
         });
 
         function acdmCond(acdm_year_from, server_year) {
@@ -1081,11 +1081,39 @@
           $('#grade_name_select').select2();
           $('#selectedAcdmGrade').select2();
           $('#selectedAcdmYears').select2();
-          flatpickr("#tr_birthday", {
-
-          });
+          flatpickr("#tr_birthday", {});
           $('#phone_no').mask('00-000000000')
-        });
+        });//end info-teachersCtrl
+        app.controller('manage-acdmCtrl',function($scope){
+          $('#create_fee_btn').click(function () {
+            $('#manage_fee_modal').modal('show');
+          });
+          $('#add_new_fee_btn').click(function () {
+            $('#manage_fee_modal').modal('show');
+          });
+          $('#fee_part').keyup(function () {
+            var parts = $('#fee_part').val();
+            var fee_card="";
+            var th = "";
+            for (var i = 1; i <= parts; i++) {
+              if (i==1) {
+                th="st";
+              }else if (i==2) {
+                th='nd';
+              }else if(i==3){
+                th="rd";
+              }else {
+                th="th";
+              }
+              fee_card +=
+              '<div class="from-group col-auto mr-auto">'+
+                '<label class="col-form-label">'+i+'<sup>'+th+'</sup> payment</label>'+
+                '<input type="number" class="form-control" id="fee_part">'+
+              '</div>'
+            }
+            $('#fee_part_item').html(fee_card);
+          });
+        });//end manage-acdmCtrl
     </script>
   </body>
 </html>
