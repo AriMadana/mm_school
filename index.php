@@ -935,14 +935,68 @@
           $('#grade_name_select').select2();
           $('#selectedAcdmGrade').select2();
           $('#selectedAcdmYears').select2();
-          flatpickr("#st_birthday", {
+          flatpickr("#st_birthday", {});
+          $('#phone_no').mask('00-000000000');
+          var selected_grade = $('#grade_name_select').children("option:selected").val();
+          var submit_btn = $('#submit_btn');
+          var student_name = $('#student_name');
+          toggle_invalid(student_name,submit_btn);
+          var father_name = $('#father_name');
+          toggle_invalid(father_name,submit_btn);
+          var st_birthday = $('#st_birthday');
+          toggle_invalid(st_birthday,submit_btn);
+          var gender = $("input[name='gender']");
+          gender.click(function () {
+            gender.removeClass('is-invalid');
+          });
+          var st_address = $('#st_address');
+          toggle_invalid(st_address,submit_btn);
+          var phone_no = $('#phone_no');
+          toggle_invalid(phone_no,submit_btn);
+          function toggle_invalid(item,subtn) {
+            item.keyup(function () {
+              item.removeClass('is-invalid');
+            });//end keyup
+            item.change(function () {
+              item.removeClass('is-invalid');
+            });//end change
+            subtn.click(function(){
+                if (item.val()) {
+                  console.log(item.val());
+                }else {
+                  item.addClass('is-invalid');
+                }
+            });//end subtn
+          }//end toggle_invalid
+          submit_btn.click(function(){
+            var gender_val = $("input[name='gender']:checked").val();
+            if (gender_val) {
+              console.log(gender_val);
+            }else {
+              gender.addClass('is-invalid');
+            }
+            if (selected_grade && student_name.val() && father_name.val() && st_birthday.val() && gender_val && st_address.val() && phone_no.val()) {
+              $('#student_name').val() = "";
+              $('#info_student_modal').modal('hide');
+            }
+          });//end subtn
+        });
+		    app.controller('checkboxCtrl',function ($scope) {});
+        app.controller("info-teachersCtrl",function ($scope, $http) {
+          $('#create_teacher_btn').click(function () {
+            $('#info_teacher_modal').modal('show');
+          });
+          $('#add_new_teacher_btn').click(function () {
+            $('#info_teacher_modal').modal('show');
+          });
+          $('#grade_name_select').select2();
+          $('#selectedAcdmGrade').select2();
+          $('#selectedAcdmYears').select2();
+          flatpickr("#tr_birthday", {
 
           });
           $('#phone_no').mask('00-000000000')
-        })
-		    app.controller('checkboxCtrl',function ($scope) {
-
-		      })
+        });
     </script>
   </body>
 </html>
