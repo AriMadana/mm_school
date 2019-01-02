@@ -14,6 +14,7 @@ require_once('database.php');
 
 $mm_school_grade = new MM_School_Grade();
 $mm_user_class = new MM_User_Class();
+$mm_school_acdm = new MM_School_Acdm();
 // $mm_teacher_class = new MM_Teacher_Class();
 // $mm_student_class = new MM_Student_Class();
 // $mm_grade_class = new MM_Grade_Class();
