@@ -677,8 +677,8 @@
                   </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#!manage-parents">
-                    Parents
+                  <a class="dropdown-item" href="#!manage-acd_fees">
+                    Acd_fees
                   </a>
                 </li>
               </ul>
@@ -744,9 +744,9 @@
             templateUrl : "ang_load_page/manage/manage-teachers.htm",
             controller : "manage-teachersCtrl"
         })
-        .when("/manage-parents", {
-            templateUrl : "ang_load_page/manage/manage-parents.htm",
-            controller : "manage-acdmCtrl"
+        .when("/manage-acd_fees", {
+            templateUrl : "ang_load_page/manage/manage-acd_fees.htm",
+            controller : "manage-acdmfeeCtrl"
         })
         .when("/info-staffs", {
             templateUrl : "ang_load_page/info/info-staffs.htm",
@@ -1292,9 +1292,52 @@
           $('#grade_name_select').select2();
           //$('#selectedAcdmGrade').select2();
           $('#selectedAcdmYears').select2();
-          flatpickr("#st_birthday", {
-
+          flatpickr("#st_birthday", {});
+          $('#phone_no').mask('00-000000000');
+          var selected_grade = $('#grade_name_select').children("option:selected").val();
+          var submit_btn = $('#submit_btn');
+          var student_name = $('#student_name');
+          toggle_invalid(student_name,submit_btn);
+          var father_name = $('#father_name');
+          toggle_invalid(father_name,submit_btn);
+          var st_birthday = $('#st_birthday');
+          toggle_invalid(st_birthday,submit_btn);
+          var gender = $("input[name='gender']");
+          gender.click(function () {
+            gender.removeClass('is-invalid');
           });
+
+        app.controller('manage-acdmfeeCtrl',function($scope){
+          $('#create_fee_btn').click(function () {
+            $('#manage_fee_modal').modal('show');
+          });
+          $('#add_new_fee_btn').click(function () {
+            $('#manage_fee_modal').modal('show');
+          });
+          $('#fee_part').keyup(function () {
+            var parts = $('#fee_part').val();
+            var fee_card="";
+            var th = "";
+            for (var i = 1; i <= parts; i++) {
+              if (i==1) {
+                th="st";
+              }else if (i==2) {
+                th='nd';
+              }else if(i==3){
+                th="rd";
+              }else {
+                th="th";
+              }
+              fee_card +=
+              '<div class="from-group col-auto mr-auto">'+
+                '<label class="col-form-label">'+i+'<sup>'+th+'</sup> payment</label>'+
+                '<input type="number" class="form-control" id="fee_part">'+
+              '</div>'
+            }
+            $('#fee_part_item').html(fee_card);
+          });
+        });//end manage-acdmCtrl
+          
           $('#phone_no').mask('00-000000000');
 
 

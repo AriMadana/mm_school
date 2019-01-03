@@ -176,40 +176,60 @@
 
                   </select>
               </div>
-              <div class="form-group">
-                <label for="student_name">Enter Student Name</label>
-                <input type="text" class="form-control" id="student_name" placeholder="Student Name">
-              </div>
-              <div class="form-group">
-                <label for="father_name">Enter Father Name</label>
-                <input type="text" class="form-control" id="father_name" placeholder="Father Name">
-              </div>
-              <div class="form-group">
-                <label for="student_name">Choose BirthDay</label>
-                <input type="text" class="form-control" placeholder="Choose BirthDay" data-toggle="flatpickr" id="st_birthday">
-              </div>
-              <div class="form-group">
-                <div class="form-check form-check-inline">
-                  <label class="text-muted">Gender</label>
+                <div class="form-group">
+                  <label for="student_name">Enter Student Name</label>
+                  <input type="text" class="form-control" id="student_name" placeholder="Student Name">
+                  <div class="invalid-feedback">
+                    Please enter student's name.
+                  </div>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input value="male" class="stu_gender_radio form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                  <label class="form-check-label" for="inlineRadio1">Male</label>
+                <div class="row">
+                  <div class="form-group col-auto">
+                    <label for="father_name">Enter Father Name</label>
+                    <input type="text" class="form-control" id="father_name" placeholder="Father Name">
+                    <div class="invalid-feedback">
+                      Please enter father's name.
+                    </div>
+                  </div>
+                  <div class="form-group col-auto ml-auto">
+                    <label for="st_birthday">Choose BirthDay</label>
+                    <input type="text" class="form-control" placeholder="Choose BirthDay" data-toggle="flatpickr" id="st_birthday">
+                    <div class="invalid-feedback">
+                      Please choose student's Birthday .
+                    </div>
+                  </div>
                 </div>
-                <div class="form-check form-check-inline">
-                  <input value="female" class="stu_gender_radio form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                  <label class="form-check-label" for="inlineRadio2">Female</label>
+                <div class="form-group">
+                  <div class="form-check form-check-inline">
+                    <label class="text-muted">Gender</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input value="male" class="stu_gender_radio form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                    <label class="form-check-label" for="inlineRadio1">Male</label>
+                   </div>
+                  <div class="form-check form-check-inline">
+                    <input value="female" class="stu_gender_radio form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                    <label class="form-check-label" for="inlineRadio2">Female</label>
+                    <div class="invalid-feedback">
+                    </div>
+                  </div>
+                  
                 </div>
+              <div class="row">
+                <div class="form-group col-auto">
+                  <label for="st_address">Enter Address</label>
+                  <input type="text" class="form-control" id="st_address" placeholder="Enter Address">
+                  <div class="invalid-feedback">
+                    Please enter student's address.
+                  </div>
+                </div>
+                <div class="form-group col-auto ml-auto">
+                  <label for="phone_no">Enter Phone no</label>
+                  <input type="text" class="form-control" id="phone_no" placeholder="Phone No">
+                  <div class="invalid-feedback">
+                    Please enter student's phone number.
+                  </div>
               </div>
-              <div class="form-group">
-                <label for="st_address">Enter Address</label>
-                <input type="text" class="form-control" id="st_address" placeholder="Enter Address">
-              </div>
-              <div class="form-group">
-                <label for="phone_no">Enter Phone no</label>
-                <input type="text" class="form-control" id="phone_no" placeholder="Phone No">
-              </div>
-
             </div>
           </div>
         </div>
