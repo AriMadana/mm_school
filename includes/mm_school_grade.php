@@ -3,15 +3,18 @@
 class MM_School_Grade extends Db_object {
 
 	protected static $db_table = "eth_grade";
-	protected static $db_fields = array('grade_id', 'grade_name', 'grade_school');
+	protected static $db_fields = array('grade_id', 'grade_name', 'grade_school', 'acdm_id');
 
 	public $grade_id;
 	public $grade_name;
 	public $grade_school;
+	public $acdm_id;
 
   public function selectGrade($school_id) {
     $db_table = static::$db_table;
-    $result = $this -> find_array_by_query("SELECT * FROM `$db_table` WHERE `grade_school` = '$school_id' ORDER BY `grade_name` ASC;");
+		$mm_school_head = new MM_School_Head();
+		$acdm_id = $mm_school_head -> selectCurAcdm($school_id);
+    $result = $this -> find_array_by_query("SELECT * FROM `$db_table` WHERE `acdm_id` = '$acdm_id' ORDER BY `grade_name` ASC;");
     return $result;
   }
   public function addGrade($grade_name,$school_id) {

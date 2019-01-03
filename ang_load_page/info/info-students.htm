@@ -51,6 +51,88 @@
 
     </div>
   </div> <!-- / .header -->
+    <div class="modal fade" id="edit_student_modal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div id="editStuAlert" style="top:-90px;z-index:1200;position:absolute;width:100%;" class="alert alert-success" role="alert">
+            <h4 class="alert-heading">Well done!</h4>
+            <p style="margin-bottom:0px;">Aww yeah, you successfully</p>
+          </div>
+          <div class="modal-card card" data-toggle="lists" data-lists-values="[&quot;name&quot;]">
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col-auto">
+
+                  <!-- Close -->
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><span class="fe fe-x"></span></span>
+                  </button>
+
+                </div>
+                <div class="col">
+
+                  <!-- Title -->
+                  <h4 class="card-header-title" id="exampleModalCenterTitle" style="text-align:center;">
+                    Edit Student
+                  </h4>
+
+                </div>
+                <div class="col-auto">
+
+                  <!-- Close -->
+                  <button id="edit-student-btn" type="button" class="close" ng-click="editStudent()">
+                    <span aria-hidden="true"><span class="fe fe-user-plus"></span></span>
+                  </button>
+
+                </div>
+              </div> <!-- / .row -->
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                  <label for="grade_name_select">Choose Grade</label>
+                  <select class="form-control" id="edit_grade_combo" data-toggle="select" name="grade_name">
+
+                  </select>
+              </div>
+              <div class="form-group">
+                <label for="student_name">Enter Student Name</label>
+                <input ng-modal="editstu_name" type="text" class="form-control" id="edit_student_name" placeholder="Student Name">
+              </div>
+              <div class="form-group">
+                <label for="father_name">Enter Father Name</label>
+                <input ng-modal="editstu_father" type="text" class="form-control" id="edit_father_name" placeholder="Father Name">
+              </div>
+              <div class="form-group">
+                <label for="student_name">Choose BirthDay</label>
+                <input ng-modal="editstu_birth" type="text" class="form-control" placeholder="Choose BirthDay" data-toggle="flatpickr" id="edit_stu_birth">
+              </div>
+              <div class="form-group">
+                <div class="form-check form-check-inline">
+                  <label class="text-muted">Gender</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input value="male" class="stu_gender_radio stu_edit_gender_radio form-check-input" value="male" type="radio" name="inlineRadioOptions" id="edit_stu_male" value="option1">
+                  <label class="form-check-label" for="inlineRadio1">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input value="female" class="stu_gender_radio stu_edit_gender_radio form-check-input" value="female" type="radio" name="inlineRadioOptions" id="edit_stu_female" value="option2">
+                  <label class="form-check-label" for="inlineRadio2">Female</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="st_address">Enter Address</label>
+                <input ng-modal="editstu_address" type="text" class="form-control" id="edit_stu_add" placeholder="Enter Address">
+              </div>
+              <div class="form-group">
+                <label for="phone_no">Enter Phone no</label>
+                <input ng-modal="editstu_phone" type="text" class="form-control" id="edit_stu_phone" placeholder="Phone No">
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="modal fade" id="info_student_modal" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -343,10 +425,10 @@
                       <i class="fe fe-more-vertical"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                      <a class="dropdown-item" ng-click="editStudent(x.acdm_id)">
+                      <a id="edit-stu-btn" for="{{x.stunacdm_id}}" class="dropdown-item">
                         <span class="fe fe-edit-2"></span>&nbsp;&nbsp;Edit
                       </a>
-                      <a class="dropdown-item" ng-click="delStudent(x.acdm_id)">
+                      <a id="del-stu-btn" for="{{x.stunacdm_id}}" class="dropdown-item" >
                         <span class="fe fe-trash-2"></span>&nbsp;&nbsp;Delete
                       </a>
                     </div>
@@ -362,17 +444,3 @@
 <!-- JAVASCRIPT
 ================================================== -->
 <!-- Libs JS -->
-<script src="assets/libs/jquery/dist/jquery.min.js"></script>
-<script src="assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="assets/libs/chart.js/dist/Chart.min.js"></script>
-<script src="assets/libs/chart.js/Chart.extension.min.js"></script>
-<script src="assets/libs/highlight/highlight.pack.min.js"></script>
-<script src="assets/libs/flatpickr/dist/flatpickr.min.js"></script>
-<script src="assets/libs/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
-<script src="assets/libs/list.js/dist/list.min.js"></script>
-<script src="assets/libs/quill/dist/quill.min.js"></script>
-<script src="assets/libs/dropzone/dist/min/dropzone.min.js"></script>
-<script src="assets/libs/select2/dist/js/select2.min.js"></script>
-
-<!-- Theme JS -->
-<script src="assets/js/theme.min.js"></script>

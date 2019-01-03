@@ -3,9 +3,9 @@
 class MM_School_StuNAcdm extends Db_object {
 
 	protected static $db_table = "eth_stuNacdm";
-	protected static $db_fields = array('stuNacdm_id', 'stu_id', 'acdm_id', 'grade_id');
+	protected static $db_fields = array('stunacdm_id', 'stu_id', 'acdm_id', 'grade_id');
 
-	public $stuNacdm_id;
+	public $stunacdm_id;
 	public $stu_id;
 	public $acdm_id;
   public $grade_id;
@@ -18,6 +18,11 @@ class MM_School_StuNAcdm extends Db_object {
     return $result;
   }
 
+  public function delStudent($stunacdm_id) {
+    $db_table = static::$db_table;
+    $result = $this -> insert_query("DELETE FROM $db_table WHERE stunacdm_id = $stunacdm_id;");
+    return $result;
+  }
 
  /*   public function sendMail($to, array $message) {
 

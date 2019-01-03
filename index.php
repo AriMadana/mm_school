@@ -33,6 +33,10 @@
     <!-- <link rel='stylesheet' href='assets/src/loading-bar.css' type='text/css'/>
     <script type='text/javascript' src='assets/src/loading-bar.js'></script> -->
     <script src="assets/js/pace.js"></script>
+    <script src="assets/js/sweetalert.js"></script>
+    <link href="assets/css/sweetalert.css" rel="stylesheet"/>
+    <script src="assets/js/iziTost.min.js"></script>
+    <link href="assets/css/iziTost.min.css" rel="stylesheet"/>
     <link href="assets/css/pace.css" rel="stylesheet" />
     <title>Dashkit</title>
     <style>
@@ -1151,9 +1155,111 @@
           });
         });
         app.controller("info-studentsCtrl",function ($scope, $http) {
+          var editStuID = '';
+
+          $(document).on('click', '#del-stu-btn', function() {
+            var stunacdm_id = $(this).attr('for');
+            swal({
+              title: "Are you sure?",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonClass: "btn-danger",
+              confirmButtonText: "Yes, delete it!",
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true
+            },
+            function(){
+              var stuDel = ({
+              'stunacdm_id' : stunacdm_id
+              });
+              console.log(stuDel);
+              $http({
+                method  : 'POST',
+                url     : 'includes/http_req/api/del_stu.php',
+                data    : stuDel, //forms user object
+                headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+              }).then(function(response) {
+                $('#selectedAcdmGrade').val($('#selectedAcdmGrade').val()).trigger('change');
+                swal.close();
+                iziToast.success({
+                  title: 'Success',
+                  message: 'You deleted one student'
+                });
+              });
+              //swal("Deleted!", "Your imaginary file has been deleted.", "success");
+
+            });
+
+          });
+
+          $(document).on('click', '#edit-stu-btn', function() {
+            editStuID = $(this).attr('for');
+            $('#edit_student_modal').modal('show');
+            for(var i = 0; i < $scope.students.length; i++) {
+              if($scope.students[i].stunacdm_id == editStuID) {
+                //console.log(editStuID);
+                $scope.editstu_id = $scope.students[i].stu_id;
+
+                $scope.editstu_name = $scope.students[i].stu_name;
+                $('#edit_student_name').val($scope.editstu_name);
+                $scope.editstu_father = $scope.students[i].stu_father;
+                $('#edit_father_name').val($scope.editstu_father);
+                $scope.editstu_birth = $scope.students[i].stu_birth;
+                $('#edit_stu_birth').val($scope.editstu_birth);
+                $scope.editstu_phone = $scope.students[i].stu_phone;
+                $('#edit_stu_phone').val($scope.editstu_phone);
+                $scope.editstu_address = $scope.students[i].stu_add;
+                $('#edit_stu_add').val($scope.editstu_address);
+                $scope.editstu_gender = $scope.students[i].stu_gender;
+
+                break;
+              }
+            }
+            $('#edit_grade_combo').val($('#selectedAcdmGrade').val()).trigger('change');
+            if ($scope.editstu_gender == 'male') {
+              $('#edit_stu_male').prop('checked', true);
+              $('#edit_stu_female').prop('checked', false);
+            } else if ($scope.editstu_gender == 'female') {
+              $('#edit_stu_male').prop('checked', false);
+              $('#edit_stu_female').prop('checked', true);
+            }
+
+            // $scope.editStudent($scope.editstu_id, $scope.editstu_name, $scope.editstu_father, $scope.editstu_birth
+            //           , $scope.editstu_phone, $scope.editstu_address, $scope.editstu_gender);
+            //editstu_years = $('#selectedAcdmYearsText').text();
+            //editstu_grade = $('#selectedAcdmGradeText').text();
+          });
+
+          $scope.editStudent = function() {
+
+            // console.log(editstu_id + editstu_name + editstu_father + editstu_birth
+            //           + editstu_phone + editstu_address + editstu_gender);
+            var student = ({
+            'stu_id' : $scope.editstu_id,
+            'stu_name' : $('#edit_student_name').val(),
+            'stu_father' : $('#edit_father_name').val(),
+            'stu_birth' : $('#edit_stu_birth').val(),
+            'stu_gender' : $('.stu_edit_gender_radio:checked').attr('value'),
+            'stu_add' : $('#edit_stu_add').val(),
+            'stu_phone' : $('#edit_stu_phone').val(),
+            'stu_grade' : $('#edit_grade_combo').val()
+            });
+            console.log(student);
+            $http({
+              method  : 'POST',
+              url     : 'includes/http_req/api/edit_stu.php',
+              data    : student, //forms user object
+              headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).then(function(response) {
+              $('#selectedAcdmGrade').val($('#selectedAcdmGrade').val()).trigger('change');
+              $('#edit_student_modal').modal('hide');
+            });
+          }
+
           pageLoader('show');
           $('#student-table-loader').hide();
           $('#addStuAlert').fadeOut();
+          $('#editStuAlert').fadeOut();
           $('#create_student_btn').click(function () {
             $('#info_student_modal').modal('show');
           });
@@ -1177,6 +1283,10 @@
             $('#grade_name_select').select2({
               data: data
             }).trigger('change');
+
+            $('#edit_grade_combo').select2({
+              data: data
+            });
           });
 
           $('#grade_name_select').select2();
@@ -1209,6 +1319,7 @@
               $('#student-table-loader').hide();
               if(response.data.length > 0) {
                 $scope.students = response.data;
+                //console.log($scope.students);
                 $('#stuRegTableCard').removeClass('no-student');
                 //$('#no-students-div').hide();
               } else {
@@ -1248,15 +1359,20 @@
                 $('#phone_no').val('');
                 $('.stu_gender_radio').prop('checked', false);
 
-                $('#addStuAlert').fadeIn();
-                setInterval(function() {
-                  $('#addStuAlert').fadeOut();
-                }, 3000);
+                // $('#addStuAlert').fadeIn();
+                // setInterval(function() {
+                //   $('#addStuAlert').fadeOut();
+                // }, 3000);
+                iziToast.success({
+                  title: 'Success',
+                  message: 'You added one student'
+                });
                 $('#add-student-btn').removeClass('is-loading');
 
               }
             });
           }
+
 
         });
 		    app.controller('checkboxCtrl',function ($scope) {
