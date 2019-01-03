@@ -34,6 +34,16 @@ class Database {
 		return $result;
 	}
 
+	public function queryID($sql) {
+		$result = $this -> connection ->query($sql);
+        if(!$result) {
+			die("Query Fail.".mysqli_error($this->connection));
+		}
+
+		$this->confirm_query($result);
+		return $this -> connection -> insert_id;
+	}
+
     /*public function query_by_array($sql, array $params) {
         $this->_error = false;
         echo "succ";
