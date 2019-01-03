@@ -1106,12 +1106,27 @@
                 th="th";
               }
               fee_card +=
-              '<div class="from-group col-auto mr-auto">'+
+              '<div class="from-group col-6">'+
                 '<label class="col-form-label">'+i+'<sup>'+th+'</sup> payment</label>'+
                 '<input type="number" class="form-control" id="fee_part">'+
               '</div>'
             }
             $('#fee_part_item').html(fee_card);
+          });
+
+          $('.edit_student_payment_btn').click(function(){
+            var textdata = '';
+            $(this).css('display','none');
+            $(this).siblings().css('opacity','0');
+            var amount = $(this).parent().siblings('.paymet_amount').text();
+            $(this).parent().siblings('.paymet_amount').text('');
+            textdata += '<div class="input-group  text-right">'+
+            '<input type="text" class="form-control" value="'+amount+'">'+
+            '<div class="input-group-append">'+
+            '<button class="btn btn-outline-secondary fe fe-check" type="button"></button>'+
+            '<button class="btn btn-outline-secondary fe fe-x text-dange" type="button"></button>'+
+            '</div></div>';
+            $(this).parent().siblings('.paymet_amount').html(textdata);
           });
         });//end manage-acdmCtrl
     </script>
