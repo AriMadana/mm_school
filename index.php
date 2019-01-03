@@ -640,7 +640,7 @@
                   </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#!info-students">
+                  <a class="dropdown-item" href="#!info-students-session">
                     Students
                   </a>
                 </li>
@@ -677,7 +677,7 @@
                   </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="#!manage-acd_fees">
+                  <a class="dropdown-item" href="#!manage-acdm-fees">
                     Acd_fees
                   </a>
                 </li>
@@ -744,8 +744,8 @@
             templateUrl : "ang_load_page/manage/manage-teachers.htm",
             controller : "manage-teachersCtrl"
         })
-        .when("/manage-acd_fees", {
-            templateUrl : "ang_load_page/manage/manage-acd_fees.htm",
+        .when("/manage-acdm-fees", {
+            templateUrl : "ang_load_page/manage/manage-acdm-fees.htm",
             controller : "manage-acdmfeeCtrl"
         })
         .when("/info-staffs", {
@@ -756,22 +756,22 @@
             templateUrl : "ang_load_page/info/info-teachers.htm",
             controller : "info-teachersCtrl"
         })
-        .when("/info-students", {
-            templateUrl : "ang_load_page/info/info-students.htm",
-            controller : "info-studentsCtrl"
+        .when("/info-students-session", {
+            templateUrl : "ang_load_page/info/info-students-session.htm",
+            controller : "info-students-sessionCtrl"
         });
       });
 
 
-      function pageLoader(trigger) {
-        if(trigger == 'hide') {
-          $('.page-loader').hide();
-          $('body').removeClass('pointer-event-none');
-        } else if (trigger == 'show') {
-          $('.page-loader').show();
-          $('body').addClass('pointer-event-none');
+        function pageLoader(trigger) {
+          if(trigger == 'hide') {
+            $('.page-loader').hide();
+            $('body').removeClass('pointer-event-none');
+          } else if (trigger == 'show') {
+            $('.page-loader').show();
+            $('body').addClass('pointer-event-none');
+          }
         }
-      }
         app.controller("manage-gradesCtrl", function ($scope, $http) {
           $('#create_grade_btn').click(function () {
             $('#sidebarModalSearch').modal('show');
@@ -1154,9 +1154,8 @@
             $scope.setAcdmCurrent(acdm_id);
           });
         });
-        app.controller("info-studentsCtrl",function ($scope, $http) {
+        app.controller("info-students-sessionCtrl",function ($scope, $http) {
           var editStuID = '';
-
           $(document).on('click', '#del-stu-btn', function() {
             var stunacdm_id = $(this).attr('for');
             swal({
@@ -1187,11 +1186,8 @@
                 });
               });
               //swal("Deleted!", "Your imaginary file has been deleted.", "success");
-
             });
-
           });
-
           $(document).on('click', '#edit-stu-btn', function() {
             editStuID = $(this).attr('for');
             $('#edit_student_modal').modal('show');
@@ -1199,7 +1195,6 @@
               if($scope.students[i].stunacdm_id == editStuID) {
                 //console.log(editStuID);
                 $scope.editstu_id = $scope.students[i].stu_id;
-
                 $scope.editstu_name = $scope.students[i].stu_name;
                 $('#edit_student_name').val($scope.editstu_name);
                 $scope.editstu_father = $scope.students[i].stu_father;
@@ -1211,7 +1206,6 @@
                 $scope.editstu_address = $scope.students[i].stu_add;
                 $('#edit_stu_add').val($scope.editstu_address);
                 $scope.editstu_gender = $scope.students[i].stu_gender;
-
                 break;
               }
             }
@@ -1223,15 +1217,12 @@
               $('#edit_stu_male').prop('checked', false);
               $('#edit_stu_female').prop('checked', true);
             }
-
             // $scope.editStudent($scope.editstu_id, $scope.editstu_name, $scope.editstu_father, $scope.editstu_birth
             //           , $scope.editstu_phone, $scope.editstu_address, $scope.editstu_gender);
             //editstu_years = $('#selectedAcdmYearsText').text();
             //editstu_grade = $('#selectedAcdmGradeText').text();
           });
-
           $scope.editStudent = function() {
-
             // console.log(editstu_id + editstu_name + editstu_father + editstu_birth
             //           + editstu_phone + editstu_address + editstu_gender);
             var student = ({
@@ -1255,7 +1246,6 @@
               $('#edit_student_modal').modal('hide');
             });
           }
-
           pageLoader('show');
           $('#student-table-loader').hide();
           $('#addStuAlert').fadeOut();
@@ -1279,69 +1269,18 @@
             $('#selectedAcdmGrade').select2({
               data: data
             }).trigger('change');
-
             $('#grade_name_select').select2({
               data: data
             }).trigger('change');
-
             $('#edit_grade_combo').select2({
               data: data
             });
           });
-
           $('#grade_name_select').select2();
           //$('#selectedAcdmGrade').select2();
           $('#selectedAcdmYears').select2();
           flatpickr("#st_birthday", {});
           $('#phone_no').mask('00-000000000');
-          var selected_grade = $('#grade_name_select').children("option:selected").val();
-          var submit_btn = $('#submit_btn');
-          var student_name = $('#student_name');
-          toggle_invalid(student_name,submit_btn);
-          var father_name = $('#father_name');
-          toggle_invalid(father_name,submit_btn);
-          var st_birthday = $('#st_birthday');
-          toggle_invalid(st_birthday,submit_btn);
-          var gender = $("input[name='gender']");
-          gender.click(function () {
-            gender.removeClass('is-invalid');
-          });
-
-        app.controller('manage-acdmfeeCtrl',function($scope){
-          $('#create_fee_btn').click(function () {
-            $('#manage_fee_modal').modal('show');
-          });
-          $('#add_new_fee_btn').click(function () {
-            $('#manage_fee_modal').modal('show');
-          });
-          $('#fee_part').keyup(function () {
-            var parts = $('#fee_part').val();
-            var fee_card="";
-            var th = "";
-            for (var i = 1; i <= parts; i++) {
-              if (i==1) {
-                th="st";
-              }else if (i==2) {
-                th='nd';
-              }else if(i==3){
-                th="rd";
-              }else {
-                th="th";
-              }
-              fee_card +=
-              '<div class="from-group col-auto mr-auto">'+
-                '<label class="col-form-label">'+i+'<sup>'+th+'</sup> payment</label>'+
-                '<input type="number" class="form-control" id="fee_part">'+
-              '</div>'
-            }
-            $('#fee_part_item').html(fee_card);
-          });
-        });//end manage-acdmCtrl
-          
-          $('#phone_no').mask('00-000000000');
-
-
-
           $('#selectedAcdmGrade').on('change', function() {
             // if($('#stuRegTableCard').hasClass('no-student')) {
             //
@@ -1369,13 +1308,10 @@
                 if(!$('#stuRegTableCard').hasClass('no-student')) {
                   $('#stuRegTableCard').addClass('no-student');
                 }
-
                 //$('#no-students-div').show();
               }
-
             });
           });
-
           $scope.addStudent = function() {
             $('#add-student-btn').addClass('is-loading');
             var add_stu_infos = ({
@@ -1401,7 +1337,6 @@
                 $('#st_address').val('');
                 $('#phone_no').val('');
                 $('.stu_gender_radio').prop('checked', false);
-
                 // $('#addStuAlert').fadeIn();
                 // setInterval(function() {
                 //   $('#addStuAlert').fadeOut();
@@ -1411,7 +1346,6 @@
                   message: 'You added one student'
                 });
                 $('#add-student-btn').removeClass('is-loading');
-
               }
             });
           }
@@ -1421,6 +1355,246 @@
 		    app.controller('checkboxCtrl',function ($scope) {
 
 	      });
+
+        app.controller('manage-acdmfeeCtrl',function($scope, $http){
+          $http.get('includes/http_req/api/req_grade.php')
+          .then(function (response) {
+            if(response.data) {
+              var data = [];
+              for(i in response.data) {
+                data.push(
+                  {id: response.data[i].grade_id, text: response.data[i].grade_name}
+                );
+              };
+            }
+            $('#add_fee_grade_combo').select2({
+              data: data
+            }).trigger('change');
+          });
+          $http.get('includes/http_req/api/req_fee_list.php')
+          .then(function (response) {
+            console.log(response.data);
+            var fee_id = '';
+            var fee_id2 = '';
+            var html = '';
+            var fee_parts = '';
+            var k = 0;
+            for(var i = 0; i < response.data.length; i++) {
+              fee_parts = '';
+              for(var j = 0; j < response.data.length; j++) {
+
+                if ((k+1)==1) {
+                  th="st";
+                }else if ((k+1)==2) {
+                  th='nd';
+                }else if((k+1)==3){
+                  th="rd";
+                }else {
+                  th="th";
+                }
+                if(response.data[i].fee_id == response.data[j].fee_id) {
+                  fee_parts += '<tr>' +
+                                  '<td>' + (k+1) + '<sup>' + th + '</sup>payment</td>' +
+                                  '<td class="paymet_amount text-center">' + response.data[j].req_amount + '</td>' +
+                                  '<td class="text-right fe-edit-trash">' +
+                                    '<span class="fe fe-edit-2 mr-3 text-danger edit_student_payment_btn"></span>' +
+                                    '<span class="fe fe-trash-2 mr-1 text-danger"></span>' +
+                                  '</td>' +
+                                '</tr>';
+                  k++;
+                } else {
+                  k=0;
+                }
+
+              }
+
+              if(fee_id2 == response.data[i].fee_id) {
+
+              }
+
+              if(fee_id != response.data[i].fee_id) {
+                fee_id = response.data[i].fee_id;
+                html += '<div class="col-12 col-lg-6 fee-cards">' +
+                          '<div class="card">' +
+                            '<div class="card-body">' +
+                              '<!-- Dropdown -->' +
+                              '<div class="dropdown card-dropdown">' +
+                                '<a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown">' +
+                                  '<i class="fe fe-more-vertical text-dark"></i>' +
+                                '</a>' +
+                                '<div class="dropdown-menu dropdown-menu-right">' +
+                                  '<a class="dropdown-item">' +
+                                    'Edit' +
+                                  '</a>' +
+                                  '<a class="dropdown-item">' +
+                                    'Delete' +
+                                  '</a>' +
+                                '</div>' +
+                              '</div>' +
+
+                              '<!-- Avatar -->' +
+                              '<div class="text-center">' +
+                                '<p class="fee-data-info-grade">' + response.data[i].grade_name + '</p>' +
+                              '</div>' +
+
+                              '<!-- Title -->' +
+                              '<h2 class="card-title text-center p-2">' +
+                                '<p style="font-size: 22px;"  class="fee-data-info-name">' + response.data[i].fee_name + '<span class="pl-7 fee-data-info-total">' + response.data[i].fee_total + '</span></p>' +
+                              '</h2>' +
+                              '<!-- Divider -->' +
+                              '<hr>' +
+
+                              '<div class="row align-items-center">' +
+                                '<div class="col">' +
+
+                                  '<!-- Time -->' +
+                                  '<p class="card-text">' +
+                                    'Separated ' + response.data[i].fee_number + 'parts for payment' +
+                                  '</p>' +
+
+                                '</div>' +
+                                '<div class="col-auto">' +
+                                  '<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseClass' + response.data[i].fee_id + '" aria-expanded="false" aria-controls="collapseClass">' +
+                                    'payment details<span class="fe fe-chevrons-down"></span>' +
+                                  '</button>' +
+                                '</div>' +
+                              '</div> <!-- / .row -->' +
+                              '<div class="collapse" id="collapseClass' + response.data[i].fee_id + '">' +
+                                '<table class="table table-nowrap">' +
+                                  '<tbody class="fee_parts_tbody">' +
+                                    fee_parts +
+                                  '</tbody>' +
+                                '</table>' +
+                              '</div>' +
+                            '</div> <!-- / .card-body -->' +
+                            '</div>' +
+                        '</div>';
+              }
+            }
+            $('#fee_cards').html(html);
+          });
+
+
+          $(document).on('click', '.edit_student_payment_btn', function() {
+            var textdata = '';
+            $(this).css('display','none');
+            $(this).siblings().css('opacity','0');
+            var amount = $(this).parent().siblings('.paymet_amount').text();
+            $(this).parent().siblings('.paymet_amount').text('');
+            textdata += '<div class="input-group  text-right">'+
+            '<input type="text" class="form-control" value="'+amount+'">'+
+            '<div class="input-group-append">'+
+            '<button class="btn btn-outline-secondary fe fe-check" type="button"></button>'+
+            '<button class="btn btn-outline-secondary fe fe-x text-dange" type="button"></button>'+
+            '</div></div>';
+            $(this).parent().siblings('.paymet_amount').html(textdata);
+          });
+          $('#create_fee_btn').click(function () {
+            $('#manage_fee_modal').modal('show');
+          });
+          $('#add_new_fee_btn').click(function () {
+            $('#manage_fee_modal').modal('show');
+          });
+          $('#fee_part').keyup(function () {
+            var parts = $('#fee_part').val();
+            var fee_card="";
+            var th = "";
+            for (var i = 1; i <= parts; i++) {
+              if (i==1) {
+                th="st";
+              }else if (i==2) {
+                th='nd';
+              }else if(i==3){
+                th="rd";
+              }else {
+                th="th";
+              }
+              fee_card +=
+              '<div class="from-group col-6">'+
+                '<label class="col-form-label">'+i+'<sup>'+th+'</sup> payment</label>'+
+                '<input for="' + i + '" type="number" class="form-control fee_part">'+
+              '</div>'
+            }
+            $('#fee_part_item').html(fee_card);
+          });
+
+          $scope.addFee = function() {
+            var fee_name = $('#fee_name').val();
+            var fee_amount = $('#total_fee_amount').val();
+            var fee_number = $('#fee_part').val();
+            var grade_id = $('#add_fee_grade_combo').val();
+            var fee_data = [];
+            var fee_parts = [];
+            console.log(fee_name, fee_amount, fee_number);
+
+            $('.fee_part').each(function(i, el) {
+              num = $(el).attr('for');
+              value = $(el).val();
+              console.log(num + ' ' + value);
+              fee_parts.push({
+                id: num,
+                value: value
+              });
+            });
+            fee_data.push({
+              'fee_name': fee_name,
+              'fee_amount': fee_amount,
+              'fee_number': fee_number,
+              'grade_id': grade_id,
+              'fee_parts': fee_parts
+            });
+            console.log(fee_data);
+            $http({
+              method : 'POST',
+              url : 'includes/http_req/forms/add_fee.php',
+              data : fee_data,
+              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              console.log(response.data);
+            });
+            // for(i in response.data) {
+            //   data.push(
+            //     {id: response.data[i].grade_id, text: response.data[i].grade_name}
+            //   );
+            // };
+          }
+        });//end manage-acdmCtrl
+        function feeSearch() {
+          var input, filter, fee_cards_div, fee_cards, fee_cards_info_grade, i;
+          input = document.getElementById("fee-search");
+          filter = input.value.toUpperCase();
+          fee_cards_div = document.getElementById("fee_cards");
+          fee_cards = fee_cards_div.getElementsByClassName("fee-cards");
+          for (i = 0; i < fee_cards.length; i++) {
+            fee_cards_info_grade = fee_cards[i].getElementsByClassName("fee-data-info-grade")[0];
+            //console.log(fee_cards_info_grade.innerHTML);
+            if (fee_cards_info_grade) {
+              if (fee_cards_info_grade.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                fee_cards[i].style.display = "";
+              } else {
+                fee_cards[i].style.display = "none";
+
+                fee_cards_info_name = fee_cards[i].getElementsByClassName("fee-data-info-name")[0];
+                if (fee_cards_info_name) {
+                  if (fee_cards_info_name.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    fee_cards[i].style.display = "";
+                  } else {
+                    fee_cards[i].style.display = "none";
+
+                    fee_cards_info_total = fee_cards[i].getElementsByClassName("fee-data-info-total")[0];
+                    if (fee_cards_info_total) {
+                      if (fee_cards_info_total.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        fee_cards[i].style.display = "";
+                      } else {
+                        fee_cards[i].style.display = "none";
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
     </script>
   </body>
 </html>
