@@ -715,7 +715,7 @@
         })
         .when("/manage-acd_fees", {
             templateUrl : "ang_load_page/manage/manage-acd_fees.htm",
-            controller : "manage-acdmCtrl"
+            controller : "manage-acdmfeeCtrl"
         })
         .when("/info-staffs", {
             templateUrl : "ang_load_page/info/info-staffs.htm",
@@ -1084,7 +1084,7 @@
           flatpickr("#tr_birthday", {});
           $('#phone_no').mask('00-000000000')
         });//end info-teachersCtrl
-        app.controller('manage-acdmCtrl',function($scope){
+        app.controller('manage-acdmfeeCtrl',function($scope){
           $('#create_fee_btn').click(function () {
             $('#manage_fee_modal').modal('show');
           });
