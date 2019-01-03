@@ -1,107 +1,58 @@
 <?php
 
-class MM_School_Grade extends Db_object {
+class MM_School_Student extends Db_object {
 
-	protected static $db_table = "eth_grade";
-	protected static $db_fields = array('grade_id', 'grade_name', 'grade_school', 'acdm_id');
+	protected static $db_table = "eth_student";
+	protected static $db_fields = array('stu_id', 'stu_name', 'stu_father', 'stu_birth', 'stu_gender', 'stu_add', 'stu_phone', 'stu_grade', 'stu_school', 'stunacdm_id');
 
-	public $grade_id;
-	public $grade_name;
-	public $grade_school;
-	public $acdm_id;
+	public $stu_id;
+	public $stu_name;
+	public $stu_father;
+  public $stu_birth;
+  public $stu_gender;
+  public $stu_add;
+  public $stu_phone;
+  public $stu_grade;
+  public $stu_school;
+  public $stunacdm_id;
 
-  public function selectGrade($school_id) {
-    $db_table = static::$db_table;
-		$mm_school_head = new MM_School_Head();
-		$acdm_id = $mm_school_head -> selectCurAcdm($school_id);
-    $result = $this -> find_array_by_query("SELECT * FROM `$db_table` WHERE `acdm_id` = '$acdm_id' ORDER BY `grade_name` ASC;");
-    return $result;
-  }
-  public function addGrade($grade_name,$school_id) {
+  public function selectStudentArray($school_id, $grade_id) {
     global $database;
     $db_table = static::$db_table;
-    $grade_name = $database -> escape_string($grade_name);
-    $result = $this -> insert_query("INSERT INTO `$db_table` (`grade_name`, `grade_school`) VALUES ('$grade_name', $school_id)");
+    $result = $this -> find_array_by_query("SELECT stu.*,sa.stunacdm_id FROM `eth_student` stu, `eth_school` sch, `eth_stuNacdm` sa WHERE sch.school_id = $school_id AND stu.stu_id = sa.stu_id AND sch.school_acdm = sa.acdm_id AND sa.grade_id = $grade_id;");
     return $result;
   }
-	public function user_match($email, $password) {
-		global $database;
-		$db_table = static::$db_table;
-        $password = md5($password);
-		$email = $database -> escape_string($email);
-        $password = $database -> escape_string($password);
-		$result = $this -> find_by_query("SELECT `admin_id` FROM `$db_table` WHERE `admin_email` = '$email' AND `admin_pass` = '$password';");
-		//$count = mysqli_num_rows($query);
-		// return ($result > 0) ? true : false;
-    return $result['admin_id'];
-	}
+  public function addStudent($stu_name,$stu_father, $stu_birth, $stu_gender, $stu_add, $stu_phone, $stu_grade, $stu_school) {
+    global $database;
+    $mm_school_stunacdm = new MM_School_StuNAcdm();
+    $db_table = static::$db_table;
+    $stu_name = $database -> escape_string($stu_name);
+    $stu_father = $database -> escape_string($stu_father);
+    $stu_birth = $database -> escape_string($stu_birth);
+    $stu_gender = $database -> escape_string($stu_gender);
+    $stu_add = $database -> escape_string($stu_add);
+    $stu_phone = $database -> escape_string($stu_phone);
 
-    public function isPresentUsername($email) {
-        global $database;
-        $db_table = static::$db_table;
-        $email = $database->escape_string($email);
-        $isPresent = $this->count_by_query("SELECT `admin_email` FROM `$db_table` WHERE `admin_email` = '$email';");
+    $stu_id = $this -> insert_queryID("INSERT INTO `$db_table` (`stu_name`, `stu_father`, `stu_birth`, `stu_gender`, `stu_add`, `stu_phone`, `stu_grade`, `stu_school`) VALUES ('$stu_name', '$stu_father', '$stu_birth', '$stu_gender', '$stu_add', '$stu_phone', $stu_grade, $stu_school);");
+    $result = $mm_school_stunacdm -> addStudentWithAcdm($stu_id, $stu_grade);
+    //$result = find_by_query("SELECT LAST_INSERT_ID() FROM `$db_table`;");
 
-        if($isPresent == 1) {
-            return true;
-        }
-        return false;
-    }
+    return $result;
+  }
 
-    public function isCorrectPassword($password) {
-        global $database;
-        $db_table = static::$db_table;
-        $password = md5($password);
-        $password = $database->escape_string($password);
-        $isCorrect = $this->count_by_query("SELECT `admin_pass` FROM `$db_table` WHERE `admin_pass` = '$password';");
+  public function editStudent($stu_id, $stu_name, $stu_father, $stu_birth, $stu_gender, $stu_add, $stu_phone, $stu_grade) {
+    global $database;
+    $db_table = static::$db_table;
+    $stu_name = $database -> escape_string($stu_name);
+    $stu_father = $database -> escape_string($stu_father);
+    $stu_birth = $database -> escape_string($stu_birth);
+    $stu_gender = $database -> escape_string($stu_gender);
+    $stu_add = $database -> escape_string($stu_add);
+    $stu_phone = $database -> escape_string($stu_phone);
+    $result = $this -> insert_query("UPDATE `$db_table` SET `stu_name` = '$stu_name', `stu_father` = '$stu_father', `stu_birth` = '$stu_birth', `stu_gender` = '$stu_gender', `stu_add` = '$stu_add', `stu_phone` = '$stu_phone', `stu_grade` = $stu_grade WHERE `stu_id` = $stu_id;");
+    return $result;
+  }
 
-        if($isCorrect == 1) {
-            return true;
-        }
-        return false;
-    }
-
-    public function isInsertSuccessful($username, $phone, $email, $password) {
-        global $database;
-        $db_table = static::$db_table;
-
-        $username = $database->escape_string($username);
-        $phone    = $database->escape_string($phone);
-        $email    = $database->escape_string($email);
-        $password = $database->escape_string($password);
-        $password = md5($password); //->OK
-
-        /*for($i = 0; $i < count($values); $i++) {
-            $values[i] = $database->escape_string($values[i]);
-        }
-        $values[3] = md5($values[3]);
-
-        $isInsert = $this->insert($db_table, array(
-            static::$db_fields[2] => $values[0], //name
-            static::$db_fields[9] => $values[1], //phone
-            static::$db_fields[1] => $values[2], //email
-            static::$db_fields[6] => $values[3]  //password
-        ));*/
-
-        $sql = "INSERT INTO `$db_table` (`admin_fname`, `admin_phone`, `admin_email`, `admin_pass`) VALUES ('$username', '$phone', '$email', '$password')"; //-> OK
-
-        $isInsert = $this->insert_query($sql); //-> OK
-
-        if($isInsert) {
-            return true;
-        }
-        return false;
-    }
-
-  public function user_info_from_userid($user_id) {
-		global $database;
-		$db_table = static::$db_table;
-		$user_id = $database -> escape_string($user_id);
-		$result = $this -> find_by_query("SELECT * FROM `$db_table` WHERE `admin_id` = $user_id;");
-		//$count = mysqli_num_rows($query);
-		// return ($result > 0) ? true : false;
-        return $result;
-	}
 
  /*   public function sendMail($to, array $message) {
 

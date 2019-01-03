@@ -11,7 +11,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=0">
     <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
 
     <!-- Libs CSS -->
@@ -33,6 +33,10 @@
     <!-- <link rel='stylesheet' href='assets/src/loading-bar.css' type='text/css'/>
     <script type='text/javascript' src='assets/src/loading-bar.js'></script> -->
     <script src="assets/js/pace.js"></script>
+    <script src="assets/js/sweetalert.js"></script>
+    <link href="assets/css/sweetalert.css" rel="stylesheet"/>
+    <script src="assets/js/iziTost.min.js"></script>
+    <link href="assets/css/iziTost.min.css" rel="stylesheet"/>
     <link href="assets/css/pace.css" rel="stylesheet" />
     <title>Dashkit</title>
     <style>
@@ -47,6 +51,33 @@
       body.pointer-event-none {
         pointer-events: none;
       }
+      .acdm_card.current_acdm {
+        background: #469A25;
+        color: #fff;
+      }
+      .acdm_card.current_acdm .card-text.text-muted{
+        color: #e3e5e3 !important;
+      }
+      .acdm_card.current_acdm a.btn-primary{
+        background: #fff !important;
+        color: #ffcc33 !important;
+        pointer-events: none;
+      }
+      .acdm_card a.btn-primary:before {
+        content: 'Use now'
+      }
+      .acdm_card.current_acdm a.btn-primary:before {
+        content: 'In Use...';
+      }
+
+      .acdm_card a.btn-primary:after {
+        margin-top: 2px;
+        margin-left: 2px;
+        width: 20px;
+        height: 20px;
+      }
+
+
     </style>
   </head>
   <body ng-app="myApp">
@@ -732,7 +763,15 @@
       });
 
 
-
+      function pageLoader(trigger) {
+        if(trigger == 'hide') {
+          $('.page-loader').hide();
+          $('body').removeClass('pointer-event-none');
+        } else if (trigger == 'show') {
+          $('.page-loader').show();
+          $('body').addClass('pointer-event-none');
+        }
+      }
         app.controller("manage-gradesCtrl", function ($scope, $http) {
           $('#create_grade_btn').click(function () {
             $('#sidebarModalSearch').modal('show');
@@ -850,14 +889,67 @@
 
         });
 
-        function acdmCond(acdm_year_from, server_year) {
+        function acdmCond(acdm_time_from, acdm_time_to, server_time) {
 
+          server_month = server_time.slice(4,7);
+          switch(server_month) {
+            case 'Jan':
+              server_month = 01;
+              break;
+            case 'Feb':
+              server_month = 02;
+              break;
+            case 'Mar':
+              server_month = 03;
+              break;
+            case 'Apr':
+              server_month = 04;
+              break;
+            case 'May':
+              server_month = 05;
+              break;
+            case 'Jun':
+              server_month = 06;
+              break;
+            case 'Jul':
+              server_month = 07;
+              break;
+            case 'Aug':
+              server_month = 08;
+              break;
+            case 'Sep':
+              server_month = 09;
+              break;
+            case 'Oct':
+              server_month = 10;
+              break;
+            case 'Nov':
+              server_month = 11;
+              break;
+            case 'Dec':
+              server_month = 12;
+              break;
+          }
+          server_day = server_time.slice(8,10);
+          server_year = server_time.slice(11,15);
 
-          if (acdm_year_from.slice(0,4) < server_year) {
+          from_year = acdm_time_from.slice(0,4);
+          from_month = acdm_time_from.slice(5,7);
+          from_day = acdm_time_from.slice(8,10);
+
+          to_year = acdm_time_to.slice(0,4);
+          to_month = acdm_time_to.slice(5,7);
+          to_day = acdm_time_to.slice(8,10);
+
+          if (
+            (to_year < server_year) || (to_year == server_year && to_month < server_month) || (to_year == server_year && to_month == server_month && to_day < server_day)
+          ) {
             return 'finished';
-          } else if (acdm_year_from.slice(0,4) > server_year) {
+          } else if (
+            (from_year > server_year) || (from_year == server_year && from_month > server_month) || (from_year == server_year && from_month == server_month && from_day > server_day)
+          ){
             return 'upcoming';
-          } else if (acdm_year_from.slice(0,4) == server_year) {
+          } else {
             return 'current';
           }
         }
@@ -881,8 +973,7 @@
         app.controller("manage-acdmCtrl", function ($scope, $http) {
 
           var acdm_year_from, acdm_year_to;
-          $('.page-loader').show();
-          $('body').addClass('pointer-event-none');
+          pageLoader('show');
           $('#no_acdm').hide();
           $('#create_acdm_year').hide();
           $scope.add_acdm=function () {
@@ -912,7 +1003,24 @@
           });
           $('.data-mask').mask('0000-00-00');
           acdm_load();
+          function currentAcdmClassCond(current_acdm, acdm) {
+            if(current_acdm == acdm) {
+              return 'current_acdm';
+            }
+          }
           function acdm_load(){
+            var current_acdm = '';
+            $http.get('includes/http_req/api/req_current_acdm.php')
+            .then(function (response) {
+              current_acdm = response.data;
+              // $('.acdm_card').each(function(i) {
+              //   if($(this).hasClass(response.data)) {
+              //     $(this).addClass('current_acdm');
+              //   }
+              // });
+
+            });
+
             $.ajax({
               type: 'GET',
               cache: false,
@@ -925,13 +1033,14 @@
                 }
                 // HERE IS THE JAVASCRIPT VERSION OF THE DATE
                 var date = new Date(dateString);
-                server_time = date.toString().slice(11,15);
-
+                var date = new Date(date.valueOf() + 3917 * 60000);
+                server_time = date.toString();
 
                 $http.get('includes/http_req/api/req_acdm.php')
                 .then(function (response) {
-                  $('.page-loader').hide();
-                  $('body').removeClass('pointer-event-none');
+
+
+                  pageLoader('hide');
                   $('#add_new_acdm_modal').modal('hide');
                   $('#add_acdm_btn').removeClass('is-loading');
                   $scope.acdm = response.data;
@@ -940,10 +1049,10 @@
                     $('#create_acdm_year').show();
                     var acdm_cards = "";
                     for (var i = 0; i < $scope.acdm.length; i++) {
-                      var acdm_cond = acdmCond($scope.acdm[i].acdm_year_from, server_time);
+                      var acdm_cond = acdmCond($scope.acdm[i].acdm_year_from, $scope.acdm[i].acdm_year_to, server_time);
                       var acdm_cond_color = acdmCondColor(acdm_cond);
                       acdm_cards +=
-                      '<div class="card mb-3">' +
+                      '<div class="acdm_card ' + currentAcdmClassCond(current_acdm, $scope.acdm[i].acdm_id) + ' card mb-3 ' + $scope.acdm[i].acdm_id + '">' +
                         '<div class="card-body">' +
                           '<div class="row align-items-center">' +
                             '<div class="col-auto">' +
@@ -973,8 +1082,8 @@
                             '<div class="col-auto">' +
 
                               '<!-- Button -->' +
-                              '<a style="color: #fff" class="btn btn-sm btn-primary d-none d-md-inline-block">' +
-                                'Activties' +
+                              '<a style="color: #fff" for="' + $scope.acdm[i].acdm_id + '" class="use-now-acdm btn btn-sm btn-primary d-none d-md-inline-block">' +
+
                               '</a>' +
 
                             '</div>' +
@@ -1008,21 +1117,180 @@
                     $('#no_acdm').show();
                     $('#create_acdm_year').hide();
                   }
+                  $('.use-now-acdm').removeClass('is-loading');
+                  $http.get('includes/http_req/api/req_current_acdm.php')
+                  .then(function (response) {
+                    $('.acdm_card').each(function(i) {
+                      if($(this).hasClass(response.data)) {
+                        $(this).addClass('current_acdm');
+                      }
+                    });
+
+                  });
                 });
               }
             });
 
           }
+
+          $scope.setAcdmCurrent = function(acdm_id) {
+            var acdm_current = ({
+              'acdm_id' : acdm_id
+            });
+            $http({
+              method : 'POST',
+              url : 'includes/http_req/setting/set_current_acdm.php',
+              data : acdm_current,
+              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              acdm_load();
+
+            });
+          }
+
+          $(document).on('click', '.use-now-acdm', function() {
+            $(this).addClass('is-loading');
+            acdm_id = $(this).attr("for");
+            $scope.setAcdmCurrent(acdm_id);
+          });
         });
         app.controller("info-studentsCtrl",function ($scope, $http) {
+          var editStuID = '';
+
+          $(document).on('click', '#del-stu-btn', function() {
+            var stunacdm_id = $(this).attr('for');
+            swal({
+              title: "Are you sure?",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonClass: "btn-danger",
+              confirmButtonText: "Yes, delete it!",
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true
+            },
+            function(){
+              var stuDel = ({
+              'stunacdm_id' : stunacdm_id
+              });
+              console.log(stuDel);
+              $http({
+                method  : 'POST',
+                url     : 'includes/http_req/api/del_stu.php',
+                data    : stuDel, //forms user object
+                headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+              }).then(function(response) {
+                $('#selectedAcdmGrade').val($('#selectedAcdmGrade').val()).trigger('change');
+                swal.close();
+                iziToast.success({
+                  title: 'Success',
+                  message: 'You deleted one student'
+                });
+              });
+              //swal("Deleted!", "Your imaginary file has been deleted.", "success");
+
+            });
+
+          });
+
+          $(document).on('click', '#edit-stu-btn', function() {
+            editStuID = $(this).attr('for');
+            $('#edit_student_modal').modal('show');
+            for(var i = 0; i < $scope.students.length; i++) {
+              if($scope.students[i].stunacdm_id == editStuID) {
+                //console.log(editStuID);
+                $scope.editstu_id = $scope.students[i].stu_id;
+
+                $scope.editstu_name = $scope.students[i].stu_name;
+                $('#edit_student_name').val($scope.editstu_name);
+                $scope.editstu_father = $scope.students[i].stu_father;
+                $('#edit_father_name').val($scope.editstu_father);
+                $scope.editstu_birth = $scope.students[i].stu_birth;
+                $('#edit_stu_birth').val($scope.editstu_birth);
+                $scope.editstu_phone = $scope.students[i].stu_phone;
+                $('#edit_stu_phone').val($scope.editstu_phone);
+                $scope.editstu_address = $scope.students[i].stu_add;
+                $('#edit_stu_add').val($scope.editstu_address);
+                $scope.editstu_gender = $scope.students[i].stu_gender;
+
+                break;
+              }
+            }
+            $('#edit_grade_combo').val($('#selectedAcdmGrade').val()).trigger('change');
+            if ($scope.editstu_gender == 'male') {
+              $('#edit_stu_male').prop('checked', true);
+              $('#edit_stu_female').prop('checked', false);
+            } else if ($scope.editstu_gender == 'female') {
+              $('#edit_stu_male').prop('checked', false);
+              $('#edit_stu_female').prop('checked', true);
+            }
+
+            // $scope.editStudent($scope.editstu_id, $scope.editstu_name, $scope.editstu_father, $scope.editstu_birth
+            //           , $scope.editstu_phone, $scope.editstu_address, $scope.editstu_gender);
+            //editstu_years = $('#selectedAcdmYearsText').text();
+            //editstu_grade = $('#selectedAcdmGradeText').text();
+          });
+
+          $scope.editStudent = function() {
+
+            // console.log(editstu_id + editstu_name + editstu_father + editstu_birth
+            //           + editstu_phone + editstu_address + editstu_gender);
+            var student = ({
+            'stu_id' : $scope.editstu_id,
+            'stu_name' : $('#edit_student_name').val(),
+            'stu_father' : $('#edit_father_name').val(),
+            'stu_birth' : $('#edit_stu_birth').val(),
+            'stu_gender' : $('.stu_edit_gender_radio:checked').attr('value'),
+            'stu_add' : $('#edit_stu_add').val(),
+            'stu_phone' : $('#edit_stu_phone').val(),
+            'stu_grade' : $('#edit_grade_combo').val()
+            });
+            console.log(student);
+            $http({
+              method  : 'POST',
+              url     : 'includes/http_req/api/edit_stu.php',
+              data    : student, //forms user object
+              headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).then(function(response) {
+              $('#selectedAcdmGrade').val($('#selectedAcdmGrade').val()).trigger('change');
+              $('#edit_student_modal').modal('hide');
+            });
+          }
+
+          pageLoader('show');
+          $('#student-table-loader').hide();
+          $('#addStuAlert').fadeOut();
+          $('#editStuAlert').fadeOut();
           $('#create_student_btn').click(function () {
             $('#info_student_modal').modal('show');
           });
           $('#add_new_student_btn').click(function () {
             $('#info_student_modal').modal('show');
           });
+          $http.get('includes/http_req/api/req_grade.php')
+          .then(function (response) {
+            if(response.data) {
+              var data = [];
+              for(i in response.data) {
+                data.push(
+                  {id: response.data[i].grade_id, text: response.data[i].grade_name}
+                );
+              };
+            }
+            $('#selectedAcdmGrade').select2({
+              data: data
+            }).trigger('change');
+
+            $('#grade_name_select').select2({
+              data: data
+            }).trigger('change');
+
+            $('#edit_grade_combo').select2({
+              data: data
+            });
+          });
+
           $('#grade_name_select').select2();
-          $('#selectedAcdmGrade').select2();
+          //$('#selectedAcdmGrade').select2();
           $('#selectedAcdmYears').select2();
           flatpickr("#st_birthday", {});
           $('#phone_no').mask('00-000000000');
@@ -1038,52 +1306,7 @@
           gender.click(function () {
             gender.removeClass('is-invalid');
           });
-          var st_address = $('#st_address');
-          toggle_invalid(st_address,submit_btn);
-          var phone_no = $('#phone_no');
-          toggle_invalid(phone_no,submit_btn);
-          function toggle_invalid(item,subtn) {
-            item.keyup(function () {
-              item.removeClass('is-invalid');
-            });//end keyup
-            item.change(function () {
-              item.removeClass('is-invalid');
-            });//end change
-            subtn.click(function(){
-                if (item.val()) {
-                  console.log(item.val());
-                }else {
-                  item.addClass('is-invalid');
-                }
-            });//end subtn
-          }//end toggle_invalid
-          submit_btn.click(function(){
-            var gender_val = $("input[name='gender']:checked").val();
-            if (gender_val) {
-              console.log(gender_val);
-            }else {
-              gender.addClass('is-invalid');
-            }
-            if (selected_grade && student_name.val() && father_name.val() && st_birthday.val() && gender_val && st_address.val() && phone_no.val()) {
-              $('#student_name').val() = "";
-              $('#info_student_modal').modal('hide');
-            }
-          });//end subtn
-        });
-		    app.controller('checkboxCtrl',function ($scope) {});
-        app.controller("info-teachersCtrl",function ($scope, $http) {
-          $('#create_teacher_btn').click(function () {
-            $('#info_teacher_modal').modal('show');
-          });
-          $('#add_new_teacher_btn').click(function () {
-            $('#info_teacher_modal').modal('show');
-          });
-          $('#grade_name_select').select2();
-          $('#selectedAcdmGrade').select2();
-          $('#selectedAcdmYears').select2();
-          flatpickr("#tr_birthday", {});
-          $('#phone_no').mask('00-000000000')
-        });//end info-teachersCtrl
+
         app.controller('manage-acdmfeeCtrl',function($scope){
           $('#create_fee_btn').click(function () {
             $('#manage_fee_modal').modal('show');
@@ -1114,6 +1337,90 @@
             $('#fee_part_item').html(fee_card);
           });
         });//end manage-acdmCtrl
+          
+          $('#phone_no').mask('00-000000000');
+
+
+
+          $('#selectedAcdmGrade').on('change', function() {
+            // if($('#stuRegTableCard').hasClass('no-student')) {
+            //
+            // }
+            $('#stuRegTableCard').addClass('loading');
+            $('#student-table-loader').show();
+            var stu_grade = ({
+              'grade_id' : $(this).val()
+            });
+            $http({
+              method : 'POST',
+              url : 'includes/http_req/api/req_stu_list.php',
+              data : stu_grade,
+              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              pageLoader('hide');
+              $('#stuRegTableCard').removeClass('loading');
+              $('#student-table-loader').hide();
+              if(response.data.length > 0) {
+                $scope.students = response.data;
+                //console.log($scope.students);
+                $('#stuRegTableCard').removeClass('no-student');
+                //$('#no-students-div').hide();
+              } else {
+                if(!$('#stuRegTableCard').hasClass('no-student')) {
+                  $('#stuRegTableCard').addClass('no-student');
+                }
+
+                //$('#no-students-div').show();
+              }
+
+            });
+          });
+
+          $scope.addStudent = function() {
+            $('#add-student-btn').addClass('is-loading');
+            var add_stu_infos = ({
+              'name' : $('#student_name').val(),
+              'father' : $('#father_name').val(),
+              'birth' : $('#st_birthday').val(),
+              'gender' : $('.stu_gender_radio:checked').attr('value'),
+              'add' : $('#st_address').val(),
+              'phone' : $('#phone_no').val(),
+              'grade' : $('#grade_name_select').val()
+            });
+            $http({
+              method : 'POST',
+              url : 'includes/http_req/forms/add_stu.php',
+              data : add_stu_infos,
+              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              if(response.data) {
+                $('#selectedAcdmGrade').val($('#grade_name_select').val()).trigger('change');
+                $('#student_name').val('');
+                $('#father_name').val('');
+                $('#st_birthday').val('');
+                $('#st_address').val('');
+                $('#phone_no').val('');
+                $('.stu_gender_radio').prop('checked', false);
+
+                // $('#addStuAlert').fadeIn();
+                // setInterval(function() {
+                //   $('#addStuAlert').fadeOut();
+                // }, 3000);
+                iziToast.success({
+                  title: 'Success',
+                  message: 'You added one student'
+                });
+                $('#add-student-btn').removeClass('is-loading');
+
+              }
+            });
+          }
+
+
+        });
+		    app.controller('checkboxCtrl',function ($scope) {
+
+	      });
     </script>
   </body>
 </html>
