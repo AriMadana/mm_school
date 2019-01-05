@@ -37,6 +37,18 @@ class MM_School_FeeNum extends Db_object {
     return $result;
   }
 
+	public function editFeePart($fee_part_id, $fee_part_amount) {
+		$db_table = static::$db_table;
+		$result = $this -> insert_query("UPDATE `$db_table` SET `req_amount` = $fee_part_amount WHERE `feenum_id` = $fee_part_id;");
+		return $result;
+	}
+
+	public function delFeePart($fee_part_id) {
+		$db_table = static::$db_table;
+		$result = $this -> insert_query("DELETE FROM `$db_table` WHERE `feenum_id` = '$fee_part_id';");
+		return $result;
+	}
+
 
  /*   public function sendMail($to, array $message) {
 

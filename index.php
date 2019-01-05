@@ -1379,6 +1379,48 @@
 	      });
 
         app.controller('manage-acdmfeeCtrl',function($scope, $http){
+          var edit_fee_id = '';
+          $(document).on('click', '.fee-edit', function() {
+            $('#edit_fee_modal').modal('show');
+            $('#edit_fee_grade').val($(this).attr('fee_grade')).trigger('change');
+            $('#edit_fee_name').val($(this).attr('fee_name'));
+            $('#edit_fee_total').val($(this).attr('fee_total'));
+            edit_fee_id = $(this).attr('fee_id');
+          });
+          $(document).on('click', '.fee-delete', function() {
+            var fee_id = $(this).attr('fee_id');
+            swal({
+              title: "Are you sure?",
+              text: "this can delete your recorded student payments",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonClass: "btn-danger",
+              confirmButtonText: "Yes, delete it!",
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true
+            },
+            function(){
+              console.log(fee_id);
+              var fee_data = ({
+                'fee_id' : fee_id
+              });
+              $http({
+                method : 'POST',
+                url : 'includes/http_req/forms/del_fee.php',
+                data : fee_data,
+                headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+              }).then(function (response) {
+                console.log(response.data);
+                // if(response.data) {
+                //   reqFeeList();
+                //   iziToast.success({
+                //     title: 'Success',
+                //     message: 'You deleted one fee'
+                //   });
+                // }
+              });
+            });
+          });
           $http.get('includes/http_req/api/req_grade.php')
           .then(function (response) {
             if(response.data) {
@@ -1392,122 +1434,161 @@
             $('#add_fee_grade_combo').select2({
               data: data
             }).trigger('change');
+            $('#edit_fee_grade').select2({
+              data: data
+            })
           });
-          $http.get('includes/http_req/api/req_fee_list.php')
-          .then(function (response) {
-            console.log(response.data);
-            if(response.data) {
-              $('#no-fee-info').hide();
-              var fee_id = '';
-              var fee_id2 = '';
-              var html = '';
-              var fee_parts = '';
-              var k = 0;
-              for(var i = 0; i < response.data.length; i++) {
-                fee_parts = '';
-                for(var j = 0; j < response.data.length; j++) {
+          reqFeeList();
+          function reqFeeList() {
+            $http.get('includes/http_req/api/req_fee_list.php')
+            .then(function (response) {
+              console.log(response.data);
+              if(response.data) {
+                $('#no-fee-info').hide();
+                var fee_id = '';
+                var fee_id2 = '';
+                var html = '';
+                var fee_parts = '';
+                var k = 0;
+                for(var i = 0; i < response.data.length; i++) {
+                  fee_parts = '';
+                  for(var j = 0; j < response.data.length; j++) {
 
-                  if ((k+1)==1) {
-                    th="st";
-                  }else if ((k+1)==2) {
-                    th='nd';
-                  }else if((k+1)==3){
-                    th="rd";
-                  }else {
-                    th="th";
+                    if ((k+1)==1) {
+                      th="st";
+                    }else if ((k+1)==2) {
+                      th='nd';
+                    }else if((k+1)==3){
+                      th="rd";
+                    }else {
+                      th="th";
+                    }
+                    if(response.data[i].fee_id == response.data[j].fee_id) {
+                      fee_parts +=    '<div class="col-4 mb-3 mt-3 text-center fee-part-item">' + (k+1) + '<sup>' + th + '</sup>payment</div>' +
+                                      '<div class="col-4 mb-3 mt-3 payment_amount text-center">' +
+                                        '<div class="each-payment-edit-info">' + response.data[j].req_amount +  '</div>' +
+                                        '<input style="display: none;" type="text" class="text-center form-control form-control-flush each-payment-edit-input" placeholder="value" value="' + response.data[j].req_amount +  '">' +
+                                      '</div>' +
+                                      '<div class="col-4 mb-3 mt-3 text-right fe-edit-trash">' +
+                                        '<div class="edit-btn-group first-edit-btn-group" style="bottom: -4px; left: 50%; margin-left: -25px;">' +
+                                          '<span style="font-size: 20px;" class="fe fe-edit-2 mr-3 text-danger edit_student_payment_btn"></span>' +
+                                          '<span style="font-size: 20px;" class="fe fe-trash-2 mr-1 text-danger del_fee_part_btn"  for="' + response.data[j].feenum_id + '"></span>' +
+                                        '</div>' +
+                                        '<div class="edit-btn-group left second-edit-btn-group" style="bottom: -4px; left: 50%; margin-left: -25px;">' +
+                                          '<span style="font-size: 20px;" class="fe fe-check mr-3 text-danger edit_fee_part_btn" for="' + response.data[j].feenum_id + '"></span>' +
+                                          '<span style="font-size: 20px;" class="fe fe-x mr-1 text-danger close_edit_stu_payment_btn"></span>' +
+                                        '</div>' +
+                                      '</div>';
+                      k++;
+                    } else {
+                      k=0;
+                    }
+
                   }
-                  if(response.data[i].fee_id == response.data[j].fee_id) {
-                    fee_parts +=    '<div class="col-4 mb-3 mt-3 text-center">' + (k+1) + '<sup>' + th + '</sup>payment</div>' +
-                                    '<div class="col-4 mb-3 mt-3 payment_amount text-center">' +
-                                      '<div class="each-payment-edit-info">' + response.data[j].req_amount +  '</div>' +
-                                      '<input style="display: none;" type="text" class="text-center form-control form-control-flush each-payment-edit-input" placeholder="value" value="' + response.data[j].req_amount +  '">' +
+
+                  if(fee_id2 == response.data[i].fee_id) {
+
+                  }
+
+                  if(fee_id != response.data[i].fee_id) {
+                    fee_id = response.data[i].fee_id;
+                    html += '<div class="col-12 col-lg-6 fee-cards">' +
+                              '<div class="card">' +
+                                '<div class="card-body">' +
+                                  '<!-- Dropdown -->' +
+                                  '<div class="dropdown card-dropdown">' +
+                                    '<a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown">' +
+                                      '<i class="fe fe-more-vertical text-dark"></i>' +
+                                    '</a>' +
+                                    '<div class="dropdown-menu dropdown-menu-right">' +
+                                      '<a class="fee-edit dropdown-item" fee_id="' + response.data[i].fee_id + '" fee_grade="' + response.data[i].grade_id + '" fee_name="' + response.data[i].fee_name + '" fee_total="' + response.data[i].fee_total + '">' +
+                                        'Edit' +
+                                      '</a>' +
+                                      '<a class="dropdown-item fee-delete" fee_id="' + response.data[i].fee_id + '">' +
+                                        'Delete' +
+                                      '</a>' +
                                     '</div>' +
-                                    '<div class="col-4 mb-3 mt-3 text-right fe-edit-trash">' +
-                                      '<div class="edit-btn-group first-edit-btn-group" style="bottom: -4px; left: 50%; margin-left: -25px;">' +
-                                        '<span style="font-size: 20px;" class="fe fe-edit-2 mr-3 text-danger edit_student_payment_btn"></span>' +
-                                        '<span style="font-size: 20px;" class="fe fe-trash-2 mr-1 text-danger"></span>' +
-                                      '</div>' +
-                                      '<div class="edit-btn-group left second-edit-btn-group" style="bottom: -4px; left: 50%; margin-left: -25px;">' +
-                                        '<span style="font-size: 20px;" class="fe fe-check mr-3 text-danger"></span>' +
-                                        '<span style="font-size: 20px;" class="fe fe-x mr-1 text-danger close_edit_stu_payment_btn"></span>' +
-                                      '</div>' +
-                                    '</div>';
-                    k++;
-                  } else {
-                    k=0;
+                                  '</div>' +
+
+                                  '<!-- Avatar -->' +
+                                  '<div class="text-center">' +
+                                    '<p class="fee-data-info-grade">' + response.data[i].grade_name + '</p>' +
+                                  '</div>' +
+
+                                  '<!-- Title -->' +
+                                  '<h2 class="card-title text-center p-2">' +
+                                    '<p style="font-size: 22px;"  class="fee-data-info-name">' + response.data[i].fee_name + '<span class="pl-7 fee-data-info-total">' + response.data[i].fee_total + '</span></p>' +
+                                  '</h2>' +
+                                  '<!-- Divider -->' +
+                                  '<hr>' +
+
+                                  '<div class="row align-items-center">' +
+                                    '<div class="col">' +
+
+                                      '<!-- Time -->' +
+                                      '<p class="card-text">' +
+                                        'Separated ' + response.data[i].fee_number + 'parts for payment' +
+                                      '</p>' +
+
+                                    '</div>' +
+                                    '<div class="col-auto">' +
+                                      '<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseClass' + response.data[i].fee_id + '" aria-expanded="false" aria-controls="collapseClass">' +
+                                        'payment details<span class="fe fe-chevrons-down"></span>' +
+                                      '</button>' +
+                                    '</div>' +
+                                  '</div> <!-- / .row -->' +
+                                  '<div class="collapse" id="collapseClass' + response.data[i].fee_id + '">' +
+                                    '<div class="row">' +
+
+                                        fee_parts +
+
+                                    '</div>' +
+                                  '</div>' +
+                                '</div> <!-- / .card-body -->' +
+                                '</div>' +
+                            '</div>';
                   }
-
                 }
-
-                if(fee_id2 == response.data[i].fee_id) {
-
-                }
-
-                if(fee_id != response.data[i].fee_id) {
-                  fee_id = response.data[i].fee_id;
-                  html += '<div class="col-12 col-lg-6 fee-cards">' +
-                            '<div class="card">' +
-                              '<div class="card-body">' +
-                                '<!-- Dropdown -->' +
-                                '<div class="dropdown card-dropdown">' +
-                                  '<a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown">' +
-                                    '<i class="fe fe-more-vertical text-dark"></i>' +
-                                  '</a>' +
-                                  '<div class="dropdown-menu dropdown-menu-right">' +
-                                    '<a class="dropdown-item">' +
-                                      'Edit' +
-                                    '</a>' +
-                                    '<a class="dropdown-item">' +
-                                      'Delete' +
-                                    '</a>' +
-                                  '</div>' +
-                                '</div>' +
-
-                                '<!-- Avatar -->' +
-                                '<div class="text-center">' +
-                                  '<p class="fee-data-info-grade">' + response.data[i].grade_name + '</p>' +
-                                '</div>' +
-
-                                '<!-- Title -->' +
-                                '<h2 class="card-title text-center p-2">' +
-                                  '<p style="font-size: 22px;"  class="fee-data-info-name">' + response.data[i].fee_name + '<span class="pl-7 fee-data-info-total">' + response.data[i].fee_total + '</span></p>' +
-                                '</h2>' +
-                                '<!-- Divider -->' +
-                                '<hr>' +
-
-                                '<div class="row align-items-center">' +
-                                  '<div class="col">' +
-
-                                    '<!-- Time -->' +
-                                    '<p class="card-text">' +
-                                      'Separated ' + response.data[i].fee_number + 'parts for payment' +
-                                    '</p>' +
-
-                                  '</div>' +
-                                  '<div class="col-auto">' +
-                                    '<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseClass' + response.data[i].fee_id + '" aria-expanded="false" aria-controls="collapseClass">' +
-                                      'payment details<span class="fe fe-chevrons-down"></span>' +
-                                    '</button>' +
-                                  '</div>' +
-                                '</div> <!-- / .row -->' +
-                                '<div class="collapse" id="collapseClass' + response.data[i].fee_id + '">' +
-                                  '<div class="row">' +
-
-                                      fee_parts +
-
-                                  '</div>' +
-                                '</div>' +
-                              '</div> <!-- / .card-body -->' +
-                              '</div>' +
-                          '</div>';
-                }
+                $('#fee_cards').html(html);
               }
-              $('#fee_cards').html(html);
-            }
+
+            });
+          }
+
+          $(document).on('click', '.del_fee_part_btn', function() {
+            swal({
+              title: "Are you sure?",
+              text: "this can delete your recorded student payments",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonClass: "btn-danger",
+              confirmButtonText: "Yes, delete it!",
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true
+            },
+            function(){
+              var fee_part_id = $(this).attr('for');
+              var del_fee_part_info = ({
+                'fee_part_id' : fee_part_id
+              });
+              $http({
+                method : 'POST',
+                url : 'includes/http_req/forms/del_fee_part.php',
+                data : del_fee_part_info,
+                headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+              }).then(function (response) {
+                if(response.data) {
+                  reqFeeList();
+                  iziToast.success({
+                    title: 'Success',
+                    message: 'You edited one fee part'
+                  });
+                }
+              });
+              //swal("Deleted!", "Your imaginary file has been deleted.", "success");
+            });
 
           });
-
-
           $(document).on('click', '.edit_student_payment_btn', function() {
 
             $(this).parent().addClass("right");
@@ -1570,7 +1651,33 @@
             }
             $('#fee_part_item').html(fee_card);
           });
+          $scope.editFee = function() {
+            var fee_name = $('#edit_fee_name').val();
+            var fee_grade = $('#edit_fee_grade').val();
+            var fee_total = $('#edit_fee_total').val();
+            var edit_fee_info = ({
+              'fee_id' : edit_fee_id,
+              'fee_name' : fee_name,
+              'fee_grade' : fee_grade,
+              'fee_total' : fee_total
+            });
+            $http({
+              method : 'POST',
+              url : 'includes/http_req/forms/edit_fee.php',
+              data : edit_fee_info,
+              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              if(response.data) {
+                reqFeeList();
+                $('#edit_fee_modal').modal('hide');
+                iziToast.success({
+                  title: 'Success',
+                  message: 'You edited a fee'
+                });
+              }
 
+            });
+          }
           $scope.addFee = function() {
             var fee_name = $('#fee_name').val();
             var fee_amount = $('#total_fee_amount').val();
@@ -1611,6 +1718,29 @@
             //   );
             // };
           }
+          $(document).on('click', '.edit_fee_part_btn', function() {
+            var fee_part_id = $(this).attr('for');
+            var fee_part_amount = $(this).parent().parent().prev().children('.each-payment-edit-input').val();
+
+            var edit_fee_part_id = ({
+              'fee_part_id' : fee_part_id,
+              'fee_part_amount' : fee_part_amount
+            });
+            $http({
+              method : 'POST',
+              url : 'includes/http_req/forms/edit_fee_part.php',
+              data : edit_fee_part_id,
+              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              if(response.data) {
+                reqFeeList();
+                iziToast.success({
+                  title: 'Success',
+                  message: 'You edited one fee part'
+                });
+              }
+            });
+          });
         });//end manage-acdmCtrl
         function feeSearch() {
           var input, filter, fee_cards_div, fee_cards, fee_cards_info_grade, i;

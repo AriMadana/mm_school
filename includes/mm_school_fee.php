@@ -33,11 +33,25 @@ class MM_School_Fee extends Db_object {
     return $result;
   }
 
+	public function editFee($fee_id, $fee_name, $fee_total, $fee_grade) {
+		global $database;
+		$db_table = static::$db_table;
+		$fee_name = $database -> escape_string($fee_name);
+		$result = $this -> insert_query("UPDATE `$db_table` SET `fee_name` = '$fee_name', `fee_total` = $fee_total, `grade_id` = $fee_grade WHERE `fee_id` = $fee_id;");
+		return $result;
+	}
+
 	public function selectFeeArr($school_id) {
 
     $result = $this -> find_array_by_query("SELECT fn.feenum_id, fn.req_amount, fn.feenum_asc, f.*, g.grade_name FROM `eth_feenum` fn, `eth_fee` f, `eth_school` sch, `eth_grade` g WHERE fn.fee_id = f.fee_id AND sch.school_acdm = g.acdm_id AND g.grade_id = f.grade_id AND sch.school_id = $school_id;");
     return $result;
   }
+
+	public function delFee($fee_id) {
+		$db_table = static::$db_table;
+		$result = $this -> insert_query("DELETE FROM `$db_table` WHERE `fee_id` = $fee_id;");
+		return $result;
+	}
 
 
  /*   public function sendMail($to, array $message) {
