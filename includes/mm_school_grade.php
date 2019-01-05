@@ -102,7 +102,19 @@ class MM_School_Grade extends Db_object {
 		// return ($result > 0) ? true : false;
         return $result;
 	}
-
+	public function delGrade($grade_id) {
+    $db_table = static::$db_table;
+    $result = $this -> insert_query("DELETE FROM $db_table WHERE grade_id = $grade_id;");
+    return $result;
+  }
+	public function editGrade($grade_id,$grade_name) {
+    global $database;
+    $db_table = static::$db_table;
+    $grade_id = $database -> escape_string($grade_id);
+		$grade_name = $database -> escape_string($grade_name);
+    $result = $this -> insert_query("UPDATE `$db_table` SET `grade_name` = '$grade_name' WHERE grade_id=$grade_id;");
+    return $result;
+  }
  /*   public function sendMail($to, array $message) {
 
         $mailtouser = mail($to, $message[0], $message[1], $message[2]);

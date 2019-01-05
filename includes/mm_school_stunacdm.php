@@ -23,6 +23,7 @@ class MM_School_StuNAcdm extends Db_object {
     $result = $this -> insert_query("DELETE FROM $db_table WHERE stunacdm_id = $stunacdm_id;");
     return $result;
   }
+	
 
  /*   public function sendMail($to, array $message) {
 
