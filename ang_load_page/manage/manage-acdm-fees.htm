@@ -103,7 +103,7 @@
       <div class="container container-fluid">
 
         <!-- Card -->
-        <div class="card card-inactive card-fluid">
+        <div id='no-fee-info' class="card card-inactive card-fluid">
           <div class="card-body text-center">
 
             <!-- Image -->
@@ -120,35 +120,39 @@
             </p>
 
             <!-- Button -->
-            <a id="create_fee_btn" class="btn btn-primary text-light">
+            <a class="create_fee_btn btn btn-primary text-light">
               Create Fee
             </a>
 
           </div>
         </div>
 
+        <div class="row mb-4">
+          <div class="col">
 
+            <!-- Form -->
+            <form>
+              <div class="input-group input-group-lg input-group-merge">
+                <input id="fee-search" type="text" class="form-control form-control-prepended search" placeholder="Search"  onkeyup="feeSearch()">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <span class="fe fe-search"></span>
+
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-auto">
+            <a class="create_fee_btn btn btn-primary text-light">
+              Create Fee
+            </a>
+          </div>
+        </div>
+        <div class="row" id='fee_cards'>
+        </div>
       </div>
     </div> <!-- / .row -->
-    <div class="row mb-4">
-      <div class="col">
 
-        <!-- Form -->
-        <form>
-          <div class="input-group input-group-lg input-group-merge">
-            <input id="fee-search" type="text" class="form-control form-control-prepended search" placeholder="Search"  onkeyup="feeSearch()">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <span class="fe fe-search"></span>
-
-              </div>
-            </div>
-          </div>
-        </form>
-
-      </div>
-    </div>
-    <div class="row" id='fee_cards'>
-    </div>
   </div>
 </div> <!-- / .main-content -->

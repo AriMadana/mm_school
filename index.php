@@ -38,6 +38,7 @@
     <script src="assets/js/iziTost.min.js"></script>
     <link href="assets/css/iziTost.min.css" rel="stylesheet"/>
     <link href="assets/css/pace.css" rel="stylesheet" />
+
     <title>Dashkit</title>
     <style>
       a {
@@ -76,8 +77,29 @@
         width: 20px;
         height: 20px;
       }
-
-
+      .edit-btn-group {
+        position: absolute;
+        -webkit-backface-visibility: hidden;  /* Chrome, Safari, Opera */
+        backface-visibility: hidden;
+      }
+      .edit-btn-group.right {
+        -webkit-transform: rotateY(180deg); /* Safari */
+        transform: rotateY(180deg); /* Standard syntax */
+        -webkit-transition: -webkit-transform 0.5s; /* Safari */
+        transition: transform 0.5s;
+      }
+      .edit-btn-group {
+        -webkit-transform: rotateY(0deg); /* Safari */
+        transform: rotateY(0deg); /* Standard syntax */
+        -webkit-transition: -webkit-transform 0.5s; /* Safari */
+        transition: transform 0.5s;
+      }
+      .edit-btn-group.left {
+        -webkit-transform: rotateY(-180deg); /* Safari */
+        transform: rotateY(-180deg); /* Standard syntax */
+        -webkit-transition: -webkit-transform 0.5s; /* Safari */
+        transition: transform 0.5s;
+      }
     </style>
   </head>
   <body ng-app="myApp">
@@ -1374,122 +1396,153 @@
           $http.get('includes/http_req/api/req_fee_list.php')
           .then(function (response) {
             console.log(response.data);
-            var fee_id = '';
-            var fee_id2 = '';
-            var html = '';
-            var fee_parts = '';
-            var k = 0;
-            for(var i = 0; i < response.data.length; i++) {
-              fee_parts = '';
-              for(var j = 0; j < response.data.length; j++) {
+            if(response.data) {
+              $('#no-fee-info').hide();
+              var fee_id = '';
+              var fee_id2 = '';
+              var html = '';
+              var fee_parts = '';
+              var k = 0;
+              for(var i = 0; i < response.data.length; i++) {
+                fee_parts = '';
+                for(var j = 0; j < response.data.length; j++) {
 
-                if ((k+1)==1) {
-                  th="st";
-                }else if ((k+1)==2) {
-                  th='nd';
-                }else if((k+1)==3){
-                  th="rd";
-                }else {
-                  th="th";
+                  if ((k+1)==1) {
+                    th="st";
+                  }else if ((k+1)==2) {
+                    th='nd';
+                  }else if((k+1)==3){
+                    th="rd";
+                  }else {
+                    th="th";
+                  }
+                  if(response.data[i].fee_id == response.data[j].fee_id) {
+                    fee_parts +=    '<div class="col-4 mb-3 mt-3 text-center">' + (k+1) + '<sup>' + th + '</sup>payment</div>' +
+                                    '<div class="col-4 mb-3 mt-3 payment_amount text-center">' +
+                                      '<div class="each-payment-edit-info">' + response.data[j].req_amount +  '</div>' +
+                                      '<input style="display: none;" type="text" class="text-center form-control form-control-flush each-payment-edit-input" placeholder="value" value="' + response.data[j].req_amount +  '">' +
+                                    '</div>' +
+                                    '<div class="col-4 mb-3 mt-3 text-right fe-edit-trash">' +
+                                      '<div class="edit-btn-group first-edit-btn-group" style="bottom: -4px; left: 50%; margin-left: -25px;">' +
+                                        '<span style="font-size: 20px;" class="fe fe-edit-2 mr-3 text-danger edit_student_payment_btn"></span>' +
+                                        '<span style="font-size: 20px;" class="fe fe-trash-2 mr-1 text-danger"></span>' +
+                                      '</div>' +
+                                      '<div class="edit-btn-group left second-edit-btn-group" style="bottom: -4px; left: 50%; margin-left: -25px;">' +
+                                        '<span style="font-size: 20px;" class="fe fe-check mr-3 text-danger"></span>' +
+                                        '<span style="font-size: 20px;" class="fe fe-x mr-1 text-danger close_edit_stu_payment_btn"></span>' +
+                                      '</div>' +
+                                    '</div>';
+                    k++;
+                  } else {
+                    k=0;
+                  }
+
                 }
-                if(response.data[i].fee_id == response.data[j].fee_id) {
-                  fee_parts += '<tr>' +
-                                  '<td>' + (k+1) + '<sup>' + th + '</sup>payment</td>' +
-                                  '<td class="paymet_amount text-center">' + response.data[j].req_amount + '</td>' +
-                                  '<td class="text-right fe-edit-trash">' +
-                                    '<span class="fe fe-edit-2 mr-3 text-danger edit_student_payment_btn"></span>' +
-                                    '<span class="fe fe-trash-2 mr-1 text-danger"></span>' +
-                                  '</td>' +
-                                '</tr>';
-                  k++;
-                } else {
-                  k=0;
+
+                if(fee_id2 == response.data[i].fee_id) {
+
                 }
 
-              }
-
-              if(fee_id2 == response.data[i].fee_id) {
-
-              }
-
-              if(fee_id != response.data[i].fee_id) {
-                fee_id = response.data[i].fee_id;
-                html += '<div class="col-12 col-lg-6 fee-cards">' +
-                          '<div class="card">' +
-                            '<div class="card-body">' +
-                              '<!-- Dropdown -->' +
-                              '<div class="dropdown card-dropdown">' +
-                                '<a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown">' +
-                                  '<i class="fe fe-more-vertical text-dark"></i>' +
-                                '</a>' +
-                                '<div class="dropdown-menu dropdown-menu-right">' +
-                                  '<a class="dropdown-item">' +
-                                    'Edit' +
+                if(fee_id != response.data[i].fee_id) {
+                  fee_id = response.data[i].fee_id;
+                  html += '<div class="col-12 col-lg-6 fee-cards">' +
+                            '<div class="card">' +
+                              '<div class="card-body">' +
+                                '<!-- Dropdown -->' +
+                                '<div class="dropdown card-dropdown">' +
+                                  '<a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown">' +
+                                    '<i class="fe fe-more-vertical text-dark"></i>' +
                                   '</a>' +
-                                  '<a class="dropdown-item">' +
-                                    'Delete' +
-                                  '</a>' +
+                                  '<div class="dropdown-menu dropdown-menu-right">' +
+                                    '<a class="dropdown-item">' +
+                                      'Edit' +
+                                    '</a>' +
+                                    '<a class="dropdown-item">' +
+                                      'Delete' +
+                                    '</a>' +
+                                  '</div>' +
                                 '</div>' +
-                              '</div>' +
 
-                              '<!-- Avatar -->' +
-                              '<div class="text-center">' +
-                                '<p class="fee-data-info-grade">' + response.data[i].grade_name + '</p>' +
-                              '</div>' +
-
-                              '<!-- Title -->' +
-                              '<h2 class="card-title text-center p-2">' +
-                                '<p style="font-size: 22px;"  class="fee-data-info-name">' + response.data[i].fee_name + '<span class="pl-7 fee-data-info-total">' + response.data[i].fee_total + '</span></p>' +
-                              '</h2>' +
-                              '<!-- Divider -->' +
-                              '<hr>' +
-
-                              '<div class="row align-items-center">' +
-                                '<div class="col">' +
-
-                                  '<!-- Time -->' +
-                                  '<p class="card-text">' +
-                                    'Separated ' + response.data[i].fee_number + 'parts for payment' +
-                                  '</p>' +
-
+                                '<!-- Avatar -->' +
+                                '<div class="text-center">' +
+                                  '<p class="fee-data-info-grade">' + response.data[i].grade_name + '</p>' +
                                 '</div>' +
-                                '<div class="col-auto">' +
-                                  '<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseClass' + response.data[i].fee_id + '" aria-expanded="false" aria-controls="collapseClass">' +
-                                    'payment details<span class="fe fe-chevrons-down"></span>' +
-                                  '</button>' +
+
+                                '<!-- Title -->' +
+                                '<h2 class="card-title text-center p-2">' +
+                                  '<p style="font-size: 22px;"  class="fee-data-info-name">' + response.data[i].fee_name + '<span class="pl-7 fee-data-info-total">' + response.data[i].fee_total + '</span></p>' +
+                                '</h2>' +
+                                '<!-- Divider -->' +
+                                '<hr>' +
+
+                                '<div class="row align-items-center">' +
+                                  '<div class="col">' +
+
+                                    '<!-- Time -->' +
+                                    '<p class="card-text">' +
+                                      'Separated ' + response.data[i].fee_number + 'parts for payment' +
+                                    '</p>' +
+
+                                  '</div>' +
+                                  '<div class="col-auto">' +
+                                    '<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseClass' + response.data[i].fee_id + '" aria-expanded="false" aria-controls="collapseClass">' +
+                                      'payment details<span class="fe fe-chevrons-down"></span>' +
+                                    '</button>' +
+                                  '</div>' +
+                                '</div> <!-- / .row -->' +
+                                '<div class="collapse" id="collapseClass' + response.data[i].fee_id + '">' +
+                                  '<div class="row">' +
+
+                                      fee_parts +
+
+                                  '</div>' +
                                 '</div>' +
-                              '</div> <!-- / .row -->' +
-                              '<div class="collapse" id="collapseClass' + response.data[i].fee_id + '">' +
-                                '<table class="table table-nowrap">' +
-                                  '<tbody class="fee_parts_tbody">' +
-                                    fee_parts +
-                                  '</tbody>' +
-                                '</table>' +
+                              '</div> <!-- / .card-body -->' +
                               '</div>' +
-                            '</div> <!-- / .card-body -->' +
-                            '</div>' +
-                        '</div>';
+                          '</div>';
+                }
               }
+              $('#fee_cards').html(html);
             }
-            $('#fee_cards').html(html);
+
           });
 
 
           $(document).on('click', '.edit_student_payment_btn', function() {
-            var textdata = '';
-            $(this).css('display','none');
-            $(this).siblings().css('opacity','0');
-            var amount = $(this).parent().siblings('.paymet_amount').text();
-            $(this).parent().siblings('.paymet_amount').text('');
-            textdata += '<div class="input-group  text-right">'+
-            '<input type="text" class="form-control" value="'+amount+'">'+
-            '<div class="input-group-append">'+
-            '<button class="btn btn-outline-secondary fe fe-check" type="button"></button>'+
-            '<button class="btn btn-outline-secondary fe fe-x text-dange" type="button"></button>'+
-            '</div></div>';
-            $(this).parent().siblings('.paymet_amount').html(textdata);
+
+            $(this).parent().addClass("right");
+            $(this).parent().siblings('.second-edit-btn-group').removeClass('left');
+            $(this).parent().parent().prev().children('.each-payment-edit-info').hide();
+            $(this).parent().parent().prev().children('.each-payment-edit-input').show();
+            $(this).parent().parent().prev().children('.each-payment-edit-input').val($(this).parent().parent().prev().children('.each-payment-edit-info').text());
+            $(this).parent().parent().prev().children('.each-payment-edit-input').select();
+            //$(this).parent().addClass('right');
+            // var textdata = '';
+            // $(this).css('display','none');
+            // $(this).siblings().css('opacity','0');
+            // var amount = $(this).parent().siblings('.paymet_amount').text();
+            // $(this).parent().siblings('.paymet_amount').text('');
+            // textdata += '<div class="input-group  text-right">'+
+            // '<input type="text" class="form-control" value="'+amount+'">'+
+            // '<div class="input-group-append">'+
+            // '<button class="btn btn-outline-secondary fe fe-check" type="button"></button>'+
+            // '<button class="btn btn-outline-secondary fe fe-x text-dange" type="button"></button>'+
+            // '</div></div>';
+            // $(this).parent().siblings('.paymet_amount').html(textdata);
           });
-          $('#create_fee_btn').click(function () {
+
+          $(document).on('click', '.close_edit_stu_payment_btn', function() {
+            $(this).parent().removeClass("right");
+            $(this).parent().siblings('.second-edit-btn-group').addClass('left');
+            $(this).parent().parent().prev().children('.each-payment-edit-info').show();
+            $(this).parent().parent().prev().children('.each-payment-edit-input').hide();
+          });
+
+          $(document).on('click', '.close_edit_stu_payment_btn', function() {
+            $(this).parent().addClass('left');
+            $(this).parent().siblings('.first-edit-btn-group').removeClass('right');
+          });
+          $('.create_fee_btn').click(function () {
             $('#manage_fee_modal').modal('show');
           });
           $('#add_new_fee_btn').click(function () {
