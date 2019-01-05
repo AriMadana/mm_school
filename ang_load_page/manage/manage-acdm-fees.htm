@@ -1,0 +1,158 @@
+<style>
+  .select2-search{
+    display: none;
+  }
+</style>
+<div class="main-content">
+  <div class="modal fade" id="manage_fee_modal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div id="addStuAlert" style="top:-90px;z-index:1200;position:absolute;width:100%;" class="alert alert-success fade" role="alert">
+            <h4 class="alert-heading">Well done!</h4>
+            <p style="margin-bottom:0px;">Aww yeah, you successfully</p>
+          </div>
+          <div class="modal-card card" data-toggle="lists" data-lists-values="[&quot;name&quot;]">
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col-auto">
+
+                  <!-- Close -->
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><span class="fe fe-x"></span></span>
+                  </button>
+
+                </div>
+                <div class="col">
+
+                  <!-- Title -->
+                  <h4 class="card-header-title" id="exampleModalCenterTitle" style="text-align:center;">
+                    Academic Fees Creation
+                  </h4>
+
+                </div>
+                <div class="col-auto">
+
+                  <!-- Close -->
+                  <button type="button" class="close" ng-click="addFee()">
+                    <span aria-hidden="true"><span class="fe fe-check"></span></span>
+                  </button>
+
+                </div>
+              </div> <!-- / .row -->
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                  <label for="grade_name_select">Choose Grade</label>
+                  <select class="form-control" id="add_fee_grade_combo" data-toggle="select" name="grade_name">
+
+                  </select>
+              </div>
+              <div class="form-group">
+                <label for="fee_name">Enter Fee Name</label>
+                <input type="text" class="form-control" id="fee_name" placeholder="Fee Name">
+              </div>
+              <div class="form-group">
+                <label for="total_fee_amount">Enter Total Amount</label>
+                <input type="text" class="form-control" id="total_fee_amount" placeholder="Total Amount">
+              </div>
+              <div class="form-group row" style="text-align:center">
+                <label for="fee_part" class="col-4 col-form-label">Separate</label>
+                <div class="col-4">
+                  <input type="number" class="form-control" id="fee_part">
+                </div>
+                <label for="fee_part" class="col-4 col-form-label">parts to pay</label>
+              </div>
+              <div class="row col-auto" id="fee_part_item">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="container">
+
+      <!-- Body -->
+      <div class="header-body">
+        <div class="row align-items-end">
+          <div class="col">
+
+            <!-- Pretitle -->
+            <h6 class="header-pretitle">
+              Overview
+            </h6>
+
+            <!-- Title -->
+            <h1 class="header-title">
+              Academic Fees
+            </h1>
+
+          </div>
+          <div class="col-auto">
+
+          </div>
+        </div> <!-- / .row -->
+      </div> <!-- / .header-body -->
+
+    </div>
+  </div> <!-- / .header -->
+
+  <div class="col-12">
+    <div class="row">
+      <div class="container container-fluid">
+
+        <!-- Card -->
+        <div id='no-fee-info' class="card card-inactive card-fluid">
+          <div class="card-body text-center">
+
+            <!-- Image -->
+            <img src="assets/img/illustrations/scale.svg" alt="..." class="img-fluid" style="max-width: 182px;">
+
+            <!-- Title -->
+            <h1>
+              No fee yet.
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-muted">
+              Create fee for your academic.
+            </p>
+
+            <!-- Button -->
+            <a class="create_fee_btn btn btn-primary text-light">
+              Create Fee
+            </a>
+
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col">
+
+            <!-- Form -->
+            <form>
+              <div class="input-group input-group-lg input-group-merge">
+                <input id="fee-search" type="text" class="form-control form-control-prepended search" placeholder="Search"  onkeyup="feeSearch()">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <span class="fe fe-search"></span>
+
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-auto">
+            <a class="create_fee_btn btn btn-primary text-light">
+              Create Fee
+            </a>
+          </div>
+        </div>
+        <div class="row" id='fee_cards'>
+        </div>
+      </div>
+    </div> <!-- / .row -->
+
+  </div>
+</div> <!-- / .main-content -->

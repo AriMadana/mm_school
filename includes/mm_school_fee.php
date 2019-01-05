@@ -1,28 +1,44 @@
 <?php
 
-class MM_School_StuNAcdm extends Db_object {
+class MM_School_Fee extends Db_object {
 
-	protected static $db_table = "eth_stuNacdm";
-	protected static $db_fields = array('stunacdm_id', 'stu_id', 'acdm_id', 'grade_id');
+	protected static $db_table = "eth_fee";
+	protected static $db_fields = array('fee_id', 'fee_name', 'fee_total', 'fee_number', 'grade_id', 'feenum_id', 'req_amount', 'feenum_asc', 'grade_name');
 
-	public $stunacdm_id;
-	public $stu_id;
-	public $acdm_id;
+	public $fee_id;
+	public $fee_name;
+	public $fee_total;
+	public $fee_number;
   public $grade_id;
+	public $feenum_id;
+	public $req_amount;
+	public $feenum_asc;
+  public $grade_name;
 
-  public function addStudentWithAcdm($stu_id,$grade_id) {
+  // public function selectGrade($school_id) {
+  //   $db_table = static::$db_table;
+	// 	$mm_school_head = new MM_School_Head();
+	// 	$acdm_id = $mm_school_head -> selectCurAcdm($school_id);
+  //   $result = $this -> find_array_by_query("SELECT * FROM `$db_table` WHERE `acdm_id` = '$acdm_id' ORDER BY `grade_name` ASC;");
+  //   return $result;
+  // }
+  public function addFee($fee_name, $fee_total, $fee_number, $grade_id, $fee_parts) {
+    global $database;
+    $mm_school_feenum = new MM_School_FeeNum();
     $db_table = static::$db_table;
-    $mm_school_head = new MM_School_Head();
-    $current_acdm = $mm_school_head -> selectCurAcdm($_SESSION['school_id']);
-    $result = $this -> insert_query("INSERT INTO `$db_table` (`stu_id`, `acdm_id`, `grade_id`) VALUES ($stu_id, $current_acdm, $grade_id);");
+    $fee_name = $database -> escape_string($fee_name);
+    $fee_id = $this -> insert_queryID("INSERT INTO `$db_table` (`fee_name`, `fee_total`, `fee_number`, `grade_id`) VALUES ('$fee_name', $fee_total, $fee_number, $grade_id);");
+    //$fee_id = $this -> insert_queryID("INSERT INTO `$db_table` (`fee_name`, `fee_total`, `fee_number`, `grade_id`) VALUES ('$fee_name', $fee_total, `fee_number`, `grade_id`);");
+    $result = $mm_school_feenum -> addFeeNum($fee_parts, $fee_id);
     return $result;
   }
 
-  public function delStudent($stunacdm_id) {
-    $db_table = static::$db_table;
-    $result = $this -> insert_query("DELETE FROM $db_table WHERE stunacdm_id = $stunacdm_id;");
+	public function selectFeeArr($school_id) {
+
+    $result = $this -> find_array_by_query("SELECT fn.feenum_id, fn.req_amount, fn.feenum_asc, f.*, g.grade_name FROM `eth_feenum` fn, `eth_fee` f, `eth_school` sch, `eth_grade` g WHERE fn.fee_id = f.fee_id AND sch.school_acdm = g.acdm_id AND g.grade_id = f.grade_id AND sch.school_id = $school_id;");
     return $result;
   }
+
 
  /*   public function sendMail($to, array $message) {
 

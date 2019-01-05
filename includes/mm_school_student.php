@@ -3,7 +3,7 @@
 class MM_School_Student extends Db_object {
 
 	protected static $db_table = "eth_student";
-	protected static $db_fields = array('stu_id', 'stu_name', 'stu_father', 'stu_birth', 'stu_gender', 'stu_add', 'stu_phone', 'stu_grade', 'stu_school');
+	protected static $db_fields = array('stu_id', 'stu_name', 'stu_father', 'stu_birth', 'stu_gender', 'stu_add', 'stu_phone', 'stu_grade', 'stu_school', 'stunacdm_id');
 
 	public $stu_id;
 	public $stu_name;
@@ -14,11 +14,12 @@ class MM_School_Student extends Db_object {
   public $stu_phone;
   public $stu_grade;
   public $stu_school;
+  public $stunacdm_id;
 
   public function selectStudentArray($school_id, $grade_id) {
     global $database;
     $db_table = static::$db_table;
-    $result = $this -> find_array_by_query("SELECT stu.* FROM `eth_student` stu, `eth_school` sch, `eth_stuNacdm` sa WHERE sch.school_id = $school_id AND stu.stu_id = sa.stu_id AND sch.school_acdm = sa.acdm_id AND sa.grade_id = $grade_id;");
+    $result = $this -> find_array_by_query("SELECT stu.*,sa.stunacdm_id FROM `eth_student` stu, `eth_school` sch, `eth_stuNacdm` sa WHERE sch.school_id = $school_id AND stu.stu_id = sa.stu_id AND sch.school_acdm = sa.acdm_id AND sa.grade_id = $grade_id;");
     return $result;
   }
   public function addStudent($stu_name,$stu_father, $stu_birth, $stu_gender, $stu_add, $stu_phone, $stu_grade, $stu_school) {
@@ -36,6 +37,19 @@ class MM_School_Student extends Db_object {
     $result = $mm_school_stunacdm -> addStudentWithAcdm($stu_id, $stu_grade);
     //$result = find_by_query("SELECT LAST_INSERT_ID() FROM `$db_table`;");
 
+    return $result;
+  }
+
+  public function editStudent($stu_id, $stu_name, $stu_father, $stu_birth, $stu_gender, $stu_add, $stu_phone, $stu_grade) {
+    global $database;
+    $db_table = static::$db_table;
+    $stu_name = $database -> escape_string($stu_name);
+    $stu_father = $database -> escape_string($stu_father);
+    $stu_birth = $database -> escape_string($stu_birth);
+    $stu_gender = $database -> escape_string($stu_gender);
+    $stu_add = $database -> escape_string($stu_add);
+    $stu_phone = $database -> escape_string($stu_phone);
+    $result = $this -> insert_query("UPDATE `$db_table` SET `stu_name` = '$stu_name', `stu_father` = '$stu_father', `stu_birth` = '$stu_birth', `stu_gender` = '$stu_gender', `stu_add` = '$stu_add', `stu_phone` = '$stu_phone', `stu_grade` = $stu_grade WHERE `stu_id` = $stu_id;");
     return $result;
   }
 

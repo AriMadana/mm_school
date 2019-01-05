@@ -1,28 +1,42 @@
 <?php
 
-class MM_School_StuNAcdm extends Db_object {
+class MM_School_FeeNum extends Db_object {
 
-	protected static $db_table = "eth_stuNacdm";
-	protected static $db_fields = array('stunacdm_id', 'stu_id', 'acdm_id', 'grade_id');
+	protected static $db_table = "eth_feenum";
+	protected static $db_fields = array('feenum_id', 'fee_id', 'req_amount', 'feenum_asc');
 
-	public $stunacdm_id;
-	public $stu_id;
-	public $acdm_id;
-  public $grade_id;
+	public $feenum_id;
+	public $fee_id;
+	public $req_amount;
+	public $feenum_asc;
 
-  public function addStudentWithAcdm($stu_id,$grade_id) {
+  // public function selectGrade($school_id) {
+  //   $db_table = static::$db_table;
+	// 	$mm_school_head = new MM_School_Head();
+	// 	$acdm_id = $mm_school_head -> selectCurAcdm($school_id);
+  //   $result = $this -> find_array_by_query("SELECT * FROM `$db_table` WHERE `acdm_id` = '$acdm_id' ORDER BY `grade_name` ASC;");
+  //   return $result;
+  // }
+  public function addFeeNum($fee_parts, $fee_id) {
+    global $database;
     $db_table = static::$db_table;
-    $mm_school_head = new MM_School_Head();
-    $current_acdm = $mm_school_head -> selectCurAcdm($_SESSION['school_id']);
-    $result = $this -> insert_query("INSERT INTO `$db_table` (`stu_id`, `acdm_id`, `grade_id`) VALUES ($stu_id, $current_acdm, $grade_id);");
+    $fee_part = '';
+    for ($i = 0; $i < sizeof($fee_parts); $i++) {
+      $fee_part .= "(" . $fee_id . ", " . $fee_parts[$i]->value . ", " . $fee_parts[$i]->id .")";
+
+			if($i == sizeof($fee_parts)-1) {
+        $fee_part .= ';';
+				break;
+      } else if ($i < sizeof($fee_parts)) {
+        $fee_part .= ',';
+      }
+    }
+    $sql = "INSERT INTO `$db_table` (`fee_id`, `req_amount`, `feenum_asc`) VALUES " . $fee_part;
+    $result = $this -> insert_query($sql);
+
     return $result;
   }
 
-  public function delStudent($stunacdm_id) {
-    $db_table = static::$db_table;
-    $result = $this -> insert_query("DELETE FROM $db_table WHERE stunacdm_id = $stunacdm_id;");
-    return $result;
-  }
 
  /*   public function sendMail($to, array $message) {
 
