@@ -681,6 +681,11 @@
                     Acd_fees
                   </a>
                 </li>
+                <li>
+                  <a class="dropdown-item" href="#!manage-student-fees">
+                    Stu_fees
+                  </a>
+                </li>
               </ul>
             </li>
           </ul>
@@ -759,6 +764,10 @@
         .when("/info-students", {
             templateUrl : "ang_load_page/info/info-students.htm",
             controller : "info-studentsCtrl"
+        })
+        .when("/manage-student-fees",{
+            templateUrl : "ang_load_page/manage/manage-student-fees.htm",
+            controller : "manage-student-feesCtrl"
         });
       });
 
@@ -1352,7 +1361,7 @@
             $(this).parent().siblings('.paymet_amount').html(textdata);
           });
         });//end manage-acdmCtrl
-          
+
           $('#phone_no').mask('00-000000000');
 
 
@@ -1436,6 +1445,9 @@
 		    app.controller('checkboxCtrl',function ($scope) {
 
 	      });
+        app.controller('manage-student-feesCtrl',function ($scope,$) {
+
+        });
     </script>
   </body>
 </html>
