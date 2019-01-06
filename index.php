@@ -717,6 +717,11 @@
                     Acd_fees
                   </a>
                 </li>
+                <li>
+                  <a class="dropdown-item" href="#!manage-stu-fees">
+                    Stu_fees
+                  </a>
+                </li>
               </ul>
             </li>
           </ul>
@@ -783,6 +788,10 @@
         .when("/manage-acdm-fees", {
             templateUrl : "ang_load_page/manage/manage-acdm-fees.htm",
             controller : "manage-acdmfeeCtrl"
+        })
+        .when("/manage-stu-fees",{
+          templateUrl : "ang_load_page/manage/manage-stu-fees.htm",
+          controller : "manage-stufeeCtrl"
         })
         .when("/info-staffs", {
             templateUrl : "ang_load_page/info/info-staffs.htm",
@@ -1459,10 +1468,7 @@
 
 
         });
-		    app.controller('checkboxCtrl',function ($scope) {
-
-	      });
-
+		    app.controller('checkboxCtrl',function ($scope) {});
         app.controller('manage-acdmfeeCtrl',function($scope, $http){
           var edit_fee_id = '';
           $(document).on('click', '.fee-edit', function() {
@@ -1836,6 +1842,25 @@
             $(this).children('span').toggleClass("rotate");
           });//end class_collapse_btn
         });//end manage-acdmCtrl
+        app.controller('manage-stufeeCtrl',function($scope, $http){
+          $http.get('includes/http_req/api/req_grade.php')
+          .then(function (response) {
+            if(response.data) {
+              var data = [];
+              for(i in response.data) {
+                data.push(
+                  {id: response.data[i].grade_id, text: response.data[i].grade_name}
+                );
+              };
+            }
+            $('#grade_name_select').select2({
+              data: data
+            }).trigger('change');
+            $('#fee_name_select').select2({
+              data: data
+            });
+          });
+        }); //end manage-stufeeCtrl
         function feeSearch() {
           var input, filter, fee_cards_div, fee_cards, fee_cards_info_grade, i;
           input = document.getElementById("fee-search");
