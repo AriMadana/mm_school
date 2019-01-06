@@ -1527,7 +1527,7 @@
 
                                       '<!-- Time -->' +
                                       '<p class="card-text">' +
-                                        'Separated ' + response.data[i].fee_number + 'parts for payment' +
+                                        'Separated ' + k + ' parts for payment' +
                                       '</p>' +
 
                                     '</div>' +
