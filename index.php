@@ -38,7 +38,21 @@
     <script src="assets/js/iziTost.min.js"></script>
     <link href="assets/css/iziTost.min.css" rel="stylesheet"/>
     <link href="assets/css/pace.css" rel="stylesheet" />
-
+    <style>
+    .class_collapse_btn {
+      color: blue;
+      -moz-transition: all 0.6s linear;
+      -webkit-transition: all 0.6s linear;
+      transition: all 0.6s linear;
+      display: inline-block;
+    }
+    .class_collapse_btn.rotate {
+      -moz-transform:rotate(180deg);
+      -webkit-transform:rotate(180deg);
+      transform:rotate(180deg);
+      color:green;
+    }
+    </style>
     <title>Dashkit</title>
     <style>
       a {
@@ -814,7 +828,6 @@
               grade_load();
             });
           }
-
           grade_load();
           function grade_load(){
             $http.get('includes/http_req/api/req_grade.php')
@@ -834,10 +847,10 @@
                             '<i class="fe fe-more-vertical text-dark"></i>' +
                           '</a>' +
                           '<div class="dropdown-menu dropdown-menu-right">' +
-                            '<a class="dropdown-item">' +
+                            '<a class="dropdown-item edit_btn" for="'+$scope.grade[i].grade_id+'">' +
                               'Edit' +
                             '</a>' +
-                            '<a class="dropdown-item">' +
+                            '<a class="dropdown-item delete-btn" for="'+$scope.grade[i].grade_id+'">' +
                               'Delete' +
                             '</a>' +
                           '</div>' +
@@ -849,9 +862,9 @@
                         '</div>' +
 
                         '<!-- Title -->' +
-                        '<h2 class="card-title text-center p-3">' +
-                          '<p style="font-size: 28px;">'+$scope.grade[i].grade_name+'</p>' +
-                        '</h2>' +
+                        '<h3 class="card-title text-center">' +
+                          '<p style="font-size: 25px;">'+$scope.grade[i].grade_name+'</p>' +
+                        '</h3>' +
                         '<!-- Divider -->' +
                         '<hr>' +
 
@@ -865,8 +878,8 @@
 
                           '</div>' +
                           '<div class="col-auto">' +
-                            '<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseClass'+$scope.grade[i].grade_id+'" aria-expanded="false" aria-controls="collapseClass">' +
-                              'Create Class<span class="fe fe-chevrons-down"></span>' +
+                            '<button class="btn btn-link class_btn" type="button" data-toggle="collapse" data-target="#collapseClass'+$scope.grade[i].grade_id+'" aria-expanded="false" aria-controls="collapseClass">' +
+                              'Create Class<span class="fe fe-arrow-down-circle class_collapse_btn"></span>' +
                             '</button>' +
                           '</div>' +
                         '</div> <!-- / .row -->' +
@@ -908,8 +921,80 @@
               }
             });
           }
-
-        });
+          $(document).on('click','.delete-btn',function(){
+            var grade_id = $(this).attr('for');
+            swal({
+              title: "Are you sure?",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonClass: "btn-danger",
+              confirmButtonText: "Yes, delete it!",
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true
+            },
+            function(){
+              var gradeDel = ({
+              'grade_id' : grade_id
+              });
+              console.log(gradeDel);
+              $http({
+                method  : 'POST',
+                url     : 'includes/http_req/api/del_grade.php',
+                data    : gradeDel, //forms user object
+                headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+              }).then(function(response) {
+                grade_load();
+                swal.close();
+                iziToast.success({
+                  title: 'Success',
+                  message: 'You deleted one grade'
+                });
+              });
+            });
+          });//end delete-btn
+          $(document).on('click','.edit_btn',function(){
+            var grade_id = $(this).attr('for');
+            var grade_name = $(this).parent().parent().siblings('h3').text();
+            $(this).parent().parent().siblings('h3').children().hide();
+            $(this).parent().parent().siblings('h3').html(
+              '<div class="input-group p-0 m-0">'+
+              '<div class="input-group-prepend">'+
+                '<span class="text-danger input-group-text form-control form-control-flush fe fe-x grade_cancel_btn" for="'+grade_id+'" style="font-size:20px"></span>'+
+              '</div>'+
+              '<input type="text" class="h3 form-control form-control-flush text-center grade_name p-0 m-0" value="'+grade_name+'" style="font-size:25px;height:26px" placeholder="grade name">'+
+              '<div class="input-group-append">'+
+                '<span class="text-danger input-group-text form-control form-control-flush fe fe-check grade_confirm_btn" for="'+grade_id+'" style="font-size:20px"></span>'+
+              '</div>'+
+            '</div>'
+            )
+            $(this).parent().parent().siblings('h3').children().children('.grade_name').select();
+          });//end edit btn
+          $(document).on('click','.grade_confirm_btn',function(){
+            var grade_id = $(this).attr('for');
+            var grade_name = $(this).parent().siblings('.grade_name').val();
+            var gradeConfirm = ({
+            'grade_id' : grade_id,
+            'grade_name':grade_name
+            });
+            $http({
+              method  : 'POST',
+              url     : 'includes/http_req/api/edit_grade.php',
+              data    : gradeConfirm, //forms user object
+              headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).then(function(response) {
+              grade_load();
+              });
+          });//end grade_confirm_btn
+          $(document).on('click','.grade_cancel_btn',function(){
+            var grade_name = $(this).parent().siblings('.form-control').val();
+            $(this).parent().parent().parent().html(
+              '<p style="font-size: 25px;">'+grade_name+'</p>'
+            )
+          });//end grade_cancel_btn
+          $(document).on('click','.class_btn',function(){
+            $(this).children('span').toggleClass("rotate");
+          });//end class_collapse_btn
+        });//end gradecontroller
 
         function acdmCond(acdm_time_from, acdm_time_to, server_time) {
 
@@ -1532,8 +1617,8 @@
 
                                     '</div>' +
                                     '<div class="col-auto">' +
-                                      '<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseClass' + response.data[i].fee_id + '" aria-expanded="false" aria-controls="collapseClass">' +
-                                        'payment details<span class="fe fe-chevrons-down"></span>' +
+                                      '<button class="btn btn-link payment_btn" type="button" data-toggle="collapse" data-target="#collapseClass' + response.data[i].fee_id + '" aria-expanded="false" aria-controls="collapseClass">' +
+                                        'payment details<span class="fe fe-chevrons-down class_collapse_btn"></span>' +
                                       '</button>' +
                                     '</div>' +
                                   '</div> <!-- / .row -->' +
@@ -1542,6 +1627,12 @@
 
                                         fee_parts +
 
+                                    '</div>' +
+                                    '<div class="container container-fluid input-group mt-3">' +
+                                      '<input type="text" class="form-control" placeholder="Enter new payment amount">' +
+                                      '<div class="input-group-append">' +
+                                        '<button class="btn btn-success">Create</button>' +
+                                      '</div>' +
                                     '</div>' +
                                   '</div>' +
                                 '</div> <!-- / .card-body -->' +
@@ -1741,6 +1832,9 @@
               }
             });
           });
+          $(document).on('click','.payment_btn',function(){
+            $(this).children('span').toggleClass("rotate");
+          });//end class_collapse_btn
         });//end manage-acdmCtrl
         function feeSearch() {
           var input, filter, fee_cards_div, fee_cards, fee_cards_info_grade, i;
