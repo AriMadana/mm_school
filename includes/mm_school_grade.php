@@ -10,6 +10,11 @@ class MM_School_Grade extends Db_object {
 	public $grade_school;
 	public $acdm_id;
 
+	public function selectGradeList($school_id) {
+    $result = $this -> find_array_by_query("SELECT fn.feenum_id, fn.req_amount, fn.feenum_asc, f.*, g.grade_name FROM `eth_feenum` fn, `eth_fee` f, `eth_school` sch, `eth_grade` g WHERE fn.fee_id = f.fee_id AND sch.school_acdm = g.acdm_id AND g.grade_id = f.grade_id AND sch.school_id = $school_id;");
+    return $result;
+  }
+
   public function selectGrade($school_id) {
     $db_table = static::$db_table;
 		$mm_school_head = new MM_School_Head();
@@ -21,7 +26,7 @@ class MM_School_Grade extends Db_object {
     global $database;
     $db_table = static::$db_table;
     $grade_name = $database -> escape_string($grade_name);
-    $result = $this -> insert_query("INSERT INTO `$db_table` (`grade_name`, `grade_school`) VALUES ('$grade_name', $school_id)");
+    $result = $this -> insert_query("INSERT INTO `$db_table` (`grade_name`, `grade_school`) VALUES ('$grade_name', $school_id);");
     return $result;
   }
 	public function user_match($email, $password) {

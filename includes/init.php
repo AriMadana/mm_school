@@ -12,6 +12,10 @@ require_once('new_config.php');
 require_once('functions.php');
 require_once('database.php');
 
+// '<ul class="list-group">' +
+
+// '</ul>' +
+
 $mm_school_grade = new MM_School_Grade();
 $mm_user_class = new MM_User_Class();
 $mm_school_acdm = new MM_School_Acdm();
@@ -20,6 +24,7 @@ $mm_school_head = new MM_School_Head();
 $mm_school_stunacdm = new MM_School_StuNAcdm();
 $mm_school_fee = new MM_School_Fee();
 $mm_school_feenum = new MM_School_FeeNum();
+$mm_school_class = new MM_School_Class();
 // $mm_teacher_class = new MM_Teacher_Class();
 // $mm_student_class = new MM_Student_Class();
 // $mm_grade_class = new MM_Grade_Class();

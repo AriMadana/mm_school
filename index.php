@@ -114,6 +114,34 @@
         -webkit-transition: -webkit-transform 0.5s; /* Safari */
         transition: transform 0.5s;
       }
+
+      .class-edit-group {
+        position: absolute;
+        -webkit-backface-visibility: hidden;  /* Chrome, Safari, Opera */
+        backface-visibility: hidden;
+        -webkit-transform: rotateY(0deg); /* Safari */
+        transform: rotateY(0deg); /* Standard syntax */
+        -webkit-transition: -webkit-transform 0.5s; /* Safari */
+        transition: transform 0.5s;
+      }
+      .class-edit-second {
+        -webkit-transform: rotateY(180deg); /* Safari */
+        transform: rotateY(180deg); /* Standard syntax */
+        -webkit-transition: -webkit-transform 0.5s; /* Safari */
+        transition: transform 0.5s;
+      }
+      .class-edit-group.left {
+        -webkit-transform: rotateY(0deg); /* Safari */
+        transform: rotateY(0deg); /* Standard syntax */
+        -webkit-transition: -webkit-transform 0.5s; /* Safari */
+        transition: transform 0.5s;
+      }
+      .class-edit-group.right {
+        -webkit-transform: rotateY(180deg); /* Safari */
+        transform: rotateY(180deg); /* Standard syntax */
+        -webkit-transition: -webkit-transform 0.5s; /* Safari */
+        transition: transform 0.5s;
+      }
     </style>
   </head>
   <body ng-app="myApp">
@@ -829,98 +857,204 @@
             });
           }
           grade_load();
+          var classes_data = [];
           function grade_load(){
+
             $http.get('includes/http_req/api/req_grade.php')
             .then(function (response) {
               $scope.grade = response.data;
-              if ($scope.grade) {
-                $('#no_grade').hide();
-                var grade_cards = "";
-                for (var i = 0; i < $scope.grade.length; i++) {
-                  grade_cards += '<div class="col-12 col-lg-4">' +
-                    '<!-- Card -->' +
-                    '<div class="card">' +
-                      '<div class="card-body">' +
-                        '<!-- Dropdown -->' +
-                        '<div class="dropdown card-dropdown">' +
-                          '<a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown">' +
-                            '<i class="fe fe-more-vertical text-dark"></i>' +
-                          '</a>' +
-                          '<div class="dropdown-menu dropdown-menu-right">' +
-                            '<a class="dropdown-item edit_btn" for="'+$scope.grade[i].grade_id+'">' +
-                              'Edit' +
-                            '</a>' +
-                            '<a class="dropdown-item delete-btn" for="'+$scope.grade[i].grade_id+'">' +
-                              'Delete' +
-                            '</a>' +
-                          '</div>' +
-                        '</div>' +
-
-                        '<!-- Avatar -->' +
-                        '<div class="text-center">' +
-                          '<p>2019/2020</p>' +
-                        '</div>' +
-
-                        '<!-- Title -->' +
-                        '<h3 class="card-title text-center">' +
-                          '<p style="font-size: 25px;">'+$scope.grade[i].grade_name+'</p>' +
-                        '</h3>' +
-                        '<!-- Divider -->' +
-                        '<hr>' +
-
-                        '<div class="row align-items-center">' +
-                          '<div class="col">' +
-
-                            '<!-- Time -->' +
-                            '<p class="card-text text-muted">' +
-                              '100 Students' +
-                            '</p>' +
-
-                          '</div>' +
-                          '<div class="col-auto">' +
-                            '<button class="btn btn-link class_btn" type="button" data-toggle="collapse" data-target="#collapseClass'+$scope.grade[i].grade_id+'" aria-expanded="false" aria-controls="collapseClass">' +
-                              'Create Class<span class="fe fe-arrow-down-circle class_collapse_btn"></span>' +
-                            '</button>' +
-                          '</div>' +
-                        '</div> <!-- / .row -->' +
-                        '<div class="collapse" id="collapseClass'+$scope.grade[i].grade_id+'">' +
-                          '<hr>' +
-                          '<div>' +
-                            '<ul class="list-group">' +
-                              '<li class="list-group-item d-flex justify-content-between align-items-center">' +
-                                'Grade-8A' +
-                                '<span>' +
-                                  '<span class="fe fe-edit-2 mr-3 text-danger"></span>' +
-                                  '<span class="fe fe-trash-2 mr-1 text-danger"></span>' +
-                                '</span>' +
-                              '</li>' +
-                              '<li class="list-group-item d-flex justify-content-between align-items-center">' +
-                                'Grade-8B' +
-                                '<span>' +
-                                  '<span class="fe fe-edit-2 mr-3 text-danger"></span>' +
-                                  '<span class="fe fe-trash-2 mr-1 text-danger"></span>' +
-                                '</span>' +
-                              '</li>' +
-                            '</ul>' +
-                            '<div class="input-group mt-3">' +
-                              '<input type="text" class="form-control" placeholder="Enter new class name">' +
-                              '<div class="input-group-append">' +
-                                '<button class="btn btn-success">Create</button>' +
-                              '</div>' +
-                            '</div>' +
-                          '</div>' +
-                        '</div>' +
-                      '</div> <!-- / .card-body -->' +
-                    '</div>' +
-                  '</div>';
-                  $('#grade_item').html(grade_cards);
+              $http.get('includes/http_req/api/req_class.php')
+              .then(function (response) {
+                if(response.data) {
+                  classes_data = response.data;
                 }
-              }else {
-                $('#no_grade').show();
-                $('#upper_grade_btn').hide();
-              }
+                console.log(classes_data);
+                console.log(classes_data.length);
+
+                if ($scope.grade) {
+                  $('#no_grade').hide();
+                  var grade_cards = "";
+                  for (var i = 0; i < $scope.grade.length; i++) {
+                    grade_cards += '<div class="col-12 col-lg-4">' +
+                                      '<!-- Card -->' +
+                                      '<div class="card">' +
+                                        '<div class="card-body">' +
+                                          '<!-- Dropdown -->' +
+                                          '<div class="dropdown card-dropdown">' +
+                                            '<a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown">' +
+                                              '<i class="fe fe-more-vertical text-dark"></i>' +
+                                            '</a>' +
+                                            '<div class="dropdown-menu dropdown-menu-right">' +
+                                              '<a class="dropdown-item edit_btn" for="'+$scope.grade[i].grade_id+'">' +
+                                                'Edit' +
+                                              '</a>' +
+                                              '<a class="dropdown-item delete-btn" for="'+$scope.grade[i].grade_id+'">' +
+                                                'Delete' +
+                                              '</a>' +
+                                            '</div>' +
+                                          '</div>' +
+
+                                          '<!-- Avatar -->' +
+                                          '<div class="text-center">' +
+                                            '<p>2019/2020</p>' +
+                                          '</div>' +
+
+                                          '<!-- Title -->' +
+                                          '<table class="card-title text-center">' +
+                                            '<tbody>' +
+                                              '<tr>' +
+                                                '<td class="edit-grade-btns col-auto"><a class="text-danger input-group-text form-control form-control-flush fe fe-x grade_cancel_btn" for="4" style="font-size: 20px;display: none;"><a></td>' +
+                                                '<td class="col grade-name-info" style="font-size: 22px;font-weight: bold;padding-top:1px;">'+$scope.grade[i].grade_name+'</td>' +
+                                                '<td class="col grade-edit-info" style="display: none;"><input type="text" class="h3 form-control form-control-flush text-center grade_name p-0 m-0" value="'+$scope.grade[i].grade_name+'" style="font-size:22px;font-weight: bold;" placeholder="grade name"></td>' +
+                                                '<td class="edit-grade-btns col-auto"><a class="text-danger input-group-text form-control form-control-flush fe fe-check grade_confirm_btn" for="'+$scope.grade[i].grade_id+'" style="font-size: 20px;display:none;"><a></td>' +
+                                              '<tr>' +
+                                            '<tbody>' +
+                                          '</table>' +
+                                          '<!-- Divider -->' +
+                                          '<hr>' +
+
+                                          '<div class="row align-items-center">' +
+                                            '<div class="col">' +
+
+                                              '<!-- Time -->' +
+                                              '<p class="card-text text-muted">' +
+                                                '100 Students' +
+                                              '</p>' +
+
+                                            '</div>' +
+                                            '<div class="col-auto">' +
+                                              '<button class="btn btn-link class_btn" type="button" data-toggle="collapse" data-target="#collapseClass'+$scope.grade[i].grade_id+'" aria-expanded="false" aria-controls="collapseClass">' +
+                                                'Create Class<span class="fe fe-arrow-down-circle class_collapse_btn"></span>' +
+                                              '</button>' +
+                                            '</div>' +
+                                          '</div> <!-- / .row -->' +
+                                          '<div class="collapse" id="collapseClass'+$scope.grade[i].grade_id+'">' +
+                                            '<hr>' +
+                                            '<div>' +
+                                              reqAndChkClasses(classes_data, $scope.grade[i].grade_id) +
+                                              '<div class="input-group mt-3">' +
+                                                '<input type="text" class="new-class-input form-control" placeholder="Enter new class name">' +
+                                                '<div class="input-group-append">' +
+                                                  '<button class="btn btn-success new-class-btn" for="'+$scope.grade[i].grade_id+'">Create</button>' +
+                                                '</div>' +
+                                              '</div>' +
+                                            '</div>' +
+                                          '</div>' +
+                                        '</div> <!-- / .card-body -->' +
+                                      '</div>' +
+                                    '</div>';
+                    $('#grade_item').html(grade_cards);
+                    console.log(classes_data.length);
+                  }
+                }else {
+                  $('#no_grade').show();
+                  $('#upper_grade_btn').hide();
+                }
+              });
+
+
             });
           }
+
+          function reqAndChkClasses(classes, grade_id) {
+            var html = '';
+            if(classes.length > 0) {
+              html += '<ul class="list-group">';
+              for(var i = 0; i < classes.length; i++) {
+                if(classes[i].grade_id == grade_id) {
+                  html += '<li class="list-group-item d-flex justify-content-between align-items-center">' +
+                            '<span class="class-name-edit-info">' + classes[i].class_name + '</span>' +
+                            '<input style="display: none;" type="text" class="form-control form-control-flush class-name-edit-input" placeholder="value" value="' + classes[i].class_name + '">' +
+                            '<span class="class-edit-group class-edit-first" style="right: 10px;">' +
+                              '<span for="' + classes[i].class_id + '" class="fe fe-edit-2 mr-3 text-danger"></span>' +
+                              '<span for="' + classes[i].class_id + '" class="fe fe-trash-2 mr-1 text-danger"></span>' +
+                            '</span>' +
+                            '<span class="class-edit-group class-edit-second" style="right: 10px;">' +
+                              '<span for="' + classes[i].class_id + '" class="fe fe-x mr-3 text-danger"></span>' +
+                              '<span for="' + classes[i].class_id + '" class="fe fe-check mr-1 text-danger"></span>' +
+                            '</span>' +
+                          '</li>';
+                }
+              }
+              html += '</ul>';
+              return html;
+            } else {
+              return '';
+            }
+          }
+          $(document).on('click', '.class-edit-first .fe-edit-2', function() {
+            $(this).parent().addClass('right');
+            $(this).parent().siblings('.class-edit-second').addClass('left');
+            $(this).parent().siblings('.class-name-edit-info').hide();
+            $(this).parent().siblings('.class-name-edit-input').show();
+            $(this).parent().siblings('.class-name-edit-input').val($(this).parent().siblings('.class-name-edit-info').text());
+            $(this).parent().siblings('.class-name-edit-input').select();
+          });
+          $(document).on('click', '.class-edit-second .fe-x', function() {
+            $(this).parent().removeClass('left');
+            $(this).parent().siblings('.class-edit-first').removeClass('right');
+            $(this).parent().siblings('.class-name-edit-info').show();
+            $(this).parent().siblings('.class-name-edit-input').hide();
+          });
+          $(document).on('click', '.class-edit-second .fe-check', function() {
+            var class_name = $(this).parent().siblings('.class-name-edit-input').val();
+            var class_id = $(this).attr('for');
+            var class_info = ({
+              'class_name' : class_name,
+              'class_id' : class_id
+            });
+            console.log(class_info);
+            $http({
+              method  : 'POST',
+              url     : 'includes/http_req/forms/edit_class.php',
+              data    : class_info, //forms user object
+              headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).then(function(response) {
+              if(response.data) {
+                grade_load();
+                swal.close();
+                iziToast.success({
+                  title: 'Success',
+                  message: 'You edited one class'
+                });
+              }
+            });
+          });
+          $(document).on('click', '.class-edit-first .fe-trash-2', function() {
+
+            var class_id = $(this).attr('for');
+            var class_info = ({
+              'class_id' : class_id
+            });
+            console.log(class_info);
+            swal({
+              title: "Are you sure?",
+              text: "This can delete your recored student data!",
+              type: "warning",
+              showCancelButton: true,
+              confirmButtonClass: "btn-danger",
+              confirmButtonText: "Yes, delete it!",
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true
+            },
+            function(){
+              $http({
+                method  : 'POST',
+                url     : 'includes/http_req/forms/del_class.php',
+                data    : class_info, //forms user object
+                headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+              }).then(function(response) {
+                if(response.data) {
+                  grade_load();
+                  swal.close();
+                  iziToast.success({
+                    title: 'Success',
+                    message: 'You deleted one class'
+                  });
+                }
+              });
+            });
+          });
           $(document).on('click','.delete-btn',function(){
             var grade_id = $(this).attr('for');
             swal({
@@ -954,28 +1088,30 @@
           });//end delete-btn
           $(document).on('click','.edit_btn',function(){
             var grade_id = $(this).attr('for');
-            var grade_name = $(this).parent().parent().siblings('h3').text();
-            $(this).parent().parent().siblings('h3').children().hide();
-            $(this).parent().parent().siblings('h3').html(
-              '<div class="input-group p-0 m-0">'+
-              '<div class="input-group-prepend">'+
-                '<span class="text-danger input-group-text form-control form-control-flush fe fe-x grade_cancel_btn" for="'+grade_id+'" style="font-size:20px"></span>'+
-              '</div>'+
-              '<input type="text" class="h3 form-control form-control-flush text-center grade_name p-0 m-0" value="'+grade_name+'" style="font-size:25px;height:26px" placeholder="grade name">'+
-              '<div class="input-group-append">'+
-                '<span class="text-danger input-group-text form-control form-control-flush fe fe-check grade_confirm_btn" for="'+grade_id+'" style="font-size:20px"></span>'+
-              '</div>'+
-            '</div>'
-            )
-            $(this).parent().parent().siblings('h3').children().children('.grade_name').select();
+            var grade_name_ini = $(this).parent().parent().siblings('table').children().children().children('.grade-name-info').text();
+            // $(this).parent().parent().siblings('table').children('.grade-name-info').hide();
+            // $(this).parent().parent().siblings('table').children('.grade-edit-info').show();
+            // $(this).parent().parent().siblings('table').children('.grade-edit-info').select();
+            $(this).parent().parent().siblings('table').children().children().children('.grade-name-info').hide();
+            $(this).parent().parent().siblings('table').children().children().children('.grade-edit-info').show();
+            $(this).parent().parent().siblings('table').children().children().children('.edit-grade-btns').children().show();
+            $(this).parent().parent().siblings('table').children().children().children('.grade-edit-info').children().select();
+            $(this).parent().parent().siblings('table').children().children().children('.grade-edit-info').children().val(grade_name_ini);
           });//end edit btn
+          $(document).on('click','.grade_cancel_btn',function(){
+            $(this).hide();
+            $(this).parent().siblings('.grade-name-info').show();
+            $(this).parent().siblings('.grade-edit-info').hide();
+            $(this).parent().siblings('.edit-grade-btns').children().hide();
+          });//end grade_cancel_btn
           $(document).on('click','.grade_confirm_btn',function(){
             var grade_id = $(this).attr('for');
-            var grade_name = $(this).parent().siblings('.grade_name').val();
+            var grade_name = $(this).parent().siblings('.grade-edit-info').children('.grade_name').val();
             var gradeConfirm = ({
             'grade_id' : grade_id,
             'grade_name':grade_name
             });
+            console.log(gradeConfirm);
             $http({
               method  : 'POST',
               url     : 'includes/http_req/api/edit_grade.php',
@@ -983,18 +1119,32 @@
               headers : {'Content-Type': 'application/x-www-form-urlencoded'}
             }).then(function(response) {
               grade_load();
-              });
+            });
           });//end grade_confirm_btn
-          $(document).on('click','.grade_cancel_btn',function(){
-            var grade_name = $(this).parent().siblings('.form-control').val();
-            $(this).parent().parent().parent().html(
-              '<p style="font-size: 25px;">'+grade_name+'</p>'
-            )
-          });//end grade_cancel_btn
+
           $(document).on('click','.class_btn',function(){
             $(this).children('span').toggleClass("rotate");
           });//end class_collapse_btn
+
+          $(document).on('click', '.new-class-btn', function() {
+            var class_info = ({
+            'class_name' : $(this).parent().siblings('.new-class-input').val(),
+            'grade_id': $(this).attr('for')
+            });
+            console.log(class_info);
+            $http({
+              method  : 'POST',
+              url     : 'includes/http_req/forms/add_class.php',
+              data    : class_info, //forms user object
+              headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+            }).then(function(response) {
+              if(response.data) {
+                grade_load();
+              }
+            });
+          });
         });//end gradecontroller
+
 
         function acdmCond(acdm_time_from, acdm_time_to, server_time) {
 
@@ -1629,9 +1779,9 @@
 
                                     '</div>' +
                                     '<div class="container container-fluid input-group mt-3">' +
-                                      '<input type="text" class="form-control" placeholder="Enter new payment amount">' +
+                                      '<input type="text" class="fee-part-new-input form-control" placeholder="Enter new payment amount">' +
                                       '<div class="input-group-append">' +
-                                        '<button class="btn btn-success">Create</button>' +
+                                        '<button class="btn btn-success fee-part-new" for="' + response.data[i].fee_id + '">Create</button>' +
                                       '</div>' +
                                     '</div>' +
                                   '</div>' +
@@ -1645,7 +1795,32 @@
 
             });
           }
-
+          $(document).on('click', '.fee-part-new', function() {
+            console.log($(this).attr('for') + $(this).parent().siblings('.fee-part-new-input').val());
+            var fee_part_new_btn = $(this);
+            fee_part_new_btn.addClass('is-loading');
+            var fee_id = $(this).attr('for');
+            var fee_num_amount = $(this).parent().siblings('.fee-part-new-input').val();
+            var new_fee_num = ({
+              'fee_id' : fee_id,
+              'fee_num_amount' : fee_num_amount
+            });
+            $http({
+              method : 'POST',
+              url : 'includes/http_req/forms/add_fee_one_num.php',
+              data : new_fee_num,
+              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              console.log(response.data);
+              if(response.data) {
+                reqFeeList();
+                iziToast.success({
+                  title: 'Success',
+                  message: 'You added new fee part'
+                });
+              }
+            });
+          });
           $(document).on('click', '.del_fee_part_btn', function() {
             swal({
               title: "Are you sure?",

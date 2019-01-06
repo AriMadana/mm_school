@@ -1,59 +1,41 @@
 <?php
 
-class MM_School_FeeNum extends Db_object {
+class MM_School_Class extends Db_object {
 
-	protected static $db_table = "eth_feenum";
-	protected static $db_fields = array('feenum_id', 'fee_id', 'req_amount', 'feenum_asc');
+	protected static $db_table = "eth_class";
+	protected static $db_fields = array('class_id', 'class_name', 'grade_id');
 
-	public $feenum_id;
-	public $fee_id;
-	public $req_amount;
-	public $feenum_asc;
+	public $class_id;
+	public $class_name;
+	public $grade_id;
 
-  // public function selectGrade($school_id) {
-  //   $db_table = static::$db_table;
-	// 	$mm_school_head = new MM_School_Head();
-	// 	$acdm_id = $mm_school_head -> selectCurAcdm($school_id);
-  //   $result = $this -> find_array_by_query("SELECT * FROM `$db_table` WHERE `acdm_id` = '$acdm_id' ORDER BY `grade_name` ASC;");
-  //   return $result;
-  // }
-  public function addFeeNum($fee_parts, $fee_id) {
+	public function addClass($class_name, $grade_id) {
+		$db_table = static::$db_table;
     global $database;
-    $db_table = static::$db_table;
-    $fee_part = '';
-    for ($i = 0; $i < sizeof($fee_parts); $i++) {
-      $fee_part .= "(" . $fee_id . ", " . $fee_parts[$i]->value . ", " . $fee_parts[$i]->id .")";
+    $class_name = $database->escape_string($class_name);
+		$result = $this -> insert_query("INSERT INTO `$db_table` (`class_name`, `grade_id`) VALUES ('$class_name', $grade_id);");
+		return $result;
+	}
 
-			if($i == sizeof($fee_parts)-1) {
-        $fee_part .= ';';
-				break;
-      } else if ($i < sizeof($fee_parts)) {
-        $fee_part .= ',';
-      }
-    }
-    $sql = "INSERT INTO `$db_table` (`fee_id`, `req_amount`, `feenum_asc`) VALUES " . $fee_part;
-    $result = $this -> insert_query($sql);
-
+	public function selectClass($school_id) {
+    $result = $this -> find_array_by_query("SELECT c.* FROM `eth_class` c, `eth_grade` g, `eth_school` sch WHERE sch.school_acdm = g.acdm_id AND g.grade_id = c.grade_id AND sch.school_id = $school_id;");
     return $result;
   }
 
-	public function addOneFeeNum($fee_id, $fee_num_amount) {
+	public function editClass($class_id, $class_name) {
 		$db_table = static::$db_table;
-		$result = $this -> insert_query("INSERT INTO `$db_table` (`fee_id`, `req_amount`) VALUES ($fee_id, $fee_num_amount);");
+		global $database;
+		$class_name = $database->escape_string($class_name);
+		$result = $this -> insert_query("UPDATE `$db_table` SET `class_name` = '$class_name' WHERE `class_id` = $class_id;");
 		return $result;
 	}
 
-	public function editFeePart($fee_part_id, $fee_part_amount) {
+	public function delClass($class_id) {
 		$db_table = static::$db_table;
-		$result = $this -> insert_query("UPDATE `$db_table` SET `req_amount` = $fee_part_amount WHERE `feenum_id` = $fee_part_id;");
+		$result = $this -> insert_query("DELETE FROM `$db_table` WHERE `class_id` = $class_id;");
 		return $result;
 	}
 
-	public function delFeePart($fee_part_id) {
-		$db_table = static::$db_table;
-		$result = $this -> insert_query("DELETE FROM `$db_table` WHERE `feenum_id` = '$fee_part_id';");
-		return $result;
-	}
 
 
  /*   public function sendMail($to, array $message) {
