@@ -38,7 +38,21 @@
     <script src="assets/js/iziTost.min.js"></script>
     <link href="assets/css/iziTost.min.css" rel="stylesheet"/>
     <link href="assets/css/pace.css" rel="stylesheet" />
-
+    <style>
+    .class_collapse_btn {
+      color: blue;
+      -moz-transition: all 0.6s linear;
+      -webkit-transition: all 0.6s linear;
+      transition: all 0.6s linear;
+      display: inline-block;
+    }
+    .class_collapse_btn.rotate {
+      -moz-transform:rotate(180deg);
+      -webkit-transform:rotate(180deg);
+      transform:rotate(180deg);
+      color:green;
+    }
+    </style>
     <title>Dashkit</title>
     <style>
       a {
@@ -864,8 +878,8 @@
 
                           '</div>' +
                           '<div class="col-auto">' +
-                            '<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseClass'+$scope.grade[i].grade_id+'" aria-expanded="false" aria-controls="collapseClass">' +
-                              'Create Class<span class="fe fe-chevrons-down"></span>' +
+                            '<button class="btn btn-link class_btn" type="button" data-toggle="collapse" data-target="#collapseClass'+$scope.grade[i].grade_id+'" aria-expanded="false" aria-controls="collapseClass">' +
+                              'Create Class<span class="fe fe-arrow-down-circle class_collapse_btn"></span>' +
                             '</button>' +
                           '</div>' +
                         '</div> <!-- / .row -->' +
@@ -977,6 +991,9 @@
               '<p style="font-size: 25px;">'+grade_name+'</p>'
             )
           });//end grade_cancel_btn
+          $(document).on('click','.class_btn',function(){
+            $(this).children('span').toggleClass("rotate");
+          });//end class_collapse_btn
         });//end gradecontroller
 
         function acdmCond(acdm_time_from, acdm_time_to, server_time) {
@@ -1600,8 +1617,8 @@
 
                                     '</div>' +
                                     '<div class="col-auto">' +
-                                      '<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseClass' + response.data[i].fee_id + '" aria-expanded="false" aria-controls="collapseClass">' +
-                                        'payment details<span class="fe fe-chevrons-down"></span>' +
+                                      '<button class="btn btn-link payment_btn" type="button" data-toggle="collapse" data-target="#collapseClass' + response.data[i].fee_id + '" aria-expanded="false" aria-controls="collapseClass">' +
+                                        'payment details<span class="fe fe-chevrons-down class_collapse_btn"></span>' +
                                       '</button>' +
                                     '</div>' +
                                   '</div> <!-- / .row -->' +
@@ -1610,6 +1627,12 @@
 
                                         fee_parts +
 
+                                    '</div>' +
+                                    '<div class="container container-fluid input-group mt-3">' +
+                                      '<input type="text" class="form-control" placeholder="Enter new payment amount">' +
+                                      '<div class="input-group-append">' +
+                                        '<button class="btn btn-success">Create</button>' +
+                                      '</div>' +
                                     '</div>' +
                                   '</div>' +
                                 '</div> <!-- / .card-body -->' +
@@ -1809,6 +1832,9 @@
               }
             });
           });
+          $(document).on('click','.payment_btn',function(){
+            $(this).children('span').toggleClass("rotate");
+          });//end class_collapse_btn
         });//end manage-acdmCtrl
         function feeSearch() {
           var input, filter, fee_cards_div, fee_cards, fee_cards_info_grade, i;
