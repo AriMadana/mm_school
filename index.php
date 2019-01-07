@@ -1149,6 +1149,10 @@
             }).then(function(response) {
               if(response.data) {
                 grade_load();
+                iziToast.success({
+                  title: 'Success',
+                  message: 'You added one class'
+                });
               }
             });
           });
