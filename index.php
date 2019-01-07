@@ -142,6 +142,50 @@
         -webkit-transition: -webkit-transform 0.5s; /* Safari */
         transition: transform 0.5s;
       }
+
+      .fee-stu-edit-group {
+        position: absolute;
+        -webkit-backface-visibility: hidden;  /* Chrome, Safari, Opera */
+        backface-visibility: hidden;
+        -webkit-transform: rotateY(0deg); /* Safari */
+        transform: rotateY(0deg); /* Standard syntax */
+        -webkit-transition: -webkit-transform 0.5s; /* Safari */
+        transition: transform 0.5s;
+      }
+      .fee-stu-edit-second {
+        -webkit-transform: rotateY(180deg); /* Safari */
+        transform: rotateY(180deg); /* Standard syntax */
+        -webkit-transition: -webkit-transform 0.5s; /* Safari */
+        transition: transform 0.5s;
+      }
+      .fee-stu-edit-group.left {
+        -webkit-transform: rotateY(0deg); /* Safari */
+        transform: rotateY(0deg); /* Standard syntax */
+        -webkit-transition: -webkit-transform 0.5s; /* Safari */
+        transition: transform 0.5s;
+      }
+      .fee-stu-edit-group.right {
+        -webkit-transform: rotateY(180deg); /* Safari */
+        transform: rotateY(180deg); /* Standard syntax */
+        -webkit-transition: -webkit-transform 0.5s; /* Safari */
+        transition: transform 0.5s;
+      }
+
+      .pay-input input {
+        margin-right: 0px !important;
+        right: 0px !important;
+      }
+
+      table .selected {
+        background: #e6f7ff;
+      }
+      table .selected input {
+        background: #e6f7ff;
+        margin-top: 0.5px !important;
+      }
+      table .selected input:focus {
+        background: #e6f7ff;
+      }
     </style>
   </head>
   <body ng-app="myApp">
@@ -1149,6 +1193,10 @@
             }).then(function(response) {
               if(response.data) {
                 grade_load();
+                iziToast.success({
+                  title: 'Success',
+                  message: 'You added one class'
+                });
               }
             });
           });
@@ -2018,6 +2066,21 @@
           });//end class_collapse_btn
         });//end manage-acdmCtrl
         app.controller('manage-stufeeCtrl',function($scope, $http){
+          $(document).on('click', '.fee-stu-edit-first .fe-edit-2', function() {
+            $(this).parent().addClass('right');
+            $(this).parent().siblings('.fee-stu-edit-second').addClass('left');
+            $(this).parent().parent().siblings('td').children('.pay-info').hide();
+            $(this).parent().parent().siblings('td').children('.pay-input').show();
+            $(this).parent().parent().parent().addClass('selected');
+          });
+
+          $(document).on('click', '.fee-stu-edit-second .fe-x', function() {
+            $(this).parent().removeClass('left');
+            $(this).parent().siblings('.fee-stu-edit-first').removeClass('right');
+            $(this).parent().parent().siblings('td').children('.pay-info').show();
+            $(this).parent().parent().siblings('td').children('.pay-input').hide();
+            $(this).parent().parent().parent().removeClass('selected');
+          });
           $http.get('includes/http_req/api/req_grade.php')
           .then(function (response) {
             if(response.data) {
