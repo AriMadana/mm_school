@@ -51,6 +51,64 @@
       </div> <!-- / .header-body -->
     </div>
   </div> <!-- / .header -->
+  <div class="modal fade" id="edit-stufee-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div id="editStuAlert" style="top:-90px;z-index:1200;position:absolute;width:100%;" class="alert alert-success" role="alert">
+          <h4 class="alert-heading">Well done!</h4>
+          <p style="margin-bottom:0px;">Aww yeah, you successfully</p>
+        </div>
+        <div class="modal-card card" data-toggle="lists" data-lists-values="[&quot;name&quot;]">
+          <div class="card-header">
+            <div class="row align-items-center">
+              <div class="col-auto">
+
+                <!-- Close -->
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true"><span class="fe fe-x"></span></span>
+                </button>
+
+              </div>
+              <div class="col">
+
+                <!-- Title -->
+                <h4 class="card-header-title" id="exampleModalCenterTitle" style="text-align:center;">
+                  Edit Student Fee
+                </h4>
+
+              </div>
+              <div class="col-auto">
+
+                <!-- Close -->
+                <button id="edit-student-btn" type="button" class="close" ng-click="editStudent()">
+                  <span aria-hidden="true"><span class="fe fe-user-plus"></span></span>
+                </button>
+
+              </div>
+            </div> <!-- / .row -->
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="student_name">Enter Student Name</label>
+              <input ng-modal="editstu_name" type="text" class="form-control" id="edit_student_name" placeholder="Student Name">
+            </div>
+            <div class="form-group">
+              <label for="1payment">1<sup>st</sup>payment</label>
+              <input ng-modal="1payment" type="text" class="form-control" id="1payment">
+            </div>
+            <div class="form-group">
+              <label for="2payment">2<sup>nd</sup>payment</label>
+              <input ng-modal="2payment" type="text" class="form-control" id="2payment">
+            </div>
+            <div class="form-group">
+              <label for="3payment">3<sup>rd</sup>payment</label>
+              <input ng-modal="3payment" type="text" class="form-control" id="3payment">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="container">
     <!-- Body -->
     <div class="header-body mt--5 mt-md--6">
@@ -60,7 +118,7 @@
           <!-- Nav -->
           <ul class="nav nav-tabs nav-overflow header-tabs">
             <li class="nav-item">
-              <a href="#!manage-acdm-fees" class="nav-link">
+              <a href="#!info-students-session" class="nav-link">
                 infos
               </a>
             </li>
@@ -136,58 +194,22 @@
                       3<sup>rd</sup>payment<br>(100000)
                     </a>
                   </th>
+                  <th>
+                  </th>
                 </tr>
               </thead>
               <tbody class="list">
-                <tr ng-repeat="x in students | orderBy : 'stu_name'">
-                  <td>
-                    <div class="custom-control custom-checkbox table-checkbox">
-                      <input type="checkbox" ng-checked='selectAll' class="checkSingle custom-control-input check-box " value="61" name="ordersSelect" id="61">
-                      <label class="custom-control-label" for="61">
-                        &nbsp;
-                      </label>
-                    </div>
-                  </td>
-                  <td class="orders-order">
-                    #{{ $index + 1 }}
-                  </td>
-                  <td class="orders-product">
-                    {{x.stu_name}}
-                  </td>
-                  <td class="orders-gender">
-                    {{x.stu_gender}}
-                  </td>
-                  <td class="orders-date">
-                    <time datetime="2018-07-30">{{x.stu_birth}}</time>
-                  </td>
-                  <td class="orders-total">
-                    {{x.stu_father}}
-                  </td>
-                  <td class="orders-status">
-                    {{x.stu_add}}
-                  </td>
-                  <td class="orders-method">
-                    {{x.stu_phone}}
-                  </td>
-                  <td class="text-right">
-                    <div class="dropdown">
-                      <a class="dropdown-ellipses dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fe fe-more-vertical"></i>
-                      </a>
-                      <div class="dropdown-menu dropdown-menu-right">
-                        <a id="edit-stu-btn" for="{{x.stunacdm_id}}" class="dropdown-item">
-                          <span class="fe fe-edit-2"></span>&nbsp;&nbsp;Edit
-                        </a>
-                        <a id="del-stu-btn" for="{{x.stunacdm_id}}" class="dropdown-item" >
-                          <span class="fe fe-trash-2"></span>&nbsp;&nbsp;Delete
-                        </a>
-                      </div>
-                    </div>
-                  </td>
+                <tr>
+                  <td>#1</td>
+                  <td>Mg Mg</td>
+                  <td>100000</td>
+                  <td>100000</td>
+                  <td>100000</td>
+                  <td style="text-align:center;"><span class="fe fe-edit-2 text-danger" id="edit-stufee-icon"></span></td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
-      </div>
+    </div>
 </div> <!-- / .main-content -->

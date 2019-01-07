@@ -717,11 +717,6 @@
                     Acd_fees
                   </a>
                 </li>
-                <li>
-                  <a class="dropdown-item" href="#!manage-stu-fees">
-                    Stu_fees
-                  </a>
-                </li>
               </ul>
             </li>
           </ul>
@@ -1860,6 +1855,9 @@
               data: data
             });
           });
+          $(document).on('click','#edit-stufee-icon',function(){
+            $('#edit-stufee-modal').modal('show');
+          });//end edit-stufee-icon
         }); //end manage-stufeeCtrl
         function feeSearch() {
           var input, filter, fee_cards_div, fee_cards, fee_cards_info_grade, i;
