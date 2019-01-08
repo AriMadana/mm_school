@@ -1035,7 +1035,7 @@
               return '';
             }
           }
-          $(document).on('click', '.class-edit-first .fe-edit-2', function() {
+          $(document).on('click touchstart', '.class-edit-first .fe-edit-2', function() {
             $(this).parent().addClass('right');
             $(this).parent().siblings('.class-edit-second').addClass('left');
             $(this).parent().siblings('.class-name-edit-info').hide();
@@ -1043,13 +1043,13 @@
             $(this).parent().siblings('.class-name-edit-input').val($(this).parent().siblings('.class-name-edit-info').text());
             $(this).parent().siblings('.class-name-edit-input').select();
           });
-          $(document).on('click', '.class-edit-second .fe-x', function() {
+          $(document).on('click touchstart', '.class-edit-second .fe-x', function() {
             $(this).parent().removeClass('left');
             $(this).parent().siblings('.class-edit-first').removeClass('right');
             $(this).parent().siblings('.class-name-edit-info').show();
             $(this).parent().siblings('.class-name-edit-input').hide();
           });
-          $(document).on('click', '.class-edit-second .fe-check', function() {
+          $(document).on('click touchstart', '.class-edit-second .fe-check', function() {
             var class_name = $(this).parent().siblings('.class-name-edit-input').val();
             var class_id = $(this).attr('for');
             var class_info = ({
@@ -1073,7 +1073,7 @@
               }
             });
           });
-          $(document).on('click', '.class-edit-first .fe-trash-2', function() {
+          $(document).on('click touchstart', '.class-edit-first .fe-trash-2', function() {
 
             var class_id = $(this).attr('for');
             var class_info = ({
@@ -1108,7 +1108,7 @@
               });
             });
           });
-          $(document).on('click','.delete-btn',function(){
+          $(document).on('click touchstart','.delete-btn',function(){
             var grade_id = $(this).attr('for');
             swal({
               title: "Are you sure?",
@@ -1139,7 +1139,7 @@
               });
             });
           });//end delete-btn
-          $(document).on('click','.edit_btn',function(){
+          $(document).on('click touchstart','.edit_btn',function(){
             var grade_id = $(this).attr('for');
             var grade_name_ini = $(this).parent().parent().siblings('table').children().children().children('.grade-name-info').text();
             // $(this).parent().parent().siblings('table').children('.grade-name-info').hide();
@@ -1151,13 +1151,13 @@
             $(this).parent().parent().siblings('table').children().children().children('.grade-edit-info').children().select();
             $(this).parent().parent().siblings('table').children().children().children('.grade-edit-info').children().val(grade_name_ini);
           });//end edit btn
-          $(document).on('click','.grade_cancel_btn',function(){
+          $(document).on('click touchstart','.grade_cancel_btn',function(){
             $(this).hide();
             $(this).parent().siblings('.grade-name-info').show();
             $(this).parent().siblings('.grade-edit-info').hide();
             $(this).parent().siblings('.edit-grade-btns').children().hide();
           });//end grade_cancel_btn
-          $(document).on('click','.grade_confirm_btn',function(){
+          $(document).on('click touchstart','.grade_confirm_btn',function(){
             var grade_id = $(this).attr('for');
             var grade_name = $(this).parent().siblings('.grade-edit-info').children('.grade_name').val();
             var gradeConfirm = ({
@@ -1175,11 +1175,11 @@
             });
           });//end grade_confirm_btn
 
-          $(document).on('click','.class_btn',function(){
+          $(document).on('click touchstart','.class_btn',function(){
             $(this).children('span').toggleClass("rotate");
           });//end class_collapse_btn
 
-          $(document).on('click', '.new-class-btn', function() {
+          $(document).on('click touchstart', '.new-class-btn', function() {
             var class_info = ({
             'class_name' : $(this).parent().siblings('.new-class-input').val(),
             'grade_id': $(this).attr('for')
@@ -1309,7 +1309,7 @@
             });
           }
           var server_time = 'ini';
-          $('#create_acdm_year').on('click', function() {
+          $('#create_acdm_year').on('click touchstart', function() {
             $('#add_new_acdm_modal').modal('show');
           });
           flatpickr("#acdmYearsRangeInput", {
@@ -1462,7 +1462,7 @@
             });
           }
 
-          $(document).on('click', '.use-now-acdm', function() {
+          $(document).on('click touchstart', '.use-now-acdm', function() {
             $(this).addClass('is-loading');
             acdm_id = $(this).attr("for");
             $scope.setAcdmCurrent(acdm_id);
@@ -1470,7 +1470,7 @@
         });
         app.controller("info-students-sessionCtrl",function ($scope, $http) {
           var editStuID = '';
-          $(document).on('click', '#del-stu-btn', function() {
+          $(document).on('click touchstart', '#del-stu-btn', function() {
             var stunacdm_id = $(this).attr('for');
             swal({
               title: "Are you sure?",
@@ -1502,7 +1502,7 @@
               //swal("Deleted!", "Your imaginary file has been deleted.", "success");
             });
           });
-          $(document).on('click', '#edit-stu-btn', function() {
+          $(document).on('click touchstart', '#edit-stu-btn', function() {
             editStuID = $(this).attr('for');
             $('#edit_student_modal').modal('show');
             for(var i = 0; i < $scope.students.length; i++) {
@@ -1669,14 +1669,14 @@
 		    app.controller('checkboxCtrl',function ($scope) {});
         app.controller('manage-acdmfeeCtrl',function($scope, $http){
           var edit_fee_id = '';
-          $(document).on('click', '.fee-edit', function() {
+          $(document).on('click touchstart', '.fee-edit', function() {
             $('#edit_fee_modal').modal('show');
             $('#edit_fee_grade').val($(this).attr('fee_grade')).trigger('change');
             $('#edit_fee_name').val($(this).attr('fee_name'));
             $('#edit_fee_total').val($(this).attr('fee_total'));
             edit_fee_id = $(this).attr('fee_id');
           });
-          $(document).on('click', '.fee-delete', function() {
+          $(document).on('click touchstart', '.fee-delete', function() {
             var fee_id = $(this).attr('fee_id');
             swal({
               title: "Are you sure?",
@@ -1849,7 +1849,7 @@
 
             });
           }
-          $(document).on('click', '.fee-part-new', function() {
+          $(document).on('click touchstart', '.fee-part-new', function() {
             console.log($(this).attr('for') + $(this).parent().siblings('.fee-part-new-input').val());
             var fee_part_new_btn = $(this);
             fee_part_new_btn.addClass('is-loading');
@@ -1875,7 +1875,7 @@
               }
             });
           });
-          $(document).on('click', '.del_fee_part_btn', function() {
+          $(document).on('click touchstart', '.del_fee_part_btn', function() {
             swal({
               title: "Are you sure?",
               text: "this can delete your recorded student payments",
@@ -1909,7 +1909,7 @@
             });
 
           });
-          $(document).on('click', '.edit_student_payment_btn', function() {
+          $(document).on('click touchstart', '.edit_student_payment_btn', function() {
 
             $(this).parent().addClass("right");
             $(this).parent().siblings('.second-edit-btn-group').removeClass('left');
@@ -1932,14 +1932,14 @@
             // $(this).parent().siblings('.paymet_amount').html(textdata);
           });
 
-          $(document).on('click', '.close_edit_stu_payment_btn', function() {
+          $(document).on('click touchstart', '.close_edit_stu_payment_btn', function() {
             $(this).parent().removeClass("right");
             $(this).parent().siblings('.second-edit-btn-group').addClass('left');
             $(this).parent().parent().prev().children('.each-payment-edit-info').show();
             $(this).parent().parent().prev().children('.each-payment-edit-input').hide();
           });
 
-          $(document).on('click', '.close_edit_stu_payment_btn', function() {
+          $(document).on('click touchstart', '.close_edit_stu_payment_btn', function() {
             $(this).parent().addClass('left');
             $(this).parent().siblings('.first-edit-btn-group').removeClass('right');
           });
@@ -2038,7 +2038,7 @@
             //   );
             // };
           }
-          $(document).on('click', '.edit_fee_part_btn', function() {
+          $(document).on('click touchstart', '.edit_fee_part_btn', function() {
             var fee_part_id = $(this).attr('for');
             var fee_part_amount = $(this).parent().parent().prev().children('.each-payment-edit-input').val();
 
@@ -2061,12 +2061,12 @@
               }
             });
           });
-          $(document).on('click','.payment_btn',function(){
+          $(document).on('click touchstart','.payment_btn',function(){
             $(this).children('span').toggleClass("rotate");
           });//end class_collapse_btn
         });//end manage-acdmCtrl
         app.controller('manage-stufeeCtrl',function($scope, $http){
-          $(document).on('click', '.fee-stu-edit-first .fe-edit-2', function() {
+          $(document).on('click touchstart', '.fee-stu-edit-first .fe-edit-2', function() {
             $(this).parent().addClass('right');
             $(this).parent().siblings('.fee-stu-edit-second').addClass('left');
             $(this).parent().parent().siblings('td').children('.pay-info').hide();
@@ -2074,7 +2074,7 @@
             $(this).parent().parent().parent().addClass('selected');
           });
 
-          $(document).on('click', '.fee-stu-edit-second .fe-x', function() {
+          $(document).on('click touchstart', '.fee-stu-edit-second .fe-x', function() {
             $(this).parent().removeClass('left');
             $(this).parent().siblings('.fee-stu-edit-first').removeClass('right');
             $(this).parent().parent().siblings('td').children('.pay-info').show();
