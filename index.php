@@ -991,7 +991,8 @@
               return '';
             }
           }
-          $(document).on('click touch', '.class-edit-first .fe-edit-2', function() {
+          $(document).on('click touch', '.class-edit-first .fe-edit-2', function(e) {
+            e.preventDefault();
             $(this).parent().addClass('right');
             $(this).parent().siblings('.class-edit-second').addClass('left');
             $(this).parent().siblings('.class-name-edit-info').hide();
@@ -999,13 +1000,15 @@
             $(this).parent().siblings('.class-name-edit-input').val($(this).parent().siblings('.class-name-edit-info').text());
             $(this).parent().siblings('.class-name-edit-input').select();
           });
-          $(document).on('click touch', '.class-edit-second .fe-x', function() {
+          $(document).on('click touch', '.class-edit-second .fe-x', function(e) {
+            e.preventDefault();
             $(this).parent().removeClass('left');
             $(this).parent().siblings('.class-edit-first').removeClass('right');
             $(this).parent().siblings('.class-name-edit-info').show();
             $(this).parent().siblings('.class-name-edit-input').hide();
           });
-          $(document).on('click touch', '.class-edit-second .fe-check', function() {
+          $(document).on('click touch', '.class-edit-second .fe-check', function(e) {
+            e.preventDefault();
             var class_name = $(this).parent().siblings('.class-name-edit-input').val();
             var class_id = $(this).attr('for');
             var class_info = ({
