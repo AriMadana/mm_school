@@ -1041,13 +1041,14 @@
             $(this).parent().siblings('.class-name-edit-info').hide();
             $(this).parent().siblings('.class-name-edit-input').show();
             $(this).parent().siblings('.class-name-edit-input').val($(this).parent().siblings('.class-name-edit-info').text());
-            $(this).parent().siblings('.class-name-edit-input').select();
+            $(this).parent().siblings('.class-name-edit-input').select().focus();
           });
           $(document).on('click touchstart', '.class-edit-second .fe-x', function() {
             $(this).parent().removeClass('left');
             $(this).parent().siblings('.class-edit-first').removeClass('right');
             $(this).parent().siblings('.class-name-edit-info').show();
             $(this).parent().siblings('.class-name-edit-input').hide();
+            $(this).parent().siblings('.class-name-edit-input').blur();
           });
           $(document).on('click touchstart', '.class-edit-second .fe-check', function() {
             var class_name = $(this).parent().siblings('.class-name-edit-input').val();
