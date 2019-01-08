@@ -890,6 +890,7 @@
           }
         }
         app.controller("manage-gradesCtrl", function ($scope, $http) {
+          $('input').blur();
           $('#create_grade_btn').click(function () {
             $('#sidebarModalSearch').modal('show');
           });
