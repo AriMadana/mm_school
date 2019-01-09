@@ -2081,7 +2081,38 @@
             $(this).parent().siblings('.fee-stu-edit-first').removeClass('right');
             $(this).parent().parent().siblings('td').children('.pay-info').show();
             $(this).parent().parent().siblings('td').children('.pay-input').hide();
+            $(this).parent().parent().siblings('.each-stu-fee').children().children('input').each(function( index ) {
+              $(this).val($(this).parent().siblings('.pay-info').text());
+              $(this).parent().siblings('.pay-info').text($(this).val());
+            });
             $(this).parent().parent().parent().removeClass('selected');
+          });
+
+          $(document).on('click touchstart', '.fee-stu-edit-second .fe-check', function() {
+            var data = [];
+            var tr = $(this).parent().parent().parent();
+            tr.addClass('is-loading');
+            $(this).parent().parent().siblings('.each-stu-fee').children().children('input').each(function( index ) {
+              data.push({
+                stu_id : $(this).attr('stu-id'),
+                feenum_id : $(this).attr('feenum-id'),
+                stufee_amount : $(this).val()
+              });
+              $(this).parent().siblings('.pay-info').text($(this).val());
+            });
+
+            $http({
+              method : 'POST',
+              url : 'includes/http_req/forms/edit_stu_fee.php',
+              data : data,
+              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              if(response.data) {
+                console.log(response.data);
+                tr.removeClass('is-loading');
+              }
+            });
+            // $(this).parent().parent().siblings('.each-stu-fee').addClass('class_name');
           });
           $http.get('includes/http_req/api/req_grade.php')
           .then(function (response) {
@@ -2096,8 +2127,100 @@
             $('#grade_name_select').select2({
               data: data
             }).trigger('change');
-            $('#fee_name_select').select2({
-              data: data
+          });
+
+          $http.get('includes/http_req/api/req_fee_list.php')
+          .then(function (response) {
+            if(response.data) {
+              $scope.fees = response.data;
+              var data = [];
+              var fee_name = '';
+              for(i in response.data) {
+                if (fee_name != response.data[i].fee_name) {
+                  data.push(
+                    {id: response.data[i].fee_id, text: response.data[i].fee_name}
+                  );
+                };
+                fee_name = response.data[i].fee_name;
+              }
+              $('#fee_name_select').select2({
+                data: data
+              }).trigger('change');
+            }
+          });
+
+          $scope.indexCheck = function(string) {
+            string = string.toString();
+            if(string.charAt(string.length-1) == '1') {
+              return 'st';
+            } else if (string.charAt(string.length-1) == '2') {
+              return 'nd';
+            } else if (string.charAt(string.length-1) == '3') {
+              return 'rd';
+            } else {
+              return 'th';
+            }
+          }
+
+          $('#fee_name_select').on('change', function() {
+            var data = [];
+            for(i in $scope.fees) {
+              if($(this).val() == $scope.fees[i].fee_id) {
+                data.push(
+                  {feenum_id: $scope.fees[i].feenum_id}
+                );
+              }
+            }
+            $scope.selfees = data;
+            console.log($scope.selfees);
+
+            var stu_fee = ({
+              'fee_id' : $(this).val()
+            });
+            $http({
+              method : 'POST',
+              url : 'includes/http_req/options/req_stufee.php',
+              data : stu_fee,
+              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              if(response.data) {
+                $scope.feeofstus = response.data;
+              }
+            });
+          });
+          $scope.feeofstus = [];
+          $scope.feeAmountOfEach = function(stu_id, feenum_id) {
+            if($scope.feeofstus.length == 0) {
+              return 0;
+            } else {
+              for(i in $scope.feeofstus) {
+                if($scope.feeofstus[i].stu_id == stu_id && $scope.feeofstus[i].feenum_id == feenum_id) {
+                  return $scope.feeofstus[i].stufee_amount;
+                }
+              }
+              return 0;
+            }
+          }
+
+          // $('#fee_name_select').select2({
+          //   data: data
+          // });
+
+          $('#grade_name_select').on('change', function() {
+            // if($('#stuRegTableCard').hasClass('no-student')) {
+            //
+            // }
+            var stu_grade = ({
+              'grade_id' : $(this).val()
+            });
+            $http({
+              method : 'POST',
+              url : 'includes/http_req/api/req_stu_list.php',
+              data : stu_grade,
+              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+            }).then(function (response) {
+              $scope.students = response.data;
+              console.log($scope.students);
             });
           });
         }); //end manage-stufeeCtrl

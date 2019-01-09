@@ -125,19 +125,9 @@
                   Name
                 </a>
               </th>
-              <th>
+              <th ng-repeat="x in selfees | orderBy : 'feenum_id'">
                 <a class="text-muted">
-                  1<sup>st</sup>payment<br>(100000)
-                </a>
-              </th>
-              <th>
-                <a class="text-muted">
-                  2<sup>nd</sup>payment<br>(100000)
-                </a>
-              </th>
-              <th>
-                <a class="text-muted">
-                  3<sup>rd</sup>payment<br>(100000)
+                  {{ $index + 1 }}<sup>{{ indexCheck($index + 1) }}</sup>payment<br>(100000)
                 </a>
               </th>
               <th>
@@ -145,25 +135,13 @@
             </tr>
           </thead>
           <tbody class="list">
-            <tr>
-              <td>#1</td>
-              <td>Mg Mg</td>
-              <td style="width: 150px;">
-                <span class="pay-info">100000</span>
+            <tr ng-repeat="x in students | orderBy : 'stu_name'">
+              <td>#{{ $index + 1 }}</td>
+              <td>{{ x.stu_name }}</td>
+              <td class="each-stu-fee" ng-repeat="y in selfees | orderBy : 'feenum_id'" style="width: 150px;">
+                <span feenum-id="{{ y.feenum_id }}" stu-id="{{ x.stu_id }}" class="pay-info">{{ feeAmountOfEach(x.stu_id, y.feenum_id) }}</span>
                 <span class="pay-input" style="display: none;">
-                  <input style="margin-right: 0px; font-size: 13px;" type="text" class="form-control form-control-flush fee-stu-edit-input" placeholder="value" value="100000">
-                </span>
-              </td>
-              <td style="width: 150px;">
-                <span class="pay-info">100000</span>
-                <span class="pay-input" style="display: none;">
-                  <input style="margin-right: 0px; font-size: 13px;" type="text" class="form-control form-control-flush fee-stu-edit-input" placeholder="value" value="100000">
-                </span>
-              </td>
-              <td style="width: 150px;">
-                <span class="pay-info">100000</span>
-                <span class="pay-input" style="display: none;">
-                  <input style="margin-right: 0px; font-size: 13px;" type="text" class="form-control form-control-flush fee-stu-edit-input" placeholder="value" value="100000">
+                  <input feenum-id="{{ y.feenum_id }}" stu-id="{{ x.stu_id }}" style="margin-right: 0px; font-size: 13px;" type="text" class="form-control form-control-flush fee-stu-edit-input" placeholder="value" value="{{ feeAmountOfEach(x.stu_id, y.feenum_id) }}">
                 </span>
               </td>
               <td style="text-align:center;">
