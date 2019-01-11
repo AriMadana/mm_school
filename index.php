@@ -1895,25 +1895,34 @@
           $(document).on('click', '.edit_fee_part_btn', function() {
             var fee_part_id = $(this).attr('for');
             var fee_part_amount = $(this).parent().parent().prev().children('.each-payment-edit-input').val();
-
-            var edit_fee_part_id = ({
-              'fee_part_id' : fee_part_id,
-              'fee_part_amount' : fee_part_amount
-            });
-            $http({
-              method : 'POST',
-              url : 'includes/http_req/forms/edit_fee_part.php',
-              data : edit_fee_part_id,
-              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
-            }).then(function (response) {
-              if(response.data) {
-                reqFeeList();
-                iziToast.success({
-                  title: 'Success',
-                  message: 'You edited one fee part'
-                });
-              }
-            });
+            var total_payment_amount_edit = $(this).parent().parent().parent().parent().siblings('h2.card-title').children().children('.fee-data-info-total').text();
+            var each_fee_amount = $(this).parent().parent().siblings('.payment_amount');
+            var sum_fee_amount=0;
+            for (var i = 0; i < each_fee_amount.length; i++) {
+              sum_fee_amount += parseInt(each_fee_amount.children('.each-payment-edit-input')[i].value);
+            }
+            if (total_payment_amount_edit < sum_fee_amount) {
+              alert('larger than total fee amount');
+            }else {
+              var edit_fee_part_id = ({
+                'fee_part_id' : fee_part_id,
+                'fee_part_amount' : fee_part_amount
+              });
+              $http({
+                method : 'POST',
+                url : 'includes/http_req/forms/edit_fee_part.php',
+                data : edit_fee_part_id,
+                headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+              }).then(function (response) {
+                if(response.data) {
+                  reqFeeList();
+                  iziToast.success({
+                    title: 'Success',
+                    message: 'You edited one fee part'
+                  });
+                }
+              });
+            }
           });
           $(document).on('click','.payment_btn',function(){
             $(this).children('span').toggleClass("rotate");
