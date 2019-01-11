@@ -1391,6 +1391,7 @@
           //$('#selectedAcdmGrade').select2();
           $('#selectedAcdmYears').select2();
           flatpickr("#st_birthday", {});
+          flatpickr('#edit_stu_birth',{});
           $('#phone_no').mask('00-000000000');
           $('#selectedAcdmGrade').on('change', function() {
             // if($('#stuRegTableCard').hasClass('no-student')) {
@@ -1578,7 +1579,7 @@
 
                   if(fee_id != response.data[i].fee_id) {
                     fee_id = response.data[i].fee_id;
-                    html += '<div class="col-12 col-lg-6 fee-cards">' +
+                    html += '<div class="col-12 col-lg-6 fee-cards payment_card">' +
                               '<div class="card">' +
                                 '<div class="card-body">' +
                                   '<!-- Dropdown -->' +
@@ -1603,7 +1604,7 @@
 
                                   '<!-- Title -->' +
                                   '<h2 class="card-title text-center p-2">' +
-                                    '<p style="font-size: 22px;"  class="fee-data-info-name">' + response.data[i].fee_name + '<span class="pl-7 fee-data-info-total">' + response.data[i].fee_total + '</span></p>' +
+                                    '<p style="font-size: 22px;"  class="fee-data-info-name"><span class="each_fee_name">' + response.data[i].fee_name + '</span><span class="pl-7 fee-data-info-total">' + response.data[i].fee_total + '</span></p>' +
                                   '</h2>' +
                                   '<!-- Divider -->' +
                                   '<hr>' +
@@ -1630,10 +1631,12 @@
 
                                     '</div>' +
                                     '<div class="container container-fluid input-group mt-3">' +
-                                      '<input type="text" class="form-control" placeholder="Enter new payment amount">' +
+                                      '<input type="number" id="payment_amount_text" class="form-control" placeholder="Enter new payment amount">' +
                                       '<div class="input-group-append">' +
-                                        '<button class="btn btn-success">Create</button>' +
+                                        '<button class="btn btn-success" id="add_fee_amount_btn">Create</button>' +
                                       '</div>' +
+                                      '<div class="invalid-feedback error-empty">Please fill payment amount.</div>'+
+                                      '<div class="invalid-feedback error-invalid">Your total payment amount is larger than required payment amount.</div>'+
                                     '</div>' +
                                   '</div>' +
                                 '</div> <!-- / .card-body -->' +
@@ -1721,8 +1724,14 @@
           $('#add_new_fee_btn').click(function () {
             $('#manage_fee_modal').modal('show');
           });
-          $('#fee_part').keyup(function () {
+          $('#fee_part').change(function(){fee_part_fun()});
+          $('#fee_part').keyup(function(){fee_part_fun()});
+          function fee_part_fun() {
             var parts = $('#fee_part').val();
+            if (parts>12) {
+              parts = 12;
+              $('#fee_part').val('12');
+            }
             var fee_card="";
             var th = "";
             for (var i = 1; i <= parts; i++) {
@@ -1738,11 +1747,11 @@
               fee_card +=
               '<div class="from-group col-6">'+
                 '<label class="col-form-label">'+i+'<sup>'+th+'</sup> payment</label>'+
-                '<input for="' + i + '" type="number" class="form-control fee_part">'+
+                '<input for="' + i + '" type="number" class="form-control fee_part" id="feepart'+i+'">'+
               '</div>'
             }
             $('#fee_part_item').html(fee_card);
-          });
+          }
           $scope.editFee = function() {
             var fee_name = $('#edit_fee_name').val();
             var fee_grade = $('#edit_fee_grade').val();
@@ -1770,46 +1779,119 @@
 
             });
           }
-          $scope.addFee = function() {
+          // $scope.addFee = function() {
+          //   var fee_name = $('#fee_name').val();
+          //   var fee_amount = $('#total_fee_amount').val();
+          //   var fee_number = $('#fee_part').val();
+          //   var grade_id = $('#add_fee_grade_combo').val();
+          //   var fee_data = [];
+          //   var fee_parts = [];
+          //   console.log(fee_name, fee_amount, fee_number);
+          //   $('.fee_part').each(function(i, el) {
+          //     num = $(el).attr('for');
+          //     value = $(el).val();
+          //     console.log(num + ' ' + value);
+          //     fee_parts.push({
+          //       id: num,
+          //       value: value
+          //     });
+          //   });
+          //   fee_data.push({
+          //     'fee_name': fee_name,
+          //     'fee_amount': fee_amount,
+          //     'fee_number': fee_number,
+          //     'grade_id': grade_id,
+          //     'fee_parts': fee_parts
+          //   });
+          //   console.log(fee_data);
+          //   $http({
+          //     method : 'POST',
+          //     url : 'includes/http_req/forms/add_fee.php',
+          //     data : fee_data,
+          //     headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+          //   }).then(function (response) {
+          //     console.log(response.data);
+          //   });
+          //
+          //
+          //   // for(i in response.data) {
+          //   //   data.push(
+          //   //     {id: response.data[i].grade_id, text: response.data[i].grade_name}
+          //   //   );
+          //   // };
+          // }
+
+          $(document).on('click','#add_fee_icon',function(){
             var fee_name = $('#fee_name').val();
             var fee_amount = $('#total_fee_amount').val();
             var fee_number = $('#fee_part').val();
             var grade_id = $('#add_fee_grade_combo').val();
+            var fee_each_sum = 0;
             var fee_data = [];
             var fee_parts = [];
-            console.log(fee_name, fee_amount, fee_number);
 
-            $('.fee_part').each(function(i, el) {
-              num = $(el).attr('for');
-              value = $(el).val();
-              console.log(num + ' ' + value);
-              fee_parts.push({
-                id: num,
-                value: value
-              });
-            });
-            fee_data.push({
-              'fee_name': fee_name,
-              'fee_amount': fee_amount,
-              'fee_number': fee_number,
-              'grade_id': grade_id,
-              'fee_parts': fee_parts
-            });
-            console.log(fee_data);
-            $http({
-              method : 'POST',
-              url : 'includes/http_req/forms/add_fee.php',
-              data : fee_data,
-              headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
-            }).then(function (response) {
-              console.log(response.data);
-            });
-            // for(i in response.data) {
-            //   data.push(
-            //     {id: response.data[i].grade_id, text: response.data[i].grade_name}
-            //   );
-            // };
-          }
+            if (!fee_name) {
+              $('#empty_fee_invalid').show();
+              $('#exit_fee_invalid').hide();
+              $('#fee_name').addClass('is-invalid');
+            }else if (!fee_amount) {
+              $('#amount_smaller_invalid').hide();
+              $('#empty_amount_invalid').show();
+              $('#total_fee_amount').addClass('is-invalid');
+            }else if (!fee_number) {
+              $('#fee_part').addClass('is-invalid');
+            }else {
+              var each_fee_name = $(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings('.col-12').children().children().children('#fee_cards').children().children().children().children('.card-title').children('.fee-data-info-name').children('.each_fee_name');
+              var already_exit = false;
+              for(var i=0; i<each_fee_name.length; i++){
+                if (fee_name == each_fee_name[i].innerHTML) {
+                  already_exit = true;
+                }
+              }
+              if (already_exit) {
+                $('#empty_fee_invalid').hide();
+                $('#exit_fee_invalid').show();
+                $(this).parent().parent().parent().parent().parent().siblings('.card-body').children('.fee_name_div').children('#fee_name').addClass('is-invalid');
+              }else {
+                for (var i = 1; i <= fee_number; i++) {
+                  fee_each_sum += parseInt($('#feepart'+i+'').val());
+                }
+                if (fee_amount < fee_each_sum) {
+                  $('#amount_smaller_invalid').show();
+                  $('#empty_amount_invalid').hide();
+                  $('#total_fee_amount').addClass('is-invalid');
+                }else {
+                  console.log(fee_name, fee_amount, fee_number);
+                  $('.fee_part').each(function(i, el) {
+                    num = $(el).attr('for');
+                    value = $(el).val();
+                    console.log(num + ' ' + value);
+                    fee_parts.push({
+                      id: num,
+                      value: value
+                    });
+                  });
+                  fee_data.push({
+                    'fee_name': fee_name,
+                    'fee_amount': fee_amount,
+                    'fee_number': fee_number,
+                    'grade_id': grade_id,
+                    'fee_parts': fee_parts
+                  });
+                  console.log(fee_data);
+                  $http({
+                    method : 'POST',
+                    url : 'includes/http_req/forms/add_fee.php',
+                    data : fee_data,
+                    headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+                  }).then(function (response) {
+                    console.log(response.data);
+                  });
+                }
+              }
+            }
+
+          });//end add_fee_icon
           $(document).on('click', '.edit_fee_part_btn', function() {
             var fee_part_id = $(this).attr('for');
             var fee_part_amount = $(this).parent().parent().prev().children('.each-payment-edit-input').val();
@@ -1836,6 +1918,35 @@
           $(document).on('click','.payment_btn',function(){
             $(this).children('span').toggleClass("rotate");
           });//end class_collapse_btn
+          $(document).on('click','#add_fee_amount_btn',function(){
+            var input_payment_amount = parseInt($(this).parent().siblings('.form-control').val());
+            if (input_payment_amount) {
+              var total_payment_amount = $(this).parent().parent().parent().siblings('.card-title').children().children().text();
+              var payment_each_amount =0;
+              var payment_each = $(this).parent().parent().siblings('.row').children('.payment_amount').children('.each-payment-edit-info');
+              for (var i = 0; i < payment_each.length; i++) {
+                payment_each_amount += parseInt(payment_each[i].innerHTML);
+              }
+              if (total_payment_amount < (input_payment_amount+payment_each_amount)) {
+                $('.error-invalid').show();
+                $('.error-empty').hide();
+                $(this).parent().siblings('.form-control').addClass('is-invalid');
+              }else {
+                //add to database
+                console.log(input_payment_amount);
+              }
+            }else {
+              $('.error-empty').show();
+              $('.error-invalid').hide();
+              $(this).parent().siblings('.form-control').addClass('is-invalid');
+            }
+          });//end add_fee_amount_btn
+          $(document).on('keyup change','#payment_amount_text',function(){
+            if ($(this).val()) {
+              $(this).removeClass('is-invalid');
+            }
+          });//end payment_amount_text key up
+
         });//end manage-acdmCtrl
         app.controller('manage-stufeeCtrl',function($scope, $http){
           $http.get('includes/http_req/api/req_grade.php')
