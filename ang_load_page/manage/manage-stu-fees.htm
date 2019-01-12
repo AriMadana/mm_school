@@ -28,6 +28,169 @@
       float: left !important;
     }
   }
+
+  @keyframes lds-ellipsis3 {
+0%, 25% {
+left: 32px;
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+50% {
+left: 32px;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+75% {
+left: 100px;
+}
+100% {
+left: 168px;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+}
+@-webkit-keyframes lds-ellipsis3 {
+0%, 25% {
+left: 32px;
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+50% {
+left: 32px;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+75% {
+left: 100px;
+}
+100% {
+left: 168px;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+}
+@keyframes lds-ellipsis2 {
+0% {
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+25%, 100% {
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+}
+@-webkit-keyframes lds-ellipsis2 {
+0% {
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+25%, 100% {
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+}
+@keyframes lds-ellipsis {
+0% {
+left: 32px;
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+25% {
+left: 32px;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+50% {
+left: 100px;
+}
+75% {
+left: 168px;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+100% {
+left: 168px;
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+}
+@-webkit-keyframes lds-ellipsis {
+0% {
+left: 32px;
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+25% {
+left: 32px;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+50% {
+left: 100px;
+}
+75% {
+left: 168px;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+100% {
+left: 168px;
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+}
+.lds-ellipsis {
+position: relative;
+}
+.lds-ellipsis > div {
+position: absolute;
+-webkit-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+width: 40px;
+height: 40px;
+}
+.lds-ellipsis div > div {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+background: #f00;
+position: absolute;
+top: 100px;
+left: 32px;
+-webkit-animation: lds-ellipsis 1s cubic-bezier(0, 0.5, 0.5, 1) infinite forwards;
+animation: lds-ellipsis 1s cubic-bezier(0, 0.5, 0.5, 1) infinite forwards;
+}
+.lds-ellipsis div:nth-child(1) div {
+-webkit-animation: lds-ellipsis2 1s cubic-bezier(0, 0.5, 0.5, 1) infinite forwards;
+animation: lds-ellipsis2 1s cubic-bezier(0, 0.5, 0.5, 1) infinite forwards;
+background: #262d1e;
+}
+.lds-ellipsis div:nth-child(2) div {
+-webkit-animation-delay: -0.5s;
+animation-delay: -0.5s;
+background: #b6c89f;
+}
+.lds-ellipsis div:nth-child(3) div {
+-webkit-animation-delay: -0.25s;
+animation-delay: -0.25s;
+background: #607e37;
+}
+.lds-ellipsis div:nth-child(4) div {
+-webkit-animation-delay: 0s;
+animation-delay: 0s;
+background: #9fb943;
+}
+.lds-ellipsis div:nth-child(5) div {
+-webkit-animation: lds-ellipsis3 1s cubic-bezier(0, 0.5, 0.5, 1) infinite forwards;
+animation: lds-ellipsis3 1s cubic-bezier(0, 0.5, 0.5, 1) infinite forwards;
+background: #262d1e;
+}
+.lds-ellipsis {
+width: 31px !important;
+height: 31px !important;
+-webkit-transform: translate(-15.5px, -15.5px) scale(0.155) translate(15.5px, 15.5px);
+transform: translate(-15.5px, -15.5px) scale(0.155) translate(15.5px, 15.5px);
+}
 </style>
 <div class="main-content">
   <!-- HEADER -->
@@ -111,7 +274,8 @@
           </div>
         </div> <!-- / .row -->
       </div>
-      <div class="table-responsive">
+
+      <div id="manage-stu-fee" class="table-responsive">
         <table ng-controller="checkboxCtrl" id="stuTable" class="table table-sm table-nowrap card-table">
           <thead>
             <tr>
@@ -126,8 +290,8 @@
                 </a>
               </th>
               <th ng-repeat="x in selfees | orderBy : 'feenum_id'">
-                <a class="text-muted">
-                  {{ $index + 1 }}<sup>{{ indexCheck($index + 1) }}</sup>payment<br>(100000)
+                <a class="text-muted {{x.feenum_id}}">
+                  {{ $index + 1 }}<sup>{{ indexCheck($index + 1) }}</sup>payment<br>({{x.req_amount}})
                 </a>
               </th>
               <th>
@@ -138,10 +302,13 @@
             <tr ng-repeat="x in students | orderBy : 'stu_name'">
               <td>#{{ $index + 1 }}</td>
               <td>{{ x.stu_name }}</td>
-              <td class="each-stu-fee" ng-repeat="y in selfees | orderBy : 'feenum_id'" style="width: 150px;">
-                <span feenum-id="{{ y.feenum_id }}" stu-id="{{ x.stu_id }}" class="pay-info">{{ feeAmountOfEach(x.stu_id, y.feenum_id) }}</span>
+              <td class="each-stu-fee" ng-repeat="y in selfees | orderBy : 'feenum_id'" style="width: 150px" on-finish-render>
+                <span style="" feenum-id="{{ y.feenum_id }}" stu-id="{{ x.stu_id }}" class="pay-info {{ checkFeePaidInLine(x.stu_id, y.feenum_id) }}">{{ feeAmountOfEach(x.stu_id, y.feenum_id) }}
+
+                </span>
+                <span class="fe fe-thumbs-up mr-4"></span>
                 <span class="pay-input" style="display: none;">
-                  <input feenum-id="{{ y.feenum_id }}" stu-id="{{ x.stu_id }}" style="margin-right: 0px; font-size: 13px;" type="text" class="form-control form-control-flush fee-stu-edit-input" placeholder="value" value="{{ feeAmountOfEach(x.stu_id, y.feenum_id) }}">
+                  <input feenum-id="{{ y.feenum_id }}" stu-id="{{ x.stu_id }}" style="margin-right: 0px; font-size: 13px;"  class="form-control form-control-flush fee-stu-edit-input" placeholder="value" value="{{ feeAmountOfEach(x.stu_id, y.feenum_id) }}">
                 </span>
               </td>
               <td style="text-align:center;">
@@ -152,7 +319,9 @@
                   <span for="" class="fe fe-x mr-3 text-danger"></span>
                   <span for="" class="fe fe-check mr-1 text-danger"></span>
                 </span>
+                <div class="lds-css ng-scope" style="position: absolute; display: none; margin-top: -5px;margin-bottom: -5px; right: 13px;"><div style="width:100%;height:100%" class="lds-ellipsis"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div></div>
               </td>
+
             </tr>
           </tbody>
         </table>

@@ -186,6 +186,26 @@
       table .selected input:focus {
         background: #e6f7ff;
       }
+
+      .pay-info .fe-thumbs-up {
+        display: none;
+      }
+      .pay-info.good {
+        color: green !important;
+        display: inline-block;
+      }
+      .pay-info + .fe-thumbs-up {
+        display: none;
+      }
+      .pay-info.good + .fe-thumbs-up {
+        display: inline-block;
+        color: green;
+      }
+
+
+      table .selected .fe-thumbs-up {
+        display: none !important;
+      }
     </style>
   </head>
   <body ng-app="myApp">
@@ -826,7 +846,34 @@
     <!-- Theme JS -->
     <script src="assets/js/theme.min.js"></script>
     <script>
-      var app = angular.module("myApp", ['ngRoute', 'ngAnimate']);
+    (function($) {
+      $.fn.inputFilter = function(inputFilter) {
+        return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
+          if (inputFilter(this.value)) {
+            this.oldValue = this.value;
+            this.oldSelectionStart = this.selectionStart;
+            this.oldSelectionEnd = this.selectionEnd;
+          } else if (this.hasOwnProperty("oldValue")) {
+            this.value = this.oldValue;
+            this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+          }
+        });
+      };
+    }(jQuery));
+
+      var app = angular.module("myApp", ['ngRoute', 'ngAnimate'])
+      .directive('onFinishRender', function ($timeout) {
+      return {
+          restrict: 'A',
+          link: function (scope, element, attr) {
+              if (scope.$last === true) {
+                  $timeout(function () {
+                      scope.$emit('ngRepeatFinished');
+                  });
+              }
+          }
+      }
+      });
       app.config(function($routeProvider) {
         //cfpLoadingBarProvider.includeSpinner = true;
         $routeProvider
@@ -2068,6 +2115,7 @@
           });//end class_collapse_btn
         });//end manage-acdmCtrl
         app.controller('manage-stufeeCtrl',function($scope, $http){
+
           $(document).on('click touchstart', '.fee-stu-edit-first .fe-edit-2', function() {
             $(this).parent().addClass('right');
             $(this).parent().siblings('.fee-stu-edit-second').addClass('left');
@@ -2090,16 +2138,41 @@
 
           $(document).on('click touchstart', '.fee-stu-edit-second .fe-check', function() {
             var data = [];
-            var tr = $(this).parent().parent().parent();
-            tr.addClass('is-loading');
+            var fe_x = $(this).prev();
+            var span = $(this).parent().parent().children('span');
+            var lds_css = $(this).parent().siblings('.lds-css');
+
+            span.hide();
+            lds_css.show();
+
             $(this).parent().parent().siblings('.each-stu-fee').children().children('input').each(function( index ) {
               data.push({
                 stu_id : $(this).attr('stu-id'),
                 feenum_id : $(this).attr('feenum-id'),
                 stufee_amount : $(this).val()
               });
+              th_is = $(this);
               $(this).parent().siblings('.pay-info').text($(this).val());
+
+              var pay_info = $(this).parent().siblings('.pay-info');
+              pay_info.removeClass('good');
+              var stu_fees = parseInt($(this).parent().siblings('.pay-info').text());
+              for (i in $scope.selfees) {
+
+                if($scope.selfees[i].feenum_id == th_is.attr('feenum-id')) {
+                  var fee_amount = $scope.selfees[i].req_amount;
+                  if(stu_fees == fee_amount) {
+                    console.log("here " + fee_amount);
+                    pay_info.addClass('good');
+                  }
+                  //console.log($scope.selfees[j].req_amount);
+                }
+                if($scope.selfees[i].feenum_id == 11) {
+                  console.log($scope.selfees[i].req_amount);
+                }
+              }
             });
+
 
             $http({
               method : 'POST',
@@ -2109,7 +2182,9 @@
             }).then(function (response) {
               if(response.data) {
                 console.log(response.data);
-                tr.removeClass('is-loading');
+                span.show();
+                lds_css.hide();
+                fe_x.click();
               }
             });
             // $(this).parent().parent().siblings('.each-stu-fee').addClass('class_name');
@@ -2146,6 +2221,7 @@
               $('#fee_name_select').select2({
                 data: data
               }).trigger('change');
+              console.log(response.data);
             }
           });
 
@@ -2167,12 +2243,15 @@
             for(i in $scope.fees) {
               if($(this).val() == $scope.fees[i].fee_id) {
                 data.push(
-                  {feenum_id: $scope.fees[i].feenum_id}
+                  {
+                    feenum_id: $scope.fees[i].feenum_id,
+                    req_amount: $scope.fees[i].req_amount
+                  }
                 );
               }
             }
             $scope.selfees = data;
-            console.log($scope.selfees);
+            //console.log('Ohh ' + $scope.selfees[0].feenum_id);
 
             var stu_fee = ({
               'fee_id' : $(this).val()
@@ -2200,7 +2279,31 @@
               }
               return 0;
             }
+
+            //checkFeePaid();
           }
+
+          $scope.checkFeePaidInLine = function(stu_id, feenum_id) {
+            if($scope.feeofstus.length == 0) {
+              return '';
+            } else {
+              for(i in $scope.feeofstus) {
+                if($scope.feeofstus[i].stu_id == stu_id && $scope.feeofstus[i].feenum_id == feenum_id) {
+                  var stu_fees = $scope.feeofstus[i].stufee_amount;
+                  for (j in $scope.selfees) {
+                    if($scope.selfees[j].feenum_id == $scope.feeofstus[i].feenum_id) {
+                      var fee_amount = $scope.selfees[j].req_amount;
+                      if(stu_fees == fee_amount) {
+                        return 'good';
+                      }
+                    }
+                  }
+                }
+              }
+              return '';
+            }
+          }
+
 
           // $('#fee_name_select').select2({
           //   data: data
@@ -2223,6 +2326,60 @@
               console.log($scope.students);
             });
           });
+          var req_amount = 0;
+          $(document).on('focus', '.fee-stu-edit-input', function() {
+            var feenum_id = $(this).attr('feenum-id');
+            var th_is = $(this);
+            for(i in $scope.selfees) {
+              if($scope.selfees[i].feenum_id == feenum_id) {
+                //console.log(feenum_id);
+                req_amount = $scope.selfees[i].req_amount;
+                //console.log(req_amount);
+              }
+            }
+          });
+          $(document).on('keypress keyup blur','.fee-stu-edit-input',function(event) {
+            $(this).val($(this).val().replace(/[^\d].+/, ""));
+            if ((event.which < 48 || event.which > 57)) {
+              event.preventDefault();
+            }
+            if ($(this).val().length == 10) {
+              event.preventDefault();
+            }
+            if (parseInt($(this).val()) > parseInt(req_amount)) {
+              $(this).val(req_amount);
+            }
+
+          });//end fee-stu-edit-input keyup
+
+
+          $scope.$on('ngRepeatFinished', function (ngRepeatFinishedEvent) {
+              //you also get the actual event object
+              //do stuff, execute functions -- whatever...
+
+              //$scope.checkFeePaidInLine();
+          });
+
+          $scope.checkFeePaid = function() {
+            $('#manage-stu-fee .each-stu-fee').each(function() {
+              var th_is = $(this);
+              var fee_amount = 0;
+              var pay_info = $(this).children('.pay-info').text();
+              var pay_id = $(this).children('.pay-info').attr('feenum-id');
+              for (i in $scope.selfees) {
+                if($scope.selfees[i].feenum_id == pay_id) {
+                  fee_amount = $scope.selfees[i].req_amount;
+                }
+              }
+
+              if(pay_info == fee_amount && !th_is.children('.pay-info').hasClass('good')) {
+                th_is.children('.pay-info').addClass('good');
+              } else if (pay_info != fee_amount) {
+                th_is.children('.pay-info').removeClass('good');
+              }
+            });
+          }
+
         }); //end manage-stufeeCtrl
         function feeSearch() {
           var input, filter, fee_cards_div, fee_cards, fee_cards_info_grade, i;

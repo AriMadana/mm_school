@@ -12,7 +12,7 @@ class MM_StuFee_Class extends Db_object {
 
   public function selectStuFee($fee_id) {
 
-    $result = $this -> find_array_by_query("SELECT sf.* FROM `eth_stufee` sf, `eth_feenum` f WHERE sf.feenum_id = f.feenum_id AND f.fee_id = $fee_id;");
+    $result = $this -> find_array_by_query("SELECT sf.* FROM `eth_stufee` sf, `eth_feenum` f WHERE sf.feenum_id = f.feenum_id AND f.fee_id = $fee_id ORDER BY f.feenum_id;");
     return $result;
   }
 
