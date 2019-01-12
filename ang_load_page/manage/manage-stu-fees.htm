@@ -28,6 +28,169 @@
       float: left !important;
     }
   }
+
+  @keyframes lds-ellipsis3 {
+0%, 25% {
+left: 32px;
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+50% {
+left: 32px;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+75% {
+left: 100px;
+}
+100% {
+left: 168px;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+}
+@-webkit-keyframes lds-ellipsis3 {
+0%, 25% {
+left: 32px;
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+50% {
+left: 32px;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+75% {
+left: 100px;
+}
+100% {
+left: 168px;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+}
+@keyframes lds-ellipsis2 {
+0% {
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+25%, 100% {
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+}
+@-webkit-keyframes lds-ellipsis2 {
+0% {
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+25%, 100% {
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+}
+@keyframes lds-ellipsis {
+0% {
+left: 32px;
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+25% {
+left: 32px;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+50% {
+left: 100px;
+}
+75% {
+left: 168px;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+100% {
+left: 168px;
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+}
+@-webkit-keyframes lds-ellipsis {
+0% {
+left: 32px;
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+25% {
+left: 32px;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+50% {
+left: 100px;
+}
+75% {
+left: 168px;
+-webkit-transform: scale(1);
+transform: scale(1);
+}
+100% {
+left: 168px;
+-webkit-transform: scale(0);
+transform: scale(0);
+}
+}
+.lds-ellipsis {
+position: relative;
+}
+.lds-ellipsis > div {
+position: absolute;
+-webkit-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+width: 40px;
+height: 40px;
+}
+.lds-ellipsis div > div {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+background: #f00;
+position: absolute;
+top: 100px;
+left: 32px;
+-webkit-animation: lds-ellipsis 1s cubic-bezier(0, 0.5, 0.5, 1) infinite forwards;
+animation: lds-ellipsis 1s cubic-bezier(0, 0.5, 0.5, 1) infinite forwards;
+}
+.lds-ellipsis div:nth-child(1) div {
+-webkit-animation: lds-ellipsis2 1s cubic-bezier(0, 0.5, 0.5, 1) infinite forwards;
+animation: lds-ellipsis2 1s cubic-bezier(0, 0.5, 0.5, 1) infinite forwards;
+background: #262d1e;
+}
+.lds-ellipsis div:nth-child(2) div {
+-webkit-animation-delay: -0.5s;
+animation-delay: -0.5s;
+background: #b6c89f;
+}
+.lds-ellipsis div:nth-child(3) div {
+-webkit-animation-delay: -0.25s;
+animation-delay: -0.25s;
+background: #607e37;
+}
+.lds-ellipsis div:nth-child(4) div {
+-webkit-animation-delay: 0s;
+animation-delay: 0s;
+background: #9fb943;
+}
+.lds-ellipsis div:nth-child(5) div {
+-webkit-animation: lds-ellipsis3 1s cubic-bezier(0, 0.5, 0.5, 1) infinite forwards;
+animation: lds-ellipsis3 1s cubic-bezier(0, 0.5, 0.5, 1) infinite forwards;
+background: #262d1e;
+}
+.lds-ellipsis {
+width: 31px !important;
+height: 31px !important;
+-webkit-transform: translate(-15.5px, -15.5px) scale(0.155) translate(15.5px, 15.5px);
+transform: translate(-15.5px, -15.5px) scale(0.155) translate(15.5px, 15.5px);
+}
 </style>
 <div class="main-content">
   <!-- HEADER -->
@@ -35,181 +198,134 @@
     <div class="container">
 
       <!-- Body -->
-      <div class="header-body" style="border:0">
+      <div class="header-body">
         <div class="row align-items-end">
           <div class="col">
+
             <!-- Pretitle -->
             <h6 class="header-pretitle">
               Overview
             </h6>
+
             <!-- Title -->
             <h1 class="header-title">
-              Student
+              Students
             </h1>
+
+          </div>
+          <div class="col-auto">
+
           </div>
         </div> <!-- / .row -->
-      </div> <!-- / .header-body -->
-    </div>
-  </div> <!-- / .header -->
-  <div class="modal fade" id="edit-stufee-modal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div id="editStuAlert" style="top:-90px;z-index:1200;position:absolute;width:100%;" class="alert alert-success" role="alert">
-          <h4 class="alert-heading">Well done!</h4>
-          <p style="margin-bottom:0px;">Aww yeah, you successfully</p>
+        <div class="row align-items-center">
+          <div class="col">
+
+            <!-- Nav -->
+            <ul class="nav nav-tabs nav-overflow header-tabs">
+              <li class="nav-item">
+                <a href="#!info-students-session" class="nav-link">
+                  infos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active">
+                  fees
+                </a>
+              </li>
+            </ul>
+
+          </div>
         </div>
-        <div class="modal-card card" data-toggle="lists" data-lists-values="[&quot;name&quot;]">
-          <div class="card-header">
-            <div class="row align-items-center">
-              <div class="col-auto">
+      </div> <!-- / .header-body -->
 
-                <!-- Close -->
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true"><span class="fe fe-x"></span></span>
-                </button>
+    </div>
 
+  </div>
+
+  <div class="container mt-4">
+    <div id="stuRegTableCard" class="card" style="margin-bottom: 10px;" data-toggle="lists" data-lists-values="[&quot;orders-order&quot;, &quot;orders-product&quot;, &quot;orders-date&quot;, &quot;orders-total&quot;, &quot;orders-status&quot;, &quot;orders-method&quot;]">
+      <div class="card-header flexible">
+        <div class="row align-items-center m-0 p-0">
+          <div class="col-sm-6">
+              <!-- Search -->
+            <form class="row" id="search_row">
+              <div class="col-auto pr-0">
+                <span class="fe fe-search text-muted"></span>
               </div>
               <div class="col">
-
-                <!-- Title -->
-                <h4 class="card-header-title" id="exampleModalCenterTitle" style="text-align:center;">
-                  Edit Student Fee
-                </h4>
-
+                  <input id="stuSearch" type="search" class="form-control form-control-flush" placeholder="Search" onkeyup="stuSearchFnc()">
               </div>
-              <div class="col-auto">
-
-                <!-- Close -->
-                <button id="edit-student-btn" type="button" class="close" ng-click="editStudent()">
-                  <span aria-hidden="true"><span class="fe fe-user-plus"></span></span>
-                </button>
-
-              </div>
-            </div> <!-- / .row -->
+            </form>
           </div>
-          <div class="card-body">
-            <div class="form-group">
-              <label for="student_name">Enter Student Name</label>
-              <input ng-modal="editstu_name" type="text" class="form-control" id="edit_student_name" placeholder="Student Name">
-            </div>
-            <div class="form-group">
-              <label for="1payment">1<sup>st</sup>payment</label>
-              <input ng-modal="1payment" type="text" class="form-control" id="1payment">
-            </div>
-            <div class="form-group">
-              <label for="2payment">2<sup>nd</sup>payment</label>
-              <input ng-modal="2payment" type="text" class="form-control" id="2payment">
-            </div>
-            <div class="form-group">
-              <label for="3payment">3<sup>rd</sup>payment</label>
-              <input ng-modal="3payment" type="text" class="form-control" id="3payment">
+          <div class="col-sm-6 mr-0">
+            <!-- Button -->
+            <div class="row align-items-center selectbox_container" style="float:right">
+              <div class="form-group m-0 mr-2">
+                  <select class="form-control" id="grade_name_select" data-toggle="select" name="grade_name">
+
+                  </select>
+              </div>
+              <div class="form-group m-0 ml-2">
+                  <select class="form-control" id="fee_name_select" data-toggle="select" name="fee_name">
+
+                  </select>
+              </div>
             </div>
           </div>
-        </div>
+        </div> <!-- / .row -->
+      </div>
+
+      <div id="manage-stu-fee" class="table-responsive">
+        <table ng-controller="checkboxCtrl" id="stuTable" class="table table-sm table-nowrap card-table">
+          <thead>
+            <tr>
+              <th>
+                <a class="text-muted">
+                  Stu ID
+                </a>
+              </th>
+              <th>
+                <a class="text-muted">
+                  Name
+                </a>
+              </th>
+              <th ng-repeat="x in selfees | orderBy : 'feenum_id'">
+                <a class="text-muted {{x.feenum_id}}">
+                  {{ $index + 1 }}<sup>{{ indexCheck($index + 1) }}</sup>payment<br>({{x.req_amount}})
+                </a>
+              </th>
+              <th>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="list">
+            <tr ng-repeat="x in students | orderBy : 'stu_name'">
+              <td>#{{ $index + 1 }}</td>
+              <td>{{ x.stu_name }}</td>
+              <td class="each-stu-fee" ng-repeat="y in selfees | orderBy : 'feenum_id'" style="width: 150px" on-finish-render>
+                <span style="" feenum-id="{{ y.feenum_id }}" stu-id="{{ x.stu_id }}" class="pay-info {{ checkFeePaidInLine(x.stu_id, y.feenum_id) }}">{{ feeAmountOfEach(x.stu_id, y.feenum_id) }}
+
+                </span>
+                <span class="fe fe-thumbs-up mr-4"></span>
+                <span class="pay-input" style="display: none;">
+                  <input feenum-id="{{ y.feenum_id }}" stu-id="{{ x.stu_id }}" style="margin-right: 0px; font-size: 13px;"  class="form-control form-control-flush fee-stu-edit-input" placeholder="value" value="{{ feeAmountOfEach(x.stu_id, y.feenum_id) }}">
+                </span>
+              </td>
+              <td style="text-align:center;">
+                <span class="fee-stu-edit-group fee-stu-edit-first" style="right: 10px;">
+                  <span for="" class="fe fe-edit-2 mr-3 text-danger"></span>
+                </span>
+                <span class="fee-stu-edit-group fee-stu-edit-second" style="right: 10px;">
+                  <span for="" class="fe fe-x mr-3 text-danger"></span>
+                  <span for="" class="fe fe-check mr-1 text-danger"></span>
+                </span>
+                <div class="lds-css ng-scope" style="position: absolute; display: none; margin-top: -5px;margin-bottom: -5px; right: 13px;"><div style="width:100%;height:100%" class="lds-ellipsis"><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div></div>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-  <div class="container">
-    <!-- Body -->
-    <div class="header-body mt--5 mt-md--6">
-      <div class="row align-items-center">
-        <div class="col">
-
-          <!-- Nav -->
-          <ul class="nav nav-tabs nav-overflow header-tabs">
-            <li class="nav-item">
-              <a href="#!info-students-session" class="nav-link">
-                infos
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="#!manage-stu-fees" class="nav-link active">
-                fees
-              </a>
-            </li>
-          </ul>
-
-        </div>
-      </div>
-    </div> <!-- / .header-body -->
-  </div>
-  <div class="container mt-4">
-      <div id="stuRegTableCard" class="card" style="margin-bottom: 10px;" data-toggle="lists" data-lists-values="[&quot;orders-order&quot;, &quot;orders-product&quot;, &quot;orders-date&quot;, &quot;orders-total&quot;, &quot;orders-status&quot;, &quot;orders-method&quot;]">
-        <div class="card-header flexible">
-          <div class="row align-items-center m-0 p-0">
-            <div class="col-sm-6">
-                <!-- Search -->
-                <form class="row" id="search_row">
-                  <div class="col-auto pr-0">
-                    <span class="fe fe-search text-muted"></span>
-                  </div>
-                  <div class="col">
-                      <input id="stuSearch" type="search" class="form-control form-control-flush" placeholder="Search" onkeyup="stuSearchFnc()">
-                  </div>
-                </form>
-              </div>
-              <div class="col-sm-6 mr-0">
-                <!-- Button -->
-                <div class="row align-items-center selectbox_container" style="float:right">
-                  <div class="form-group m-0 mr-2">
-                      <select class="form-control" id="grade_name_select" data-toggle="select" name="grade_name">
-
-                      </select>
-                  </div>
-                  <div class="form-group m-0 ml-2">
-                      <select class="form-control" id="fee_name_select" data-toggle="select" name="fee_name">
-
-                      </select>
-                  </div>
-                </div>
-              </div>
-            </div> <!-- / .row -->
-          </div>
-          <div class="table-responsive">
-            <table ng-controller="checkboxCtrl" id="stuTable" class="table table-sm table-nowrap card-table">
-              <thead>
-                <tr>
-                  <th>
-                    <a class="text-muted">
-                      Stu ID
-                    </a>
-                  </th>
-                  <th>
-                    <a class="text-muted">
-                      Name
-                    </a>
-                  </th>
-                  <th>
-                    <a class="text-muted">
-                      1<sup>st</sup>payment<br>(100000)
-                    </a>
-                  </th>
-                  <th>
-                    <a class="text-muted">
-                      2<sup>nd</sup>payment<br>(100000)
-                    </a>
-                  </th>
-                  <th>
-                    <a class="text-muted">
-                      3<sup>rd</sup>payment<br>(100000)
-                    </a>
-                  </th>
-                  <th>
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="list">
-                <tr>
-                  <td>#1</td>
-                  <td>Mg Mg</td>
-                  <td>100000</td>
-                  <td>100000</td>
-                  <td>100000</td>
-                  <td style="text-align:center;"><span class="fe fe-edit-2 text-danger" id="edit-stufee-icon"></span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-    </div>
 </div> <!-- / .main-content -->
