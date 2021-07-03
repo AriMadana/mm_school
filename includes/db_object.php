@@ -98,6 +98,12 @@ class Db_object {
       $result = $database -> queryID($sql);
       return $result;
     }
+
+    public static function insert_multi_query($sql) {
+      global $database;
+      $result = $database -> multiQuery($sql);
+      return $result;
+    }
     /*public function insert($table, $fields = array()) {
         if(count($fields)) {
             $keys = array_keys($fields);

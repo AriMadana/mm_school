@@ -34,6 +34,16 @@ class Database {
 		return $result;
 	}
 
+	public function multiQuery($sql) {
+		$result = $this -> connection ->multi_query($sql);
+        if(!$result) {
+			die("Query Fail.".mysqli_error($this->connection));
+		}
+
+		$this->confirm_query($result);
+		return $result;
+	}
+
 	public function queryID($sql) {
 		$result = $this -> connection ->query($sql);
         if(!$result) {

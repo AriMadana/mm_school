@@ -37,6 +37,12 @@ class MM_School_FeeNum extends Db_object {
     return $result;
   }
 
+	public function addOneFeeNum($fee_id, $fee_num_amount) {
+		$db_table = static::$db_table;
+		$result = $this -> insert_query("INSERT INTO `$db_table` (`fee_id`, `req_amount`) VALUES ($fee_id, $fee_num_amount);");
+		return $result;
+	}
+
 	public function editFeePart($fee_part_id, $fee_part_amount) {
 		$db_table = static::$db_table;
 		$result = $this -> insert_query("UPDATE `$db_table` SET `req_amount` = $fee_part_amount WHERE `feenum_id` = $fee_part_id;");
